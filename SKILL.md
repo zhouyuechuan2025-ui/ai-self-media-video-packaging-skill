@@ -1,34 +1,42 @@
 ---
 name: package-talking-head-video
-description: Use when packaging an existing talking-head video from MP4 and SRT into polished, time-aligned motion graphics with Remotion by default or HyperFrames as an optional adapter.
+description: Use when packaging center-presenter talking-head content from SRT, optionally with source video, into time-aligned motion graphics or a transparent overlay.
 ---
 
 # Package Talking-Head Video
 
-Turn a center-presenter talking-head video plus SRT into a reproducible, semantically directed packaging project. Preserve the source edit, voice, and burned-in captions unless the user explicitly requests otherwise.
+Turn center-presenter talking-head content plus SRT into a reproducible, semantically directed packaging project. Accept either SRT-only transparent-overlay output or video-plus-SRT composite output. Preserve the source edit, voice, and burned-in captions unless the user explicitly requests otherwise.
 
 ## Required workflow
 
-1. Probe and hash both inputs, parse every SRT cue, classify claims and evidence, and write Gate A documents. Gate A is analysis only.
+1. Parse and hash the SRT, then probe and hash the video when supplied. For SRT-only overlay output, lock width, height, fps, and duration from the cues before writing Gate A documents. Gate A is analysis only.
 2. Present the plan first. Do not continue until the user approves this exact job. Silence, urgency, another job's approval, or broad permission is not approval.
 3. After explicit Gate A approval, build the composition inputs at Gate B. Use Remotion by default; use the HyperFrames adapter only when requested.
 4. After Gate B approval, generate eight representative review stills and a contact sheet at Gate C. Do not render the final video.
-5. After explicit Gate D approval, render and verify the actual artifact with ffprobe, full decode, black-frame detection, eight representative frames, hashes, and a manifest.
+5. After explicit Gate D approval, render and verify the actual artifact with ffprobe, full decode, eight representative frames, hashes, and a manifest. Composite MP4 requires black-frame detection; transparent MOV requires ProRes 4444, no audio track, an alpha-capable pixel format, and sampled alpha variation.
+
+## Choose the output mode
+
+- Default to `--output-mode composite` for first-time users. Require both video and SRT, review the real presenter and burned-in subtitles, and output `packaged.mp4`.
+- Use `--output-mode overlay` when the user wants a ProRes 4444 Alpha `overlay.mov`. Video is optional, but SRT, width, height, and fps must describe the target edit exactly. Warn that SRT-only mode cannot inspect the real face position or subtitle height.
 
 ## Four cumulative commands
 
 ```bash
 # Gate A: plan only
-npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in
+npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --output-mode composite
 
 # Gate B: composition inputs
-npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b
+npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b
 
 # Gate C: review stills and contact sheet, no final MP4
-npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c
+npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b --approve-gate-c
 
 # Gate D: final render and artifact QA
-npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
+npm run package-video -- --video INPUT.mp4 --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
+
+# SRT-only transparent ProRes 4444 overlay
+npm run package-video -- --srt INPUT.srt --out RUN --renderer remotion --captions burned-in --output-mode overlay --width 1920 --height 1080 --fps 30 --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
 ```
 
 ## V2 semantic structures

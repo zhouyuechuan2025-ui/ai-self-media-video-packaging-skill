@@ -6,6 +6,7 @@ import type {Storyboard} from '../../packages/core/src/schema';
 import type {SemanticStructure} from '../../packages/core/src/template-contracts';
 import {resolvePresentationMode, type PresentationMode} from '../../packages/core/src/presentation-contracts';
 import {probeMedia} from '../../packages/core/src/probe';
+import type {OutputMode} from './output-mode';
 
 export type RepresentativeBeat = {
   id: string;
@@ -32,6 +33,33 @@ const runChecked = (command: string, args: string[]): string => {
 const sha256 = (file: string): string => createHash('sha256').update(readFileSync(file)).digest('hex').toUpperCase();
 
 export const probeOutput = (file: string) => probeMedia(file);
+
+export const probePixelFormat = (file: string): string => {
+  const output = runChecked('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=pix_fmt', '-of', 'default=noprint_wrappers=1:nokey=1', resolve(file)]).trim();
+  if (!output) throw new Error('Unable to read rendered pixel format');
+  return output;
+};
+
+export const parseAlphaSignalStats = (output: string): {min: number; max: number; samples: number} => {
+  const mins = [...output.matchAll(/lavfi\.signalstats\.YMIN=([0-9.]+)/g)].map((match) => Number(match[1]));
+  const maxs = [...output.matchAll(/lavfi\.signalstats\.YMAX=([0-9.]+)/g)].map((match) => Number(match[1]));
+  if (mins.length === 0 || mins.length !== maxs.length) throw new Error('Unable to read sampled alpha-plane signal statistics');
+  return {min: Math.min(...mins), max: Math.max(...maxs), samples: mins.length};
+};
+
+export const probeAlphaRange = (file: string): {min: number; max: number; samples: number} => parseAlphaSignalStats(runChecked('ffmpeg', [
+  '-v', 'error', '-i', resolve(file),
+  '-vf', 'fps=1,alphaextract,signalstats,metadata=print:file=-',
+  '-an', '-f', 'null', '-',
+]));
+
+export const verifyAlphaChannel = (file: string): {pixelFormat: string; min: number; max: number; samples: number} => {
+  const pixelFormat = probePixelFormat(file);
+  if (!pixelFormat.startsWith('yuva')) throw new Error(`Transparent overlay is missing an alpha-capable pixel format: ${pixelFormat}`);
+  const range = probeAlphaRange(file);
+  if (range.min >= range.max) throw new Error(`Transparent overlay contains no sampled alpha variation: ${range.min}–${range.max}`);
+  return {pixelFormat, ...range};
+};
 
 export const decodeEntireFile = (file: string): void => {
   runChecked('ffmpeg', ['-v', 'error', '-i', resolve(file), '-f', 'null', '-']);
@@ -92,11 +120,14 @@ export const buildContactSheet = (frames: FrameEvidence[], target: string): stri
   return resolve(target);
 };
 
-export const writeRenderManifest = ({output, storyboard, frames, target}: {output: string; storyboard: Storyboard; frames: FrameEvidence[]; target: string}) => {
+export const writeRenderManifest = ({output, storyboard, frames, target, outputMode = 'composite'}: {output: string; storyboard: Storyboard; frames: FrameEvidence[]; target: string; outputMode?: OutputMode}) => {
   const probe = probeOutput(output);
+  const pixelFormat = probePixelFormat(output);
+  const alphaChannel = outputMode === 'overlay' ? verifyAlphaChannel(output) : null;
   const manifest = {
     rendererVersion: '2.0',
-    output: {file: basename(output), sha256: sha256(output), ...probe},
+    outputMode,
+    output: {file: basename(output), sha256: sha256(output), pixelFormat, ...probe},
     storyboard: {id: storyboard.id, duration: storyboard.duration, structures: [...new Set(storyboard.beats.map((beat) => beat.structure))]},
     frames: frames.map((frame) => ({...frame, file: basename(frame.file)})),
     visualQuality: {
@@ -105,7 +136,8 @@ export const writeRenderManifest = ({output, storyboard, frames, target}: {outpu
       gateCApproval: 'confirmed-before-render',
     },
     fullDecode: 'pass',
-    blackFrames: detectBlackFrames(output),
+    alphaChannel: alphaChannel ? {verified: true, ...alphaChannel} : null,
+    blackFrames: outputMode === 'composite' ? detectBlackFrames(output) : [],
   };
   writeFileSync(target, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
   return manifest;

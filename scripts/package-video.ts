@@ -1,7 +1,8 @@
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {basename, join, resolve} from 'node:path';
-import {copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
+import {copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
 import {pathToFileURL} from 'node:url';
 import {assertDirectorPlan} from '../packages/core/src/director-validation';
 import {planStoryboard} from '../packages/core/src/planner';
@@ -11,6 +12,7 @@ import {parseSrt} from '../packages/core/src/srt';
 import {generateHyperFramesProject} from '../packages/hyperframes-adapter/src/generate';
 import {buildContactSheet, decodeEntireFile, detectBlackFrames, extractRepresentativeFrames, frameEvidenceFromFile, selectRepresentativeBeats, writeRenderManifest} from './lib/artifact-qa';
 import {approvedGate, requireCumulativeApprovals, requireRenderAuthorization, type Args} from './lib/gates';
+import {buildOverlayFfmpegArgs, buildOverlaySequenceFlags, buildRemotionOutputFlags, resolveOutputMode, syntheticOverlayProbe} from './lib/output-mode';
 
 const parseArgs = (values: string[]): Args => {
   const args: Args = {};
@@ -48,22 +50,28 @@ const ensurePreviewMedia = (source: string, destination: string, codec: string, 
 
 export const main = (argv = process.argv.slice(2)): void => {
   const args = parseArgs(argv);
-  const video = resolve(required(args, 'video'));
   const srt = resolve(required(args, 'srt'));
   const out = resolve(required(args, 'out'));
-  if (!existsSync(video) || !existsSync(srt)) throw new Error('Input video or SRT does not exist');
+  const video = typeof args.video === 'string' ? resolve(args.video) : undefined;
+  const outputMode = resolveOutputMode(args, video);
+  if (!existsSync(srt)) throw new Error('Input SRT does not exist');
+  if (video && !existsSync(video)) throw new Error('Input video does not exist');
   const renderer = typeof args.renderer === 'string' ? args.renderer : 'remotion';
   const captionsMode = typeof args.captions === 'string' ? args.captions : 'burned-in';
   const renderConcurrency = typeof args.concurrency === 'string' ? args.concurrency : '2';
   const renderTimeout = typeof args.timeout === 'string' ? args.timeout : '120000';
   if (!['burned-in', 'none', 'generated'].includes(captionsMode)) throw new Error('Invalid --captions mode');
   if (!['remotion', 'hyperframes'].includes(renderer)) throw new Error('Invalid --renderer');
+  if (renderer === 'hyperframes' && outputMode === 'overlay') throw new Error('Overlay MOV output currently requires --renderer remotion');
   if (!/^[1-9]\d*$/.test(renderConcurrency) || Number(renderConcurrency) > 16) throw new Error('Invalid --concurrency; expected an integer from 1 to 16');
   if (!/^[1-9]\d*$/.test(renderTimeout) || Number(renderTimeout) < 7000) throw new Error('Invalid --timeout; expected an integer of at least 7000 milliseconds');
 
-  mkdirSync(out, {recursive: true});
-  const probe = probeMedia(video);
   const cues = parseSrt(readFileSync(srt, 'utf8'));
+  const width = Number(typeof args.width === 'string' ? args.width : 1920);
+  const height = Number(typeof args.height === 'string' ? args.height : 1080);
+  const fps = Number(typeof args.fps === 'string' ? args.fps : 30);
+  mkdirSync(out, {recursive: true});
+  const probe = video ? probeMedia(video) : syntheticOverlayProbe({cues, width, height, fps});
   const id = typeof args.id === 'string' ? args.id : basename(out).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'video-package';
   const storyboard = planStoryboard({id, title: typeof args.title === 'string' ? args.title : id, cues, probe, captionsMode: captionsMode as 'burned-in' | 'none' | 'generated', sourceVideo: 'input.mp4', sourceSrt: 'input.srt'});
   assertDirectorPlan(storyboard);
@@ -71,7 +79,12 @@ export const main = (argv = process.argv.slice(2)): void => {
   writeFileSync(join(out, 'SOURCE_PROBE.json'), `${JSON.stringify(probe, null, 2)}\n`, 'utf8');
   writeFileSync(join(out, 'STORYBOARD.md'), storyboardMarkdown(storyboard), 'utf8');
   writeFileSync(join(out, 'storyboard.json'), `${JSON.stringify(storyboard, null, 2)}\n`, 'utf8');
-  writeFileSync(join(out, 'input-manifest.json'), `${JSON.stringify({video: {sha256: sha256(video), size: probe.size, duration: probe.duration, codec: probe.video.codec}, srt: {sha256: sha256(srt), cues: cues.length}}, null, 2)}\n`, 'utf8');
+  writeFileSync(join(out, 'input-manifest.json'), `${JSON.stringify({
+    outputMode,
+    video: video ? {sha256: sha256(video), size: probe.size, duration: probe.duration, codec: probe.video.codec} : null,
+    canvas: {width: probe.video.width, height: probe.video.height, fps: probe.video.fps, duration: probe.duration},
+    srt: {sha256: sha256(srt), cues: cues.length},
+  }, null, 2)}\n`, 'utf8');
 
   const gate = approvedGate(args);
   if (args.render === true && gate !== 'D') requireRenderAuthorization(args);
@@ -84,10 +97,10 @@ export const main = (argv = process.argv.slice(2)): void => {
   const repo = resolve(import.meta.dirname, '..');
   const publicDir = join(out, 'public');
   mkdirSync(publicDir, {recursive: true});
-  ensurePreviewMedia(video, join(publicDir, 'input.mp4'), probe.video.codec, repo);
+  if (video) ensurePreviewMedia(video, join(publicDir, 'input.mp4'), probe.video.codec, repo);
   copyFileSync(srt, join(publicDir, 'input.srt'));
   const propsPath = join(out, 'props.json');
-  writeFileSync(propsPath, `${JSON.stringify({storyboard, cues, overlayOnly: false}, null, 2)}\n`, 'utf8');
+  writeFileSync(propsPath, `${JSON.stringify({storyboard, cues, overlayOnly: outputMode === 'overlay'}, null, 2)}\n`, 'utf8');
 
   if (renderer === 'hyperframes') {
     const project = generateHyperFramesProject(storyboard);
@@ -95,7 +108,7 @@ export const main = (argv = process.argv.slice(2)): void => {
     mkdirSync(target, {recursive: true});
     writeFileSync(join(target, 'index.html'), project.html, 'utf8');
     writeFileSync(join(target, 'index.motion.json'), `${JSON.stringify(project.motion, null, 2)}\n`, 'utf8');
-    copyFileSync(join(publicDir, 'input.mp4'), join(target, 'input.mp4'));
+    if (video) copyFileSync(join(publicDir, 'input.mp4'), join(target, 'input.mp4'));
   }
 
   if (gate === 'B') {
@@ -130,14 +143,37 @@ export const main = (argv = process.argv.slice(2)): void => {
   requireRenderAuthorization(args);
   const renders = join(out, 'renders');
   mkdirSync(renders, {recursive: true});
-  const output = join(renders, 'packaged.mp4');
-  run(process.execPath, [join(repo, 'node_modules', '@remotion', 'cli', 'remotion-cli.js'), 'render', entry, 'VideoPackaging', output, '--props', propsPath, '--public-dir', publicDir, '--codec', 'h264', '--crf', '18', '--concurrency', renderConcurrency, '--timeout', renderTimeout, '--disallow-parallel-encoding', '--overwrite'], repo);
+  const output = join(renders, outputMode === 'overlay' ? 'overlay.mov' : 'packaged.mp4');
+  const remotionCli = join(repo, 'node_modules', '@remotion', 'cli', 'remotion-cli.js');
+  if (outputMode === 'overlay') {
+    const sequenceDir = mkdtempSync(join(tmpdir(), 'ai-self-media-overlay-'));
+    try {
+      const sequenceArgs = [remotionCli, 'render', entry, 'VideoPackaging', sequenceDir, '--props', propsPath, '--public-dir', publicDir];
+      sequenceArgs.push(...buildOverlaySequenceFlags(), '--concurrency', renderConcurrency, '--timeout', renderTimeout, '--overwrite');
+      run(process.execPath, sequenceArgs, repo);
+      run('ffmpeg', buildOverlayFfmpegArgs({
+        sequenceDir,
+        output,
+        fps: storyboard.fps,
+        totalFrames: Math.ceil(storyboard.duration * storyboard.fps),
+      }), repo);
+    } finally {
+      rmSync(sequenceDir, {recursive: true, force: true});
+    }
+  } else {
+    const renderArgs = [remotionCli, 'render', entry, 'VideoPackaging', output, '--props', propsPath, '--public-dir', publicDir];
+    renderArgs.push(...buildRemotionOutputFlags(outputMode));
+    renderArgs.push('--concurrency', renderConcurrency, '--timeout', renderTimeout, '--disallow-parallel-encoding', '--overwrite');
+    run(process.execPath, renderArgs, repo);
+  }
   decodeEntireFile(output);
   const finalFrames = extractRepresentativeFrames(output, storyboard, join(renders, 'qa-frames'));
   buildContactSheet(finalFrames, join(renders, 'contact-sheet.jpg'));
-  const manifest = writeRenderManifest({output, storyboard, frames: finalFrames, target: join(out, 'RENDER_MANIFEST.json')});
-  const blackFrames = detectBlackFrames(output);
-  if (blackFrames.length > 0) throw new Error(`Artifact QA failed: detected ${blackFrames.length} black segment(s)`);
+  const manifest = writeRenderManifest({output, storyboard, frames: finalFrames, target: join(out, 'RENDER_MANIFEST.json'), outputMode});
+  if (outputMode === 'composite') {
+    const blackFrames = detectBlackFrames(output);
+    if (blackFrames.length > 0) throw new Error(`Artifact QA failed: detected ${blackFrames.length} black segment(s)`);
+  }
   process.stdout.write(`Gate D render complete: ${output}\nSHA-256: ${manifest.output.sha256}\n`);
 };
 

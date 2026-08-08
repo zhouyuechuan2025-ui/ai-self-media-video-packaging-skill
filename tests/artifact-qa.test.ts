@@ -4,7 +4,7 @@ import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {afterAll, beforeAll, describe, expect, it} from 'vitest';
 import type {Storyboard} from '../packages/core/src/schema';
-import {buildContactSheet, decodeEntireFile, detectBlackFrames, extractRepresentativeFrames, probeOutput, selectRepresentativeBeats, writeRenderManifest} from '../scripts/lib/artifact-qa';
+import {buildContactSheet, decodeEntireFile, detectBlackFrames, extractRepresentativeFrames, parseAlphaSignalStats, probeOutput, selectRepresentativeBeats, writeRenderManifest} from '../scripts/lib/artifact-qa';
 
 const temp = mkdtempSync(join(tmpdir(), 'packaging-artifact-qa-'));
 const video = join(temp, 'sample.mp4');
@@ -32,6 +32,11 @@ beforeAll(() => {
 afterAll(() => rmSync(temp, {recursive: true, force: true}));
 
 describe('artifact-level QA', () => {
+  it('parses sampled alpha-plane range evidence', () => {
+    expect(parseAlphaSignalStats('lavfi.signalstats.YMIN=256\nlavfi.signalstats.YMAX=3760\nlavfi.signalstats.YMIN=3760\nlavfi.signalstats.YMAX=3760')).toEqual({min: 256, max: 3760, samples: 2});
+    expect(() => parseAlphaSignalStats('no signal stats')).toThrow(/alpha/i);
+  });
+
   it('selects eight semantically distinct representative beats', () => {
     const selected = selectRepresentativeBeats(storyboard);
     expect(selected).toHaveLength(8);

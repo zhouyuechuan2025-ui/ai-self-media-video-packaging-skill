@@ -78,6 +78,69 @@ npm ci
 
 > 使用 package-talking-head-video 检查这段 MP4 和 SRT，先生成 Gate A，未经我批准不要渲染。
 
+## 前期素材准备
+
+### 1. 先准备剪辑完成的真人口播视频
+
+这个 Skill 负责的是**画面包装**，不处理重读、漏读和气口，也不负责修正口误、长停顿、错误镜头或其他基础剪辑问题。输入视频必须是顺序、声音和时长已经确定的完整成片。
+
+推荐使用人物位于画面中间的 16:9 横屏素材。源片如果已经烧录字幕，后续应使用 `--captions burned-in`，避免生成第二层重复字幕。
+
+如果源片没有字幕：希望最终包装包含字幕时改用 `--captions generated`；只要动效、不需要字幕时使用 `--captions none`。
+
+### 2. 导出与成片完全对应的 SRT
+
+在剪辑或字幕工具中完成字幕识别、校对和时间轴对齐，导出视频时同时勾选并导出 UTF-8 编码的 `.srt` 文件。视频如果又发生删改，必须重新导出 SRT；旧时间码不能继续使用。
+
+SRT 是动效导演的核心输入。Skill 会读取全部字幕，根据每段口播的语义、时间码和事实属性匹配侧卡、流程、对比、数字、证据或简笔画结构，而不是简单地把字幕换一种颜色显示。
+
+## 在 Codex 中怎么使用
+
+是的，标准流程就是把**视频 + SRT** 一起提供给 Codex，并明确要求调用 `package-talking-head-video`。可以直接这样说：
+
+> 请调用 package-talking-head-video。输入是 `input.mp4` 和 `input.srt`，人物在画面中间，源视频已经剪辑完成并烧录字幕。先分析全部 SRT 并输出 Gate A 包装方案，确认后再制作。最终使用 composite 模式直接输出包装完成的 MP4。
+
+Codex 不会收到文件后立刻盲目导出。Skill 先生成 Gate A 方案，列出动效时间码、视觉结构、配色、人物与字幕安全区、简笔画和事实风险；方案确认后才进入实现、可视验收和最终导出。
+
+## 两种输出与包装方式
+
+| 方式 | 用户提供 | 最终输出 | 适合谁 |
+|---|---|---|---|
+| **方案一：透明叠加层** | 至少提供 SRT，并指定画布宽高和帧率 | 无音轨、带 Alpha 通道的 ProRes 4444 `overlay.mov` | 已经固定拍摄机位和工程规格、希望在剪映/Premiere/Final Cut 中自行叠加的人 |
+| **方案二：直接合成（默认推荐）** | 同时提供剪辑完成的视频和对应 SRT | 已经叠加动效的 H.264/AAC `packaged.mp4` | 大多数第一次使用者、希望减少操作并进行真实人物/字幕遮挡检查的人 |
+
+### 我的推荐
+
+**保留两种方案让用户选择，但默认推荐方案二。** 原因是视频 + SRT 能让 Skill 基于真实分辨率、帧率、人物位置和烧录字幕完成可视质检，并直接交付成片，出错环节最少。
+
+方案一更适合进阶工作流。只提供 SRT 时，Skill 无法看到真实人物位置、字幕高度和原片构图，只能按默认的中央人物安全区制作；因此必须额外确认 `--width`、`--height` 和 `--fps`。默认值为 `1920×1080 / 30fps`。如果原片机位不固定，建议仍把视频作为参考输入，或直接选择方案二。
+
+### 方案一：只提供 SRT，输出透明 MOV
+
+先生成方案：
+
+```bash
+npm run package-video -- --srt ./input.srt --out ./run-overlay --renderer remotion --captions burned-in --output-mode overlay --width 1920 --height 1080 --fps 30
+```
+
+全部 Gate 获批后导出：
+
+```bash
+npm run package-video -- --srt ./input.srt --out ./run-overlay --renderer remotion --captions burned-in --output-mode overlay --width 1920 --height 1080 --fps 30 --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
+```
+
+输出文件为 `run-overlay/renders/overlay.mov`。将它放在原口播视频上方同一起点叠加，不要改变速度、入点、出点或画布尺寸。导出会检查 ProRes 编码、Alpha 像素格式、真实透明度变化、无音轨、完整解码、时长、尺寸、帧率和 SHA-256。
+
+上面的示例假定原视频已经烧录字幕，所以使用 `burned-in`。如果透明 MOV 还需要包含可见字幕，把两条命令里的字幕参数改成 `--captions generated`。
+
+### 方案二：视频 + SRT，直接合成 MP4
+
+```bash
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run-composite --renderer remotion --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
+```
+
+输出文件为 `run-composite/renders/packaged.mp4`，里面已经包含原口播画面、原声音和动效包装。
+
 ## 最短使用流程
 
 ### 硬规则：先出方案，确认后再实施
@@ -87,7 +150,7 @@ npm ci
 ### 1. 只做 Gate A，不渲染
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --output-mode composite
 ```
 
 会生成 `BRIEF.md`、`SOURCE_PROBE.json`、`STORYBOARD.md`、`storyboard.json` 和 `input-manifest.json`。
@@ -95,7 +158,7 @@ npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --ren
 ### 2. Gate A 获批后完成 Gate B 视觉实现
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b
 ```
 
 此阶段生成可复核的视觉实现，不导出最终成片。程序会在 HEVC 等浏览器不兼容输入时创建不改时序的 H.264/AAC 制作代理。
@@ -103,7 +166,7 @@ npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --ren
 ### 3. Gate C 可视验收
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b --approve-gate-c
 ```
 
 检查实际时间轴、人物安全区、字幕安全区、语义准确性、配色与结构差异，再决定是否导出。
@@ -111,7 +174,7 @@ npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --ren
 ### 4. Gate D 获批后生成 Remotion 成片
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --output-mode composite --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
 ```
 
 程序生成最终 MP4、代表帧和 `RENDER_MANIFEST.json`，并执行 ffprobe、完整解码与黑帧扫描。

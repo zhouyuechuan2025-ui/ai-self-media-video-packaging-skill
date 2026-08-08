@@ -3,6 +3,7 @@ import {describe, expect, it} from 'vitest';
 import {SEMANTIC_STRUCTURES} from '../../packages/core/src/template-contracts';
 
 const skill = readFileSync('SKILL.md', 'utf8');
+const readme = readFileSync('README.md', 'utf8');
 
 describe('public Skill contract', () => {
   it('contains every pressure-tested safety boundary', () => {
@@ -58,5 +59,19 @@ describe('public Skill contract', () => {
     expect(skill).toContain('bottom 18%');
     expect(skill).toContain('Remotion by default');
     expect(skill).toContain('HyperFrames adapter');
+  });
+
+  it('teaches first-time users the two real input and output workflows', () => {
+    for (const phrase of [
+      '前期素材准备',
+      '不处理重读、漏读和气口',
+      '视频 + SRT',
+      '只提供 SRT',
+      '透明 MOV',
+      '直接合成 MP4',
+      '--output-mode overlay',
+      '--output-mode composite',
+      '默认推荐',
+    ]) expect(readme).toContain(phrase);
   });
 });
