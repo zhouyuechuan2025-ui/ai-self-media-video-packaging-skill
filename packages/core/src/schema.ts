@@ -1,4 +1,12 @@
 import {z} from 'zod';
+import {PALETTE_IDS} from './palettes';
+
+export {PALETTE_IDS} from './palettes';
+
+export const DIRECTOR_ROLES = [
+  'hook', 'definition', 'problem', 'contrast', 'mechanism', 'steps',
+  'data', 'evidence', 'payoff', 'cta', 'bridge',
+] as const;
 
 export const VISUAL_STRUCTURES = [
   'impact-question',
@@ -53,6 +61,8 @@ const beatSchema = z.object({
   structure: z.enum(VISUAL_STRUCTURES),
   motions: z.array(z.enum(MOTION_PRIMITIVES)).min(1).max(3),
   placement: z.enum(['left', 'right', 'center', 'full']),
+  palette: z.enum(PALETTE_IDS),
+  directorRole: z.enum(DIRECTOR_ROLES),
   kicker: z.string().max(28).optional(),
   evidence: z
     .object({src: z.string().min(1), label: z.string().min(1), sourceUrl: z.string().url().optional()})
@@ -100,6 +110,13 @@ export const StoryboardSchema = z
           message: 'Beat exceeds source duration',
         });
       }
+      if (storyboard.width / storyboard.height > 1.5 && beat.placement === 'center') {
+        context.addIssue({
+          code: 'custom',
+          path: ['beats', index, 'placement'],
+          message: 'Center placement is not allowed for a center-presenter 16:9 source',
+        });
+      }
       const previous = storyboard.beats[index - 1];
       if (previous && beat.start < previous.end) {
         context.addIssue({
@@ -116,3 +133,4 @@ export type StoryboardBeat = Storyboard['beats'][number];
 export type VisualStructure = (typeof VISUAL_STRUCTURES)[number];
 export type MotionPrimitive = (typeof MOTION_PRIMITIVES)[number];
 export type IllustrationScenario = (typeof ILLUSTRATION_SCENARIOS)[number];
+export type DirectorRole = (typeof DIRECTOR_ROLES)[number];
