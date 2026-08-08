@@ -1,6 +1,7 @@
 import type {CSSProperties, ReactElement} from 'react';
 import {AbsoluteFill, Img, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Storyboard} from '../../core/src/schema';
+import {PALETTES} from '../../core/src/palettes';
 import type {SrtCue} from '../../core/src/types';
 import {illustrationRegistry} from './illustrations';
 import {structureRegistry} from './structures';
@@ -34,13 +35,14 @@ const BeatOverlay = ({storyboard, beat}: {storyboard: Storyboard; beat: Storyboa
   const duration = Math.max(1, Math.round((beat.end - beat.start) * fps));
   const progress = Math.max(0, Math.min(1, frame / Math.max(1, duration - 1)));
   const Structure = structureRegistry[beat.structure].Component;
+  const palette = PALETTES[beat.palette];
   const Illustration = beat.illustration ? illustrationRegistry[beat.illustration.type] : null;
   const wrapper: CSSProperties = {display: 'flex', boxSizing: 'border-box', ...placementStyle(beat.placement)};
 
   return <AbsoluteFill data-beat={beat.id} data-safe-zone={structureRegistry[beat.structure].safeZone} style={wrapper}>
-    <Structure text={beat.text} kicker={beat.kicker} progress={progress} accent={storyboard.theme.accent}/>
-    {Illustration ? <div style={{position: 'absolute', [beat.placement === 'right' ? 'left' : 'right']: 96, bottom: 168, width: 500, padding: 18, borderRadius: 28, background: 'rgba(7,15,30,.72)', border: '1px solid rgba(148,163,184,.24)', boxShadow: '0 18px 48px rgba(2,8,23,.28)'}}><Illustration progress={progress} accent={storyboard.theme.accent}/></div> : null}
-    {beat.evidence ? <div style={{position: 'absolute', right: 110, top: 112, width: 520, height: 292, overflow: 'hidden', borderRadius: 24, border: `3px solid ${storyboard.theme.accent}`, background: '#fff'}}><Img src={staticFile(beat.evidence.src)} style={{width: '100%', height: '100%', objectFit: 'contain'}}/><span style={{position: 'absolute', left: 18, bottom: 14, padding: '7px 12px', borderRadius: 10, background: 'rgba(2,8,23,.82)', color: '#fff', font: '700 18px/1.2 system-ui'}}>{beat.evidence.label}</span></div> : null}
+    <Structure text={beat.text} kicker={beat.kicker} progress={progress} palette={palette} placement={beat.placement}/>
+    {Illustration ? <div data-illustration-lane={beat.placement === 'left' ? 'right' : 'left'} style={{position: 'absolute', [beat.placement === 'left' ? 'right' : 'left']: '6%', top: '16%', bottom: '20%', width: '26%', padding: 18, borderRadius: 20, background: PALETTES['paper-sketch'].surface, border: `2px solid ${PALETTES['paper-sketch'].line}`, boxShadow: `12px 12px 0 ${PALETTES['paper-sketch'].accent}55`}}><Illustration progress={progress} accent={PALETTES['paper-sketch'].accent}/></div> : null}
+    {beat.evidence ? <div data-evidence-lane={beat.placement} style={{position: 'absolute', [beat.placement === 'right' ? 'right' : 'left']: '6%', top: '11%', width: beat.placement === 'full' ? '88%' : '26%', height: beat.placement === 'full' ? '68%' : '42%', overflow: 'hidden', borderRadius: 20, border: `3px solid ${palette.accent}`, background: '#fff'}}><Img src={staticFile(beat.evidence.src)} style={{width: '100%', height: '100%', objectFit: 'contain'}}/><span style={{position: 'absolute', left: 18, bottom: 14, padding: '7px 12px', borderRadius: 8, background: 'rgba(2,8,23,.82)', color: '#fff', font: '700 18px/1.2 system-ui'}}>{beat.evidence.label}</span></div> : null}
   </AbsoluteFill>;
 };
 

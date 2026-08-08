@@ -22,7 +22,7 @@ import {
 import type {StructureDefinition, StructureProps} from './types';
 
 export const structureRegistry: Record<VisualStructure, StructureDefinition> = {
-  'impact-question': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['hit', 'reveal'], Component: ImpactQuestion},
+  'impact-question': {safeZone: 'full', aspectRatios: ['16:9', '9:16'], motions: ['hit', 'reveal'], Component: ImpactQuestion},
   'contrarian-stamp': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['stamp', 'focus'], Component: ContrarianStamp},
   'gradient-keyword': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['lift', 'focus'], Component: GradientKeyword},
   'split-conflict': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['slide', 'reveal'], Component: SplitConflict},

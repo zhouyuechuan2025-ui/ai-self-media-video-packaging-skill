@@ -1,11 +1,13 @@
 import type {CSSProperties, ReactElement} from 'react';
 import type {MotionPrimitive} from '../../../core/src/schema';
+import type {Palette} from '../../../core/src/palettes';
 
 export type StructureProps = {
   text: string;
   kicker?: string;
   progress: number;
-  accent: string;
+  palette: Palette;
+  placement: 'left' | 'right' | 'center' | 'full';
 };
 
 export type StructureMode =
