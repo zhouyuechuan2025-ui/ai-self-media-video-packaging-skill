@@ -74,4 +74,14 @@ describe('public Skill contract', () => {
       '默认推荐',
     ]) expect(readme).toContain(phrase);
   });
+
+  it('explains subtitle choices in plain Chinese instead of editor jargon', () => {
+    for (const phrase of [
+      '原视频已经带有字幕（字幕已固定在画面中）',
+      '原视频没有字幕，希望 Skill 自动生成字幕',
+      '原视频没有字幕，并且只需要动效、不需要字幕',
+    ]) expect(readme).toContain(phrase);
+    expect(readme).not.toContain('已烧录字幕');
+    expect(readme).not.toContain('烧录字幕');
+  });
 });
