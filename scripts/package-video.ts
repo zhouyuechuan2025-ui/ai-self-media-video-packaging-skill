@@ -55,9 +55,11 @@ export const main = (argv = process.argv.slice(2)): void => {
   const renderer = typeof args.renderer === 'string' ? args.renderer : 'remotion';
   const captionsMode = typeof args.captions === 'string' ? args.captions : 'burned-in';
   const renderConcurrency = typeof args.concurrency === 'string' ? args.concurrency : '2';
+  const renderTimeout = typeof args.timeout === 'string' ? args.timeout : '120000';
   if (!['burned-in', 'none', 'generated'].includes(captionsMode)) throw new Error('Invalid --captions mode');
   if (!['remotion', 'hyperframes'].includes(renderer)) throw new Error('Invalid --renderer');
   if (!/^[1-9]\d*$/.test(renderConcurrency) || Number(renderConcurrency) > 16) throw new Error('Invalid --concurrency; expected an integer from 1 to 16');
+  if (!/^[1-9]\d*$/.test(renderTimeout) || Number(renderTimeout) < 7000) throw new Error('Invalid --timeout; expected an integer of at least 7000 milliseconds');
 
   mkdirSync(out, {recursive: true});
   const probe = probeMedia(video);
@@ -111,7 +113,14 @@ export const main = (argv = process.argv.slice(2)): void => {
     return frameEvidenceFromFile(beat, file);
   });
   const reviewContact = buildContactSheet(reviewFrames, join(reviewDir, 'contact-sheet.jpg'));
-  writeFileSync(join(out, 'GATE_C_REPORT.json'), `${JSON.stringify({status: 'ready-for-review', contactSheet: reviewContact, frames: reviewFrames.map((frame) => ({...frame, file: basename(frame.file)}))}, null, 2)}\n`, 'utf8');
+  writeFileSync(join(out, 'GATE_C_REPORT.json'), `${JSON.stringify({
+    status: 'manual-review-required',
+    stableFrameProgress: 0.72,
+    contactSheet: reviewContact,
+    frames: reviewFrames.map((frame) => ({...frame, file: basename(frame.file)})),
+    blockingChecklist: ['face-safety', 'card-density', 'clipping', 'contrast', 'semantic-fit', 'subtitle-clearance'],
+    rule: 'Any failed or unchecked item blocks Gate D.',
+  }, null, 2)}\n`, 'utf8');
 
   if (gate === 'C') {
     process.stdout.write(`Gate C review ready; no final video rendered: ${reviewContact}\n`);
@@ -122,7 +131,7 @@ export const main = (argv = process.argv.slice(2)): void => {
   const renders = join(out, 'renders');
   mkdirSync(renders, {recursive: true});
   const output = join(renders, 'packaged.mp4');
-  run(process.execPath, [join(repo, 'node_modules', '@remotion', 'cli', 'remotion-cli.js'), 'render', entry, 'VideoPackaging', output, '--props', propsPath, '--public-dir', publicDir, '--codec', 'h264', '--crf', '18', '--concurrency', renderConcurrency, '--overwrite'], repo);
+  run(process.execPath, [join(repo, 'node_modules', '@remotion', 'cli', 'remotion-cli.js'), 'render', entry, 'VideoPackaging', output, '--props', propsPath, '--public-dir', publicDir, '--codec', 'h264', '--crf', '18', '--concurrency', renderConcurrency, '--timeout', renderTimeout, '--disallow-parallel-encoding', '--overwrite'], repo);
   decodeEntireFile(output);
   const finalFrames = extractRepresentativeFrames(output, storyboard, join(renders, 'qa-frames'));
   buildContactSheet(finalFrames, join(renders, 'contact-sheet.jpg'));

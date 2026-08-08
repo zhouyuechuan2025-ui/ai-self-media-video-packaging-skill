@@ -4,12 +4,14 @@ import {basename, join, resolve} from 'node:path';
 import {mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import type {Storyboard} from '../../packages/core/src/schema';
 import type {SemanticStructure} from '../../packages/core/src/template-contracts';
+import {resolvePresentationMode, type PresentationMode} from '../../packages/core/src/presentation-contracts';
 import {probeMedia} from '../../packages/core/src/probe';
 
 export type RepresentativeBeat = {
   id: string;
   timestamp: number;
   structure: SemanticStructure;
+  presentationMode: Exclude<PresentationMode, 'adaptive'>;
 };
 
 export type FrameEvidence = RepresentativeBeat & {
@@ -54,7 +56,12 @@ export const selectRepresentativeBeats = (storyboard: Storyboard): Representativ
   for (const beat of storyboard.beats) {
     if (seen.has(beat.structure)) continue;
     seen.add(beat.structure);
-    selected.push({id: beat.id, timestamp: Number(((beat.start + beat.end) / 2).toFixed(3)), structure: beat.structure});
+    selected.push({
+      id: beat.id,
+      timestamp: Number((beat.start + (beat.end - beat.start) * 0.72).toFixed(3)),
+      structure: beat.structure,
+      presentationMode: resolvePresentationMode(beat.structure, beat.placement),
+    });
     if (selected.length === 8) break;
   }
   if (selected.length < 8) throw new Error(`Gate C requires eight distinct semantic structures; received ${selected.length}`);
@@ -92,6 +99,11 @@ export const writeRenderManifest = ({output, storyboard, frames, target}: {outpu
     output: {file: basename(output), sha256: sha256(output), ...probe},
     storyboard: {id: storyboard.id, duration: storyboard.duration, structures: [...new Set(storyboard.beats.map((beat) => beat.structure))]},
     frames: frames.map((frame) => ({...frame, file: basename(frame.file)})),
+    visualQuality: {
+      stableFrameProgress: 0.72,
+      presentationContract: 'presenter-safe-or-opaque-full-screen',
+      gateCApproval: 'confirmed-before-render',
+    },
     fullDecode: 'pass',
     blackFrames: detectBlackFrames(output),
   };

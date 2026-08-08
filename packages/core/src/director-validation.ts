@@ -1,5 +1,6 @@
 import type {Storyboard} from './schema';
 import {TemplateContentSchema, type SemanticStructure} from './template-contracts';
+import {PRESENTATION_MODE_BY_STRUCTURE} from './presentation-contracts';
 
 export type DirectorIssueCode =
   | 'structure-diversity'
@@ -9,7 +10,8 @@ export type DirectorIssueCode =
   | 'evidence-missing'
   | 'content-contract'
   | 'copy-too-long'
-  | 'semantic-mismatch';
+  | 'semantic-mismatch'
+  | 'presentation-mode-mismatch';
 
 export type DirectorIssue = {code: DirectorIssueCode; message: string; beatId?: string};
 
@@ -21,6 +23,7 @@ const structureAllowsFullScreen = new Set<SemanticStructure>([
   'metric-odometer',
   'signal-route',
   'semantic-doodle',
+  'bidirectional-flow',
 ]);
 
 export const validateDirectorPlan = (storyboard: Storyboard): DirectorIssue[] => {
@@ -72,6 +75,13 @@ export const validateDirectorPlan = (storyboard: Storyboard): DirectorIssue[] =>
         message: `${beat.structure}/${beat.directorRole} cannot use a full-screen treatment`,
       });
     }
+    if (PRESENTATION_MODE_BY_STRUCTURE[beat.structure] === 'opaque-full-screen' && beat.placement !== 'full') {
+      issues.push({
+        code: 'presentation-mode-mismatch',
+        beatId: beat.id,
+        message: `${beat.structure} crosses the presenter center and must use an opaque full-screen treatment`,
+      });
+    }
 
     const previous = storyboard.beats[index - 1];
     if (
@@ -98,4 +108,3 @@ export const assertDirectorPlan = (storyboard: Storyboard): void => {
     .join('; ');
   throw new Error(`Director plan rejected: ${details}`);
 };
-

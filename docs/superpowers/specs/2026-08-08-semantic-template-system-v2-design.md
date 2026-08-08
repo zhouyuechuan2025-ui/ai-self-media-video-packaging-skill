@@ -1,6 +1,6 @@
 # Semantic Template System V2 — Design Specification
 
-**Status:** Approved design direction, implementation pending
+**Status:** Implemented and verified against the `auto-editing-0` real invocation
 **Target:** Public `ai-self-media-video-packaging-skill` repository
 **Primary use case:** 16:9, center-framed talking-head footage with burned-in or separately managed captions
 
@@ -66,7 +66,7 @@ The reference canvas is 1920×1080.
 - Right editorial lane: `x = 68%–95%`.
 - Bottom caption reserve: the lower `18%` of the frame unless the source is explicitly caption-free.
 - Critical text, evidence, diagrams, and counters must not enter the protected presenter or caption lanes.
-- Decorative elements may cross the protected lane only when opacity, size, and duration cannot obscure the face or mouth.
+- No foreground surface, text, path, glow, or illustration may cross the protected lane.
 
 ### Full-screen mode
 
@@ -79,7 +79,14 @@ Full-screen treatment is permitted only for:
 - a numeric conclusion;
 - the final summary or CTA.
 
-Full-screen scenes must either keep a transparent presenter window or deliberately dim the A-roll while preserving burned-in captions.
+Full-screen scenes use an opaque edge-to-edge background. There is no translucent hybrid mode: if meaningful geometry enters the presenter lane, the presenter is intentionally replaced for that beat.
+
+### Side-card density
+
+- Side surfaces follow content height and never fill the lane from a fixed top to bottom.
+- Maximum card height is 64% of the frame.
+- One idea uses one compact rail; two rails require two genuinely complementary groups.
+- Representative review frames are sampled at 72% of the beat, then manually checked for face safety, empty space, clipping, contrast, semantic fit, and subtitle clearance.
 
 ## 6. Semantic template library
 

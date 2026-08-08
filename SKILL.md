@@ -50,7 +50,10 @@ Select by spoken meaning, never by palette rotation:
 
 - Maintain one continuous source video/audio track. Do not silently recut or reorder it.
 - For a 16:9 center-presenter source, protect center x=35%–65%. Put ordinary critical copy in left x=5%–32% or right x=68%–95%, and reserve the bottom 18% for burned-in subtitles.
-- Full-screen structures must either preserve the presenter window or use an intentional dim layer. Keep critical copy above the caption reserve.
+- Every scene must be either presenter-safe or opaque full-screen. There is no translucent hybrid mode.
+- Presenter-safe scenes keep center x=35%–65% completely untouched by foreground surfaces, text, diagrams, paths, glows, or illustrations. If any meaningful element must enter the center, switch to a fully opaque full-screen scene; never partially cover the face.
+- Side cards are content-fit: no fixed vertical fill, no decorative empty lower half, and no card taller than 64% of the frame. Prefer one compact rail over two sparse rails when the spoken content does not support two groups.
+- Opaque full-screen scenes cover the complete 1920×1080 canvas with an opaque base. Keep critical copy above the caption reserve even when the source captions are hidden by the full-screen scene.
 - Semantic palettes support structure; color alone never counts as a new layout.
 - If captions are burned in, use `burned-in` and do not generate a second caption layer.
 - Visual beats normally last 1.6–3.2 seconds and never exceed six seconds.
@@ -60,6 +63,7 @@ Select by spoken meaning, never by palette rotation:
 - Videos longer than 30 seconds require at least eight semantically valid structures; the same structure may not appear more than twice consecutively.
 - Alternate ordinary left/right lanes. Do not place two ordinary overlays on the same side consecutively.
 - A component gallery, HTML page, successful build, or mockup is not a delivered video. Verify the real output artifact.
+- Gate C screenshots are taken at 72% of each selected beat so the layout is readable after entry motion. Perform manual frame review for face safety, card density, clipping, contrast, semantic fit, and subtitle clearance. Any failed item blocks Gate D.
 
 Read only the reference needed for the current step:
 
@@ -68,3 +72,4 @@ Read only the reference needed for the current step:
 - Ten semantic structures: [references/visual-structures.md](references/visual-structures.md)
 - Motion and integrated doodles: [references/motion-and-illustration.md](references/motion-and-illustration.md)
 - QA and troubleshooting: [references/qa-and-troubleshooting.md](references/qa-and-troubleshooting.md)
+- Blocking visual QA: [references/visual-quality-gates.md](references/visual-quality-gates.md)

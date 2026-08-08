@@ -31,7 +31,7 @@ const structures: SemanticStructure[] = [
 
 const beat = (index: number, overrides: Partial<StoryboardBeat> = {}): StoryboardBeat => {
   const structure = overrides.structure ?? structures[(index - 1) % structures.length];
-  const full = ['four-stage-pipeline', 'before-after-scrub', 'evidence-panel', 'metric-odometer', 'signal-route', 'semantic-doodle'].includes(structure);
+  const full = ['bidirectional-flow', 'four-stage-pipeline', 'before-after-scrub', 'evidence-panel', 'metric-odometer', 'signal-route', 'semantic-doodle'].includes(structure);
   return {
     id: `b${index}`,
     start: (index - 1) * 2.5,
@@ -101,5 +101,11 @@ describe('validateDirectorPlan', () => {
   it('does not demand eight structures for a short clip', () => {
     const beats = [beat(1), beat(2)];
     expect(validateDirectorPlan(storyboard(beats, 5)).map((issue) => issue.code)).not.toContain('structure-diversity');
+  });
+
+  it('rejects full-canvas structures placed in a presenter lane', () => {
+    const beats = Array.from({length: 10}, (_, index) => beat(index + 1));
+    beats[6] = beat(7, {structure: 'bidirectional-flow', content: contentFor('bidirectional-flow'), placement: 'left', directorRole: 'mechanism'});
+    expect(validateDirectorPlan(storyboard(beats)).map((issue) => issue.code)).toContain('presentation-mode-mismatch');
   });
 });

@@ -8,7 +8,7 @@ export const EvidencePanel = ({content, progress, palette, evidence}: StructureP
   const asset = evidence?.src ?? content.evidenceAsset;
   return (
     <AbsoluteFill data-structure-identity="evidence-panel" data-critical-content="true" style={typography}>
-      <FullScreenSurface mode="dim" palette={palette}>
+      <FullScreenSurface mode="opaque" palette={palette}>
         <div style={{position: 'absolute', inset: '6% 6% 11%', display: 'grid', gridTemplateColumns: '1.65fr .72fr', gap: 30}}>
           <div style={{position: 'relative', overflow: 'hidden', borderRadius: 30, background: '#ffffff', border: `3px solid ${palette.line}`, boxShadow: `18px 22px 0 ${palette.accent}33`, ...rise(phase(progress, 0, 0.45), 30)}}>
             <img src={asset} alt={content.caption} style={{width: '100%', height: '100%', objectFit: 'contain'}}/>

@@ -35,6 +35,7 @@ const choosePlacement = (
     'metric-odometer',
     'signal-route',
     'semantic-doodle',
+    'bidirectional-flow',
   ]);
   if (directorRole === 'hook' || fullStructures.has(structure)) return 'full';
   return lastSide === 'left' ? 'right' : 'left';

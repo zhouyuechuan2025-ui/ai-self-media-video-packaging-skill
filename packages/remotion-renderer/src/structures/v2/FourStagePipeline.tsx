@@ -7,7 +7,7 @@ export const FourStagePipeline = ({content, progress, palette}: StructureProps):
   if (content.structure !== 'four-stage-pipeline') throw new Error('FourStagePipeline received incompatible content');
   return (
     <AbsoluteFill data-structure-identity="four-stage-pipeline" data-critical-content="true" style={typography}>
-      <FullScreenSurface mode="dim" palette={palette}>
+      <FullScreenSurface mode="opaque" palette={palette}>
         <div style={{position: 'absolute', inset: '9% 7% 12%', display: 'grid', gridTemplateRows: 'auto 1fr auto'}}>
           <div><Kicker color={palette.line}>OPERATING PIPELINE</Kicker><h2 style={{margin: '15px 0 0', fontSize: 54, color: palette.foreground}}>{content.title}</h2></div>
           <div style={{display: 'grid', gridTemplateColumns: `repeat(${content.stages.length}, 1fr)`, gap: 18, alignItems: 'center'}}>
@@ -22,4 +22,3 @@ export const FourStagePipeline = ({content, progress, palette}: StructureProps):
     </AbsoluteFill>
   );
 };
-

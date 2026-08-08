@@ -17,13 +17,16 @@
 5. 4×2 contact sheet;
 6. SHA-256 for output and frames;
 7. manifest read-back.
+8. stable review frames sampled at 72% of each beat;
+9. manual visual checklist from `visual-quality-gates.md` with no failures.
 
 ## Common failures
 
 - **Chromium cannot decode HEVC:** create an H.264/AAC proxy with identical duration and no timeline changes.
 - **Duplicate subtitles:** use `--captions burned-in` when the source already contains captions.
 - **Everything looks like the same card:** inspect `data-structure-identity`; each semantic contract must use its own DOM/composition hierarchy, not just another palette.
-- **Presenter is covered:** move ordinary critical copy into x=5%–32% or x=68%–95%; keep x=35%–65% transparent.
+- **Presenter is covered:** move every foreground element into x=5%–32% or x=68%–95%. If any meaningful geometry needs the center, convert the scene to fully opaque full-screen; never leave a translucent face overlap.
+- **Side card is mostly empty:** remove fixed top-to-bottom sizing, use content-fit height, and collapse two sparse rails into one compact rail when the semantics allow it.
 - **Subtitle is covered:** keep critical content above the bottom 18% reserve.
 - **Black SVG block:** put `fill="none"` directly on open SVG elements; do not rely only on CSS.
 - **Evidence claim without proof:** supply an approved source asset or downgrade to `thesis-and-proof`.

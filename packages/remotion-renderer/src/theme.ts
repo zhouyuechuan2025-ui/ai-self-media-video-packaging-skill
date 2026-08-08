@@ -9,8 +9,9 @@ export const presenterSafeZones = {
 
 export const sideLaneStyle = (side: 'left' | 'right'): CSSProperties => ({
   position: 'absolute',
-  top: '7%',
-  bottom: '18%',
+  top: '41%',
   width: '27%',
+  maxHeight: '64%',
+  transform: 'translateY(-50%)',
   ...(side === 'left' ? {left: '5%'} : {right: '5%'}),
 });

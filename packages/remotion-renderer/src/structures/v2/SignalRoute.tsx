@@ -27,8 +27,8 @@ export const SignalRoute = ({content, progress, palette}: StructureProps): React
   const activeIndex = Math.min(content.nodes.length - 1, Math.floor(route * content.nodes.length));
   const path = routePath(content.nodes.length);
   return (
-    <AbsoluteFill data-structure-identity="signal-route" data-critical-content="true" data-route-layout="side-lanes" style={typography}>
-      <FullScreenSurface mode="presenter-window" palette={palette}>
+    <AbsoluteFill data-structure-identity="signal-route" data-critical-content="true" data-route-layout="full-canvas" style={typography}>
+      <FullScreenSurface mode="opaque" palette={palette}>
         <div style={{position: 'absolute', left: '6%', top: '7%'}}><Kicker color={palette.line}>{content.routeLabel}</Kicker></div>
         <svg viewBox="0 0 1500 760" style={{position: 'absolute', inset: '8% 7% 14%', width: '86%', height: '70%', overflow: 'visible'}} aria-hidden>
           <path d={path} fill="none" stroke={`${palette.line}55`} strokeWidth="16" strokeLinecap="round" strokeLinejoin="round"/>

@@ -6,21 +6,21 @@
 
 ## 真实调用效果
 
-下面所有画面都直接抽取自同一次真实 Skill 调用生成的最终 MP4。案例使用 49.273 秒、1920×1080 的口播源片与 21 条 SRT；导演方案实际生成 22 个视觉节拍，使用 6 套配色与 8 种语义结构，最长状态 3.2 秒。Remotion 输出为 49.323 秒、H.264/AAC，输出 SHA-256 为 `026C197E05B3D3C14323DF04A81F27C6F252E467D8BADC7CA963D02121278C37`。
+下面所有画面都直接抽取自同一次真实 Skill 调用生成的最终 MP4。案例使用 49.273 秒、1920×1080 的口播源片与 21 条 SRT；导演方案实际生成 22 个视觉节拍，使用 6 套配色与 8 种语义结构，最长状态 3.2 秒。Remotion 输出为 49.323 秒、H.264/AAC，输出 SHA-256 为 `60BE56C417FE63EF17F18874A4EE74318D001CD40D7A40BA3312488900B85443`。
 
 ![真实调用八帧总览](docs/assets/previews/auto-editing-0-contact-sheet.jpg)
 
 | 论点与证据 | 双侧编辑轨 | 文字指标 |
 |---|---|---|
-| ![论点与证据](docs/assets/previews/auto-editing-0-01-thesis-and-proof-1.333s.png) | ![双侧编辑轨](docs/assets/previews/auto-editing-0-02-editorial-dual-rail-3.800s.png) | ![保留口语数值的指标结构](docs/assets/previews/auto-editing-0-03-metric-odometer-5.934s.png) |
+| ![论点与证据](docs/assets/previews/auto-editing-0-01-thesis-and-proof-1.920s.png) | ![双侧编辑轨](docs/assets/previews/auto-editing-0-02-editorial-dual-rail-4.269s.png) | ![保留口语数值的指标结构](docs/assets/previews/auto-editing-0-03-metric-odometer-6.403s.png) |
 
 | 命令面板 | 语义简笔画 | 前后对比 |
 |---|---|---|
-| ![命令面板](docs/assets/previews/auto-editing-0-04-command-palette-9.849s.png) | ![人物推石上坡的语义简笔画](docs/assets/previews/auto-editing-0-05-semantic-doodle-15.349s.png) | ![前后对比](docs/assets/previews/auto-editing-0-06-before-after-scrub-19.117s.png) |
+| ![命令面板](docs/assets/previews/auto-editing-0-04-command-palette-10.546s.png) | ![人物推石上坡的语义简笔画](docs/assets/previews/auto-editing-0-05-semantic-doodle-15.606s.png) | ![前后对比](docs/assets/previews/auto-editing-0-06-before-after-scrub-19.564s.png) |
 
 | 四阶段流程 | 信号路径 |
 |---|---|
-| ![四阶段流程](docs/assets/previews/auto-editing-0-07-four-stage-pipeline-21.083s.png) | ![避开人物中心区的信号路径](docs/assets/previews/auto-editing-0-08-signal-route-26.283s.png) |
+| ![四阶段流程](docs/assets/previews/auto-editing-0-07-four-stage-pipeline-21.501s.png) | ![全屏信号路径](docs/assets/previews/auto-editing-0-08-signal-route-26.980s.png) |
 
 这组预览不是设计稿。完整证据链包括：[真实调用命令](examples/auto-editing-0/invocation.txt)、[输入哈希与参数](examples/auto-editing-0/input-manifest.json)、[完整分镜](examples/auto-editing-0/storyboard.json)、[逐帧哈希与时间码](examples/auto-editing-0/preview-manifest.json)及[成片验收记录](examples/auto-editing-0/QA_REPORT.md)。原始视频和 SRT 不随仓库分发。
 
@@ -47,7 +47,9 @@
 - 人物默认位于画面中间，中央约 35%–65% 保持透明。
 - 普通信息进入左侧 6%–32% 或右侧 68%–94%，左右交替出现。
 - 底部 18% 预留给原片烧录字幕。
-- 开头钩子、章节转场、证据和结尾收束可短暂全屏，普通全屏镜头约 1–2 秒。
+- 每个镜头只能二选一：人物安全模式，或100%不透明全屏模式。任何卡片、路径、插画或光效需要进入人物中心区时，必须切换为完整全屏，禁止半透明压脸。
+- 左右信息卡按内容自适应高度，不用固定通栏高度填充空白；只有两组真实互补信息才使用双侧卡。
+- 开头钩子、章节转场、证据和结尾收束可短暂使用100%不透明全屏，普通全屏镜头约 1–2 秒。
 - 冲击问题、渐变关键词、信号路径、编辑印章、完成检查轨与纸张简笔画分别使用不同版式和语义配色，不是同一张卡片随机换色。
 
 ### 10 种 seek-safe 动效原语
@@ -130,6 +132,8 @@ Remotion 与 HyperFrames 共享同一份 schema 和 storyboard，避免两套规
 2. **Gate B — 视觉实现：** 获批后实现视觉结构、动效和必要插画；不把画廊截图当成结果。
 3. **Gate C — 可交互验收：** 检查实际时间轴、任意 seek、人物与字幕安全区、证据可读性。
 4. **Gate D — 导出验收：** 获得明确导出授权后渲染，并用 ffprobe、完整解码和代表帧验证最终文件。
+
+Gate C 的代表帧固定抽取在对应节拍的 72% 稳定位置，并逐张人工检查人物遮挡、卡片空白、内容重叠、可读性、语义匹配和字幕安全区；任何一项失败都禁止进入 Gate D。完整规则见 [视觉质检门禁](references/visual-quality-gates.md)。
 
 ## 事实与安全原则
 

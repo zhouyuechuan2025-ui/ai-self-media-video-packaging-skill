@@ -24,9 +24,8 @@ export const EditorialDualRail = ({content, progress, palette}: StructureProps):
             <NumberedItem key={`${item.label}-${index}`} index={index + 1} {...item} palette={palette} progress={phase(progress, 0.25 + index * 0.12, 0.65 + index * 0.12)}/>
           ))}
         </div>
-        <div style={{position: 'absolute', left: 25, right: 25, bottom: 26, padding: '16px 18px', borderRadius: 16, background: palette.card, borderLeft: `6px solid ${palette.accent}`, color: palette.foreground, fontSize: 22, lineHeight: 1.25, fontWeight: 900}}>{content.takeaway}</div>
+        <div style={{marginTop: 24, padding: '16px 18px', borderRadius: 16, background: palette.card, borderLeft: `6px solid ${palette.accent}`, color: palette.foreground, fontSize: 22, lineHeight: 1.25, fontWeight: 900}}>{content.takeaway}</div>
       </SideSurface>
     </AbsoluteFill>
   );
 };
-

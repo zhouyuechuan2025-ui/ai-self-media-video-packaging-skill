@@ -61,6 +61,10 @@ describe('generateHyperFramesProject V2', () => {
     expect(result.html).toContain('window.__timelines.main');
     expect(result.motion.duration).toBe(20);
     expect(result.motion.assertions).toHaveLength(20);
+    expect(result.html).toContain('data-presentation-mode="presenter-safe"');
+    expect(result.html).toContain('data-presentation-mode="opaque-full-screen"');
+    expect(result.html).toContain('.beat[data-presentation-mode=opaque-full-screen] .beat__motion');
+    expect(result.html).not.toContain('top:7%;bottom:18%;width:27%');
   });
 
   it('escapes content and evidence values', () => {

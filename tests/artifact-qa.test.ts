@@ -36,6 +36,7 @@ describe('artifact-level QA', () => {
     const selected = selectRepresentativeBeats(storyboard);
     expect(selected).toHaveLength(8);
     expect(new Set(selected.map((item) => item.structure)).size).toBe(8);
+    expect(selected[0].timestamp).toBe(0.18);
   });
 
   it('probes, decodes, extracts, checks, and builds a contact sheet', () => {

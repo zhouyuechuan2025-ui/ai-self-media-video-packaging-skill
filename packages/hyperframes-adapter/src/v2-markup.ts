@@ -1,6 +1,7 @@
 import type {StoryboardBeat} from '../../core/src/schema';
 import type {SemanticStructure} from '../../core/src/template-contracts';
 import {PALETTES} from '../../core/src/palettes';
+import {resolvePresentationMode} from '../../core/src/presentation-contracts';
 
 export const escapeHtml = (value: string): string => value
   .replaceAll('&', '&amp;')
@@ -26,7 +27,8 @@ export const markupIdentity = (structure: SemanticStructure): string => identiti
 
 const shell = (beat: StoryboardBeat, body: string): string => {
   const palette = PALETTES[beat.palette];
-  return `<section class="beat clip beat--${beat.structure}" id="beat-${escapeHtml(beat.id)}" data-semantic-structure="${beat.structure}" data-markup-identity="${markupIdentity(beat.structure)}" data-start="${beat.start}" data-duration="${Number((beat.end - beat.start).toFixed(3))}" data-placement="${beat.placement}" data-palette="${beat.palette}" style="--beat-canvas:${palette.canvas};--beat-surface:${palette.surface};--beat-card:${palette.card};--beat-fg:${palette.foreground};--beat-muted:${palette.muted};--beat-accent:${palette.accent};--beat-line:${palette.line}">
+  const presentationMode = resolvePresentationMode(beat.structure, beat.placement);
+  return `<section class="beat clip beat--${beat.structure}" id="beat-${escapeHtml(beat.id)}" data-semantic-structure="${beat.structure}" data-markup-identity="${markupIdentity(beat.structure)}" data-presentation-mode="${presentationMode}" data-start="${beat.start}" data-duration="${Number((beat.end - beat.start).toFixed(3))}" data-placement="${beat.placement}" data-palette="${beat.palette}" style="--beat-canvas:${palette.canvas};--beat-surface:${palette.surface};--beat-card:${palette.card};--beat-fg:${palette.foreground};--beat-muted:${palette.muted};--beat-accent:${palette.accent};--beat-line:${palette.line}">
   <div id="beat-${escapeHtml(beat.id)}-motion" class="beat__motion">${body}<div class="beat__rail motion-secondary"></div></div>
 </section>`;
 };
@@ -110,4 +112,3 @@ const renderers: Record<SemanticStructure, (beat: StoryboardBeat) => string> = {
 };
 
 export const renderV2Beat = (beat: StoryboardBeat): string => renderers[beat.structure](beat);
-

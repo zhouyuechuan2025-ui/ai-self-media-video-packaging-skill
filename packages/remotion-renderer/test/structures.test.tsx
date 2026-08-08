@@ -3,10 +3,12 @@ import {describe, expect, it} from 'vitest';
 import {PALETTES} from '../../core/src/palettes';
 import {SEMANTIC_STRUCTURES, type SemanticStructure, type TemplateContent} from '../../core/src/template-contracts';
 import {contrastRatio} from '../src/contrast';
-import {FullScreenSurface} from '../src/structures/shared';
+import {FullScreenSurface, SideSurface} from '../src/structures/shared';
 import {structureRegistry} from '../src/structures';
 import {MetricOdometer} from '../src/structures/v2/MetricOdometer';
 import {SignalRoute} from '../src/structures/v2/SignalRoute';
+import {ThesisAndProof} from '../src/structures/v2/ThesisAndProof';
+import {BeforeAfterScrub} from '../src/structures/v2/BeforeAfterScrub';
 import {presenterSafeZones, sideLaneStyle} from '../src/theme';
 
 const fixtureContent: Record<SemanticStructure, TemplateContent> = {
@@ -39,6 +41,7 @@ describe('V2 structureRegistry', () => {
   it('registers ten independent component functions', () => {
     expect(Object.keys(structureRegistry).sort()).toEqual([...SEMANTIC_STRUCTURES].sort());
     expect(new Set(Object.values(structureRegistry).map((entry) => entry.Component)).size).toBe(10);
+    expect(Object.values(structureRegistry).every((entry) => ['presenter-safe', 'opaque-full-screen', 'adaptive'].includes(entry.presentationMode))).toBe(true);
   });
 
   it('renders a distinct semantic identity for every structure', () => {
@@ -63,8 +66,9 @@ describe('presenter-safe visual foundations', () => {
       right: {startPercent: 68, endPercent: 95},
       subtitleBottomPercent: 18,
     });
-    expect(sideLaneStyle('left')).toMatchObject({left: '5%', width: '27%', bottom: '18%'});
-    expect(sideLaneStyle('right')).toMatchObject({right: '5%', width: '27%', bottom: '18%'});
+    expect(sideLaneStyle('left')).toMatchObject({left: '5%', width: '27%'});
+    expect(sideLaneStyle('right')).toMatchObject({right: '5%', width: '27%'});
+    expect(sideLaneStyle('left')).not.toHaveProperty('bottom');
   });
 
   it('keeps normal and large text at WCAG AA contrast', () => {
@@ -80,6 +84,42 @@ describe('presenter-safe visual foundations', () => {
     );
     expect(html).toContain('data-presenter-window="35-65"');
     expect(html).toContain('data-subtitle-reserve="18"');
+    expect(html).not.toContain('border-right');
+    expect(html).not.toContain('border-left');
+  });
+
+  it('makes presenter-safe cards fit their content instead of filling the lane height', () => {
+    const html = renderToStaticMarkup(
+      <SideSurface side="left" palette={PALETTES['deep-ocean']}>
+        <span>紧凑信息</span>
+      </SideSurface>,
+    );
+    expect(html).toContain('data-density-mode="content-fit"');
+    expect(html).toContain('data-overlay-zone="left"');
+    expect(html).not.toContain('bottom:18%');
+    expect(html).not.toContain('height:75%');
+  });
+
+  it('uses only opaque full-screen or presenter-safe modes, never a translucent hybrid', () => {
+    const opaque = renderToStaticMarkup(
+      <FullScreenSurface mode="opaque" palette={PALETTES['deep-ocean']}>
+        <span>全屏结论</span>
+      </FullScreenSurface>,
+    );
+    expect(opaque).toContain('data-full-screen-opaque="true"');
+    expect(opaque).not.toContain('data-presenter-window');
+    expect(opaque).not.toContain('transparent');
+
+    const fullHook = renderToStaticMarkup(
+      <ThesisAndProof content={fixtureContent['thesis-and-proof']} progress={0.72} palette={PALETTES['deep-ocean']} placement="full"/>,
+    );
+    expect(fullHook).toContain('data-full-screen-opaque="true"');
+
+    for (const structure of ['bidirectional-flow', 'four-stage-pipeline', 'before-after-scrub', 'evidence-panel', 'signal-route', 'semantic-doodle'] as const) {
+      const markup = renderStructure(structure);
+      expect(markup).toContain('data-full-screen-opaque="true"');
+      expect(markup).not.toContain('data-presenter-window');
+    }
   });
 
   it('renders verbal metrics literally instead of animating them from zero', () => {
@@ -96,7 +136,20 @@ describe('presenter-safe visual foundations', () => {
     expect(html).not.toContain('>0<');
   });
 
-  it('keeps signal-route nodes in the side lanes around the presenter', () => {
+  it('settles before-after review frames with both labels fully readable', () => {
+    const html = renderToStaticMarkup(
+      <BeforeAfterScrub
+        content={{structure: 'before-after-scrub', before: '人工逐项找素材', after: '原视频进入工作流', criterion: '剪辑入口'}}
+        progress={0.72}
+        palette={PALETTES['editorial-cream']}
+        placement="full"
+      />,
+    );
+    expect(html).toContain('left:52%');
+    expect(html).toContain('text-align:right');
+  });
+
+  it('makes signal-route fully opaque because its geometry crosses the center', () => {
     const html = renderToStaticMarkup(
       <SignalRoute
         content={{structure: 'signal-route', nodes: ['放入原视频', '工作流处理', '约5分钟完成'], routeLabel: '本次个人工作流', result: '个人实测：约5分钟'}}
@@ -105,7 +158,8 @@ describe('presenter-safe visual foundations', () => {
         placement="full"
       />,
     );
-    expect(html).toContain('data-route-layout="side-lanes"');
-    expect(html).toContain('data-presenter-window="35-65"');
+    expect(html).toContain('data-route-layout="full-canvas"');
+    expect(html).toContain('data-full-screen-opaque="true"');
+    expect(html).not.toContain('data-presenter-window');
   });
 });

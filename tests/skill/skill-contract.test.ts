@@ -37,6 +37,18 @@ describe('public Skill contract', () => {
     expect(packagingScript).toContain("'--concurrency', renderConcurrency");
   });
 
+  it('defines blocking visual QA for center safety, content density, and real review frames', () => {
+    for (const phrase of [
+      'presenter-safe or opaque full-screen',
+      'content-fit',
+      'never partially cover the face',
+      '72%',
+      'manual frame review',
+      'blocks Gate D',
+    ]) expect(skill.toLowerCase()).toContain(phrase.toLowerCase());
+    expect(skill).toContain('references/visual-quality-gates.md');
+  });
+
   it('documents the ten V2 structures and cumulative four-gate flow', () => {
     for (const name of SEMANTIC_STRUCTURES) expect(skill).toContain(name);
     for (const flag of ['--approve-gate-a', '--approve-gate-b', '--approve-gate-c', '--approve-gate-d']) {

@@ -74,6 +74,8 @@ export const SideSurface = ({
 }): ReactElement => (
   <section
     data-side-surface={side}
+    data-overlay-zone={side}
+    data-density-mode="content-fit"
     style={{
       ...typography,
       ...sideLaneStyle(side),
@@ -84,7 +86,7 @@ export const SideSurface = ({
       border: `1px solid ${palette.line}77`,
       boxShadow: `0 26px 70px ${palette.canvas}88`,
       backdropFilter: 'blur(14px)',
-      ...rise(progress, side === 'left' ? 22 : 30),
+      opacity: 0.08 + clamp01(progress) * 0.92,
     }}
   >
     {children}
@@ -96,24 +98,20 @@ export const FullScreenSurface = ({
   palette,
   children,
 }: {
-  mode: 'presenter-window' | 'dim';
+  mode: 'presenter-window' | 'opaque';
   palette: Palette;
   children: ReactNode;
 }): ReactElement => (
   <section
     data-presenter-window={mode === 'presenter-window' ? '35-65' : undefined}
+    data-full-screen-opaque={mode === 'opaque' ? 'true' : undefined}
     data-full-screen-mode={mode}
     data-subtitle-reserve="18"
     style={{...typography, position: 'absolute', inset: 0, overflow: 'hidden', color: palette.foreground}}
   >
-    {mode === 'presenter-window' ? (
-      <>
-        <div style={{position: 'absolute', inset: '0 65% 18% 0', background: `${palette.canvas}ed`, borderRight: `1px solid ${palette.line}77`}}/>
-        <div style={{position: 'absolute', inset: '0 0 18% 65%', background: `${palette.canvas}ed`, borderLeft: `1px solid ${palette.line}77`}}/>
-      </>
-    ) : (
-      <div style={{position: 'absolute', inset: 0, background: `linear-gradient(180deg, ${palette.canvas}f2 0%, ${palette.canvas}e8 82%, transparent 100%)`}}/>
-    )}
+    {mode === 'opaque' ? (
+      <div style={{position: 'absolute', inset: 0, background: `linear-gradient(145deg, ${palette.canvas} 0%, ${palette.surface} 100%)`}}/>
+    ) : null}
     <div style={{position: 'absolute', inset: '0 0 18% 0'}}>{children}</div>
   </section>
 );
