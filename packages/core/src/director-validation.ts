@@ -1,43 +1,91 @@
 import type {Storyboard} from './schema';
+import {TemplateContentSchema, type SemanticStructure} from './template-contracts';
 
 export type DirectorIssueCode =
-  | 'palette-diversity'
   | 'structure-diversity'
-  | 'adjacent-pair-repeat'
-  | 'template-overuse'
+  | 'structure-run-too-long'
   | 'side-repeat'
-  | 'invalid-full-screen-role';
+  | 'invalid-full-screen-role'
+  | 'evidence-missing'
+  | 'content-contract'
+  | 'copy-too-long'
+  | 'semantic-mismatch';
 
 export type DirectorIssue = {code: DirectorIssueCode; message: string; beatId?: string};
 
-const fullScreenRoles = new Set(['hook', 'bridge', 'payoff', 'cta', 'evidence']);
+const roleAllowsFullScreen = new Set(['hook', 'bridge', 'payoff', 'cta', 'evidence']);
+const structureAllowsFullScreen = new Set<SemanticStructure>([
+  'four-stage-pipeline',
+  'before-after-scrub',
+  'evidence-panel',
+  'metric-odometer',
+  'signal-route',
+  'semantic-doodle',
+]);
 
 export const validateDirectorPlan = (storyboard: Storyboard): DirectorIssue[] => {
   const issues: DirectorIssue[] = [];
-  if (storyboard.duration > 30 && new Set(storyboard.beats.map((beat) => beat.palette)).size < 4) {
-    issues.push({code: 'palette-diversity', message: 'Videos over 30 seconds require at least four semantic palettes'});
-  }
-  if (storyboard.duration > 30 && new Set(storyboard.beats.map((beat) => beat.structure)).size < 5) {
-    issues.push({code: 'structure-diversity', message: 'Videos over 30 seconds require at least five visual structures'});
+  const uniqueStructures = new Set(storyboard.beats.map((beat) => beat.structure)).size;
+  if (storyboard.duration > 30 && uniqueStructures < 8) {
+    issues.push({
+      code: 'structure-diversity',
+      message: `Videos over 30 seconds require eight semantically valid structures; received ${uniqueStructures}`,
+    });
   }
 
-  const counts = new Map<string, number>();
+  let runLength = 0;
+  let previousStructure: SemanticStructure | undefined;
   storyboard.beats.forEach((beat, index) => {
-    counts.set(beat.structure, (counts.get(beat.structure) ?? 0) + 1);
-    if (beat.placement === 'full' && !fullScreenRoles.has(beat.directorRole)) {
-      issues.push({code: 'invalid-full-screen-role', beatId: beat.id, message: `${beat.directorRole} cannot cover the presenter`});
+    runLength = beat.structure === previousStructure ? runLength + 1 : 1;
+    previousStructure = beat.structure;
+    if (runLength === 3) {
+      issues.push({
+        code: 'structure-run-too-long',
+        beatId: beat.id,
+        message: `${beat.structure} appears more than twice consecutively`,
+      });
     }
+
+    const parsedContent = TemplateContentSchema.safeParse(beat.content);
+    if (!parsedContent.success || beat.content.structure !== beat.structure) {
+      issues.push({
+        code: 'content-contract',
+        beatId: beat.id,
+        message: `Content does not satisfy ${beat.structure}`,
+      });
+    }
+    if (beat.structure === 'evidence-panel' && !beat.evidence) {
+      issues.push({
+        code: 'evidence-missing',
+        beatId: beat.id,
+        message: 'Evidence panels require a real source asset',
+      });
+    }
+    if (
+      beat.placement === 'full'
+      && !roleAllowsFullScreen.has(beat.directorRole)
+      && !structureAllowsFullScreen.has(beat.structure)
+    ) {
+      issues.push({
+        code: 'invalid-full-screen-role',
+        beatId: beat.id,
+        message: `${beat.structure}/${beat.directorRole} cannot use a full-screen treatment`,
+      });
+    }
+
     const previous = storyboard.beats[index - 1];
-    if (!previous) return;
-    if (beat.structure === previous.structure && beat.palette === previous.palette) {
-      issues.push({code: 'adjacent-pair-repeat', beatId: beat.id, message: 'Adjacent beats repeat the same structure and palette'});
+    if (
+      previous
+      && beat.placement !== 'full'
+      && previous.placement !== 'full'
+      && beat.placement === previous.placement
+    ) {
+      issues.push({
+        code: 'side-repeat',
+        beatId: beat.id,
+        message: 'Consecutive ordinary overlays use the same presenter-safe lane',
+      });
     }
-    if (beat.placement !== 'full' && previous.placement !== 'full' && beat.placement === previous.placement) {
-      issues.push({code: 'side-repeat', beatId: beat.id, message: 'Consecutive ordinary overlays use the same presenter-safe lane'});
-    }
-  });
-  counts.forEach((count, structure) => {
-    if (count > 3) issues.push({code: 'template-overuse', message: `${structure} appears ${count} times`});
   });
   return issues;
 };
@@ -45,6 +93,9 @@ export const validateDirectorPlan = (storyboard: Storyboard): DirectorIssue[] =>
 export const assertDirectorPlan = (storyboard: Storyboard): void => {
   const issues = validateDirectorPlan(storyboard);
   if (issues.length === 0) return;
-  const details = issues.map((issue) => `${issue.code}${issue.beatId ? `(${issue.beatId})` : ''}: ${issue.message}`).join('; ');
+  const details = issues
+    .map((issue) => `${issue.code}${issue.beatId ? `(${issue.beatId})` : ''}: ${issue.message}`)
+    .join('; ');
   throw new Error(`Director plan rejected: ${details}`);
 };
+
