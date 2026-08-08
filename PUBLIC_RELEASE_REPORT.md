@@ -51,4 +51,10 @@ The source MP4, source SRT, full output MP4, local paths, and private assets are
 
 ## Current state
 
-Local source and evidence are ready for a public GitHub repository. Repository creation, initial push, and remote read-back must be completed before this report can be treated as proof of publication.
+Published publicly at <https://github.com/zhouyuechuan2025-ui/ai-self-media-video-packaging-skill>.
+
+- Initial public commit: `4e5d98a595f98d8b387cf0e8476df2d9c159d3b2`.
+- Default branch: `main`.
+- Repository visibility: public.
+- Remote read-back: completed for the repository metadata, README, `SKILL.md`, package manifest, real-case preview manifest, and public file tree.
+- Publication boundary: pushed to GitHub only; not deployed, released to npm, or published elsewhere.
