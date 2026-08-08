@@ -1,18 +1,25 @@
-# Motion and line illustrations
+# Motion and integrated line illustrations
 
-## Motion primitives
+## Seek-safe motion primitives
 
-`hit`, `slide`, `lift`, `stamp`, `route`, `trace`, `count`, `reveal`, `relay`, and `focus` are frame-driven functions. Each takes frame, fps, start frame, and duration. The same frame must always produce the same result.
+`hit`, `slide`, `lift`, `stamp`, `route`, `trace`, `count`, `reveal`, `relay`, and `focus` are deterministic functions of frame, fps, start frame, and duration. The same frame must always render the same state.
 
-## Line-illustration scenarios
+- Use `hit` for a short hook or conclusion, not every heading.
+- Use `route` and `trace` for actual paths, loops, and staged progress.
+- Use `count` only for attributed metrics.
+- Use `focus` for a selected command, source, or proof detail.
+- Never use timers, random values, runtime state, or CSS transitions that depend on playback history.
 
-- `information-overload`: scattered task cards converge into one clear path.
-- `climb-boulder`: a person pushes a boulder uphill to show difficult progress.
-- `workstation-balance`: desk and balance scale explain tradeoffs.
-- `paper-plane-route`: a fast route without implying unsupported automation.
-- `route-activation`: connected nodes light up in sequence.
-- `before-after-illustration`: two states with a visible transformation.
+## Semantic doodle contract
 
-Use explicit SVG `fill="none"` for line paths. Keep the background transparent, avoid brands and text inside the drawing, and animate layers with the same frame-driven primitives.
+An integrated doodle has three explicit layers:
 
-For a center-presenter source, place a doodle in one side lane or use it as a brief approved full-screen chapter illustration. Use warm paper, relaxed dark strokes, and one semantic accent so it remains visually distinct from technology, editorial, and completion families.
+1. `line`: the subject and stable environment;
+2. `action`: the force, route, movement, or transformation;
+3. `outcome`: the resulting state.
+
+The `semantic-doodle` structure keeps the drawing inside the composition hierarchy instead of placing it in a detached generic card. It receives `subject`, `action`, `outcome`, and one accent color from the storyboard.
+
+Use programmatic SVG with explicit `fill="none"`, explicit stroke attributes, rounded caps/joins, and frame-derived drawing progress. Avoid logos, brand imitation, decorative text inside the drawing, and unsupported product claims.
+
+Existing reusable drawing scenarios include information overload, climbing a difficult path, balancing tradeoffs, following a fast route, activating connected nodes, and showing a before/after transformation. The semantic content decides which scenario is valid.

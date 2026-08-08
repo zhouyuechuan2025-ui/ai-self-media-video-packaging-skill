@@ -1,5 +1,6 @@
 import {readFileSync} from 'node:fs';
 import {describe, expect, it} from 'vitest';
+import {SEMANTIC_STRUCTURES} from '../../packages/core/src/template-contracts';
 
 const skill = readFileSync('SKILL.md', 'utf8');
 
@@ -21,7 +22,7 @@ describe('public Skill contract', () => {
       'left/right lanes',
       'bottom 18%',
       'full-screen',
-      '1-2 seconds',
+      '1.6–3.2 seconds',
       'semantic palettes',
       'programmatic line illustrations',
       'Do not continue until the user approves',
@@ -34,5 +35,16 @@ describe('public Skill contract', () => {
     const packagingScript = readFileSync('scripts/package-video.ts', 'utf8');
     expect(packagingScript).toContain("const renderConcurrency = typeof args.concurrency === 'string' ? args.concurrency : '2'");
     expect(packagingScript).toContain("'--concurrency', renderConcurrency");
+  });
+
+  it('documents the ten V2 structures and cumulative four-gate flow', () => {
+    for (const name of SEMANTIC_STRUCTURES) expect(skill).toContain(name);
+    for (const flag of ['--approve-gate-a', '--approve-gate-b', '--approve-gate-c', '--approve-gate-d']) {
+      expect(skill).toContain(flag);
+    }
+    expect(skill).toContain('35%–65%');
+    expect(skill).toContain('bottom 18%');
+    expect(skill).toContain('Remotion by default');
+    expect(skill).toContain('HyperFrames adapter');
   });
 });

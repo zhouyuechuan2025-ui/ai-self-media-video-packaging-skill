@@ -1,19 +1,21 @@
-# Gates
+# Four cumulative gates
 
 ## Gate A — source and plan
 
-Write `BRIEF.md`, `SOURCE_PROBE.json`, `STORYBOARD.md`, `storyboard.json`, and `input-manifest.json`. Record hashes, duration, codecs, SRT count, caption mode, planned structures, claims needing evidence, and safe areas. No build, preview, or render.
+No approval flags. Write `BRIEF.md`, `SOURCE_PROBE.json`, `STORYBOARD.md`, `storyboard.json`, and `input-manifest.json`. Record hashes, media properties, every SRT cue, caption mode, semantic structures, placement, evidence status, full-screen exceptions, and risks. Do not build review visuals or render.
 
-The plan must be shown to the user before implementation. Stop and wait for explicit approval for this exact job. Do not infer approval from silence, urgency, a broad production permission, or approval given to another video.
+Show the plan to the user and stop. Approval must refer to this exact job.
 
-## Gate B — visual construction
+## Gate B — composition inputs
 
-After explicit Gate A approval, construct the real timeline. Check every beat against the SRT and source footage. A static component sheet may support review but is not Gate C.
+Requires `--approve-gate-a --approve-gate-b`. Prepare the browser-compatible continuous source, props, and renderer project. No final video.
 
-## Gate C — interactive or rendered preview
+## Gate C — review evidence
 
-Review the actual continuous video with seek-safe motion. Inspect the opening, at least one middle mechanism/evidence beat, and the ending. Fix overlapping copy, hidden faces, covered burned-in captions, or non-readable motion.
+Requires `--approve-gate-a --approve-gate-b --approve-gate-c`. Generate eight semantically distinct stills and a contact sheet from the real composition. A video with fewer than eight distinct structures fails Gate C. Review hierarchy, face clearance, subtitle clearance, evidence legibility, doodle meaning, and structural difference. No final MP4.
 
-## Gate D — export
+## Gate D — final export
 
-Export only after explicit approval. Validate the actual file with ffprobe, full decode, frame extraction, dimensions, duration, audio presence, and hashes. Do not describe an unexported project as delivered.
+Requires all four approval flags plus `--render`. Render the final artifact, probe it, decode the entire file, detect black segments, extract eight representative frames, build a contact sheet, and write `RENDER_MANIFEST.json` with hashes and media facts.
+
+Never describe an unrendered project, component gallery, or contact sheet as a delivered video.

@@ -1,8 +1,6 @@
 # Usage
 
-## Install as an Agent Skill
-
-Clone the repository, install dependencies, and link or copy the repository directory into your Agent Skills directory. The entrypoint is `SKILL.md`.
+## Install
 
 ```bash
 git clone https://github.com/zhouyuechuan2025-ui/ai-self-media-video-packaging-skill.git
@@ -10,73 +8,66 @@ cd ai-self-media-video-packaging-skill
 npm ci
 ```
 
-Example trigger:
-
-> Use package-talking-head-video to inspect this MP4 and SRT, prepare Gate A, and wait for my approval before rendering.
+Requirements: Node.js 20+, FFmpeg, and ffprobe. The Agent Skill entrypoint is `SKILL.md`.
 
 ## Inputs
 
-- one existing video file;
+- one existing center-presenter talking-head video;
 - one UTF-8 SRT file;
 - caption mode: `burned-in`, `none`, or `generated`;
-- renderer: `remotion` or `hyperframes`;
-- an output directory that is safe to write.
+- renderer: `remotion` by default, or `hyperframes` for compatible project output;
+- a writable output directory.
 
-The default layout assumes a center-presenter 16:9 source. Ordinary overlays use the left x=6-32% or right x=68-94% lane, protect the center x=35-65%, and keep the bottom 18% clear for burned-in captions. Gate A must list every full-screen exception and semantic palette before implementation.
+The default 16:9 layout protects center x=35%–65%, uses left x=5%–32% and right x=68%–95%, and reserves the bottom 18% for source captions.
 
-## Gate A only
+## Gate A — plan only
 
 ```bash
 npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in
 ```
 
-Outputs:
+Outputs: `BRIEF.md`, `SOURCE_PROBE.json`, `STORYBOARD.md`, `storyboard.json`, and `input-manifest.json`. Review and approve this exact plan before continuing.
 
-- `BRIEF.md`
-- `SOURCE_PROBE.json`
-- `STORYBOARD.md`
-- `storyboard.json`
-- `input-manifest.json`
-
-## Approved Remotion render
+## Gate B — build composition inputs
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --render
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b
 ```
 
-The renderer creates an H.264/AAC browser proxy only when needed, keeps the source timeline continuous, renders the packaged MP4, extracts five frames, performs a full decode, and writes `RENDER_MANIFEST.json`.
+This may create a continuous H.264/AAC proxy for browser-incompatible codecs. It does not render the final MP4.
 
-## HyperFrames project
+## Gate C — visual review
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer hyperframes --captions burned-in --approve-gate-a
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c
 ```
 
-This creates `hyperframes/index.html` and `hyperframes/index.motion.json` from the same storyboard. Validate it with the pinned optional CLI:
+This generates eight review stills and a contact sheet from eight distinct semantic structures. It does not render the final MP4.
+
+## Gate D — final render
 
 ```bash
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
+```
+
+Gate D renders H.264/AAC, performs full decode and black-frame checks, extracts eight representative frames, builds a contact sheet, and writes `RENDER_MANIFEST.json`.
+
+## Optional HyperFrames output
+
+```bash
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer hyperframes --captions burned-in --approve-gate-a --approve-gate-b
 npx hyperframes@0.7.99 lint ./run/hyperframes
 npx hyperframes@0.7.99 check ./run/hyperframes --snapshots
 ```
 
+The adapter preserves the same ten semantic identifiers and seek-safe absolute timeline. Gate C review stills and Gate D rendering use the default Remotion path.
+
 ## Caption modes
 
-- `burned-in`: the source already contains subtitles; no new caption track is rendered.
-- `none`: no subtitles are wanted.
-- `generated`: a caption layer is rendered from the supplied SRT.
+- `burned-in`: keep existing source captions and generate no duplicate layer.
+- `none`: render no caption layer.
+- `generated`: render captions from the SRT.
 
-## Evidence assets
+## Evidence
 
-Add an evidence object to a storyboard beat only when the source image exists and can be redistributed or used locally:
-
-```json
-{
-  "evidence": {
-    "src": "evidence/product-doc.png",
-    "label": "Official product documentation",
-    "sourceUrl": "https://example.com/official-doc"
-  }
-}
-```
-
-An illustration is explanatory, not evidentiary. Do not use a drawing, generic icon, or animated counter as proof.
+Only use `evidence-panel` when an approved image exists. Include `src`, `label`, and optional `sourceUrl`. If the source is missing, use `thesis-and-proof` and keep the statement attributed. A semantic doodle is explanatory, never evidentiary.

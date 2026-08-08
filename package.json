@@ -1,6 +1,6 @@
 {
   "name": "ai-self-media-video-packaging-skill",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "An Agent Skill for packaging talking-head videos with Remotion, HyperFrames, evidence cards, and programmatic line illustrations.",
@@ -15,8 +15,8 @@
     "build": "npm run typecheck && remotion compositions packages/remotion-renderer/src/index.ts",
     "package-video": "tsx scripts/package-video.ts",
     "make:synthetic": "tsx scripts/make-synthetic.ts",
-    "example:synthetic": "tsx scripts/package-video.ts --video examples/synthetic-horizontal/input.mp4 --srt examples/synthetic-horizontal/input.srt --out examples/synthetic-horizontal/run --renderer remotion --approve-gate-a --render",
-    "example:auto-editing-0": "tsx scripts/package-video.ts --video examples/auto-editing-0/private-input/input.mp4 --srt examples/auto-editing-0/private-input/input.srt --out examples/auto-editing-0/run --renderer remotion --captions burned-in --approve-gate-a --render",
+    "example:synthetic": "tsx scripts/package-video.ts --video examples/synthetic-horizontal/input.mp4 --srt examples/synthetic-horizontal/input.srt --out examples/synthetic-horizontal/run --renderer remotion",
+    "example:auto-editing-0": "tsx scripts/package-video.ts --video examples/auto-editing-0/private-input/input.mp4 --srt examples/auto-editing-0/private-input/input.srt --out examples/auto-editing-0/run-v2 --renderer remotion --captions burned-in",
     "checksums": "node scripts/generate-checksums.mjs",
     "verify:public": "node scripts/verify-public-repo.mjs",
     "verify:all": "npm test && npm run typecheck && npm run build && npm run verify:public"
