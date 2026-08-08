@@ -1,6 +1,8 @@
 import {describe, expect, it} from 'vitest';
+import {TemplateContentSchema} from '../src/template-contracts';
 import {validateDirectorPlan} from '../src/director-validation';
 import {planStoryboard} from '../src/planner';
+import {classifySemanticStructure} from '../src/semantic-rules';
 import type {MediaProbe, SrtCue} from '../src/types';
 
 const probe: MediaProbe = {
@@ -13,75 +15,105 @@ const probe: MediaProbe = {
 const cues: SrtCue[] = [
   {index: 1, start: 0, end: 2.6, text: '为什么你的视频一直没人看？'},
   {index: 2, start: 2.7, end: 5.2, text: '不是内容不够多，而是重点不清楚'},
-  {index: 3, start: 5.3, end: 8.2, text: '三个步骤把信息路径跑通'},
-  {index: 4, start: 8.3, end: 11.2, text: '这是官方截图和数据证据'},
-  {index: 5, start: 11.3, end: 14, text: '最后完成检查，评论区见'},
-  {index: 6, start: 14.1, end: 17, text: '真正关键不是堆更多特效'},
-  {index: 7, start: 17.1, end: 20, text: '以前手工剪辑，现在流程自动跑通'},
-  {index: 8, start: 20.1, end: 23, text: '画面左边讲重点，右边展示结果'},
-  {index: 9, start: 23.1, end: 26, text: '一条路径连接选题文案和剪辑'},
-  {index: 10, start: 26.1, end: 29, text: '5分钟完成是我的本次实测'},
-  {index: 11, start: 29.1, end: 32, text: '这里给出来源和官方文档'},
+  {index: 3, start: 5.3, end: 8.2, text: '首先读取素材，然后分析，再生成方案，最后确认'},
+  {index: 4, start: 8.3, end: 11.2, text: '这是官方截图和文档证据'},
+  {index: 5, start: 11.3, end: 14, text: '运行检查、审核方案、确认导出'},
+  {index: 6, start: 14.1, end: 17, text: '输入脚本，AI生成视频，人再反馈修正'},
+  {index: 7, start: 17.1, end: 20, text: '节点从选题流向脚本再到视频'},
+  {index: 8, start: 20.1, end: 23, text: '本次只消耗了3%的额度'},
+  {index: 9, start: 23.1, end: 26, text: '创作者推着任务越过难点拿到结果'},
+  {index: 10, start: 26.1, end: 29, text: '左边说明现状，右边给出行动'},
+  {index: 11, start: 29.1, end: 32, text: '关键是让结构服务于内容，因为读者先理解逻辑'},
   {index: 12, start: 32.1, end: 36, text: '下一步检查结果并完成交付'},
 ];
 
+describe('semantic classification', () => {
+  it.each([
+    ['首先读取素材，然后分析，再生成方案，最后执行', 'four-stage-pipeline'],
+    ['从手工剪辑变成自动化工作流', 'before-after-scrub'],
+    ['输入脚本，AI生成视频，人再反馈修正', 'bidirectional-flow'],
+    ['运行检查、审核方案、确认导出', 'command-palette'],
+    ['节点从选题流向脚本再到视频', 'signal-route'],
+    ['本次只消耗了3%', 'metric-odometer'],
+    ['创作者推着任务越过难点拿到结果', 'semantic-doodle'],
+  ] as const)('maps %s to %s', (text, structure) => {
+    expect(classifySemanticStructure(text, 1)).toBe(structure);
+  });
+});
+
 describe('planStoryboard', () => {
-  it('creates deterministic, readable, evidence-aware beats', () => {
-    const first = planStoryboard({
-      id: 'planner-fixture', title: 'Planner fixture', cues, probe,
-      captionsMode: 'burned-in', sourceVideo: 'input.mp4', sourceSrt: 'input.srt',
-    });
-    const second = planStoryboard({
-      id: 'planner-fixture', title: 'Planner fixture', cues, probe,
-      captionsMode: 'burned-in', sourceVideo: 'input.mp4', sourceSrt: 'input.srt',
-    });
+  it('creates deterministic beats with valid semantic content', () => {
+    const input = {
+      id: 'planner-fixture',
+      title: 'Planner fixture',
+      cues,
+      probe,
+      captionsMode: 'burned-in' as const,
+      sourceVideo: 'input.mp4',
+      sourceSrt: 'input.srt',
+      evidenceByCue: {
+        4: {src: 'evidence/official-doc.png', label: '官方文档', sourceUrl: 'https://example.com/docs'},
+      },
+    };
+    const first = planStoryboard(input);
+    const second = planStoryboard(input);
 
     expect(first).toEqual(second);
-    expect(first.beats[0].structure).toBe('impact-question');
-    expect(first.beats[0].end).toBeLessThanOrEqual(3);
-    expect(first.beats.find((beat) => beat.text.includes('证据'))?.structure).toMatch(/^evidence-/);
-    expect(first.beats.some((beat) => beat.illustration?.type === 'route-activation')).toBe(true);
+    expect(first.version).toBe('2.0');
+    expect(first.beats[0].structure).toBe('thesis-and-proof');
+    expect(first.beats.find((beat) => beat.text.includes('证据'))?.structure).toBe('evidence-panel');
+    expect(first.beats.some((beat) => beat.illustration?.type === 'climb-boulder')).toBe(true);
     expect(first.captionsMode).toBe('burned-in');
     expect(JSON.stringify(first)).not.toContain('captionTrack');
-    expect(new Set(first.beats.map((beat) => beat.palette)).size).toBeGreaterThanOrEqual(4);
-    expect(new Set(first.beats.map((beat) => beat.structure)).size).toBeGreaterThanOrEqual(5);
+    expect(new Set(first.beats.map((beat) => beat.structure)).size).toBeGreaterThanOrEqual(8);
     expect(first.beats.every((beat) => ['left', 'right', 'full'].includes(beat.placement))).toBe(true);
 
-    const fullScreenRoles = first.beats
-      .filter((beat) => beat.placement === 'full')
-      .map((beat) => beat.directorRole);
-    expect(fullScreenRoles.every((role) => ['hook', 'bridge', 'payoff', 'cta', 'evidence'].includes(role))).toBe(true);
-
     first.beats.forEach((beat, index) => {
+      expect(beat.content.structure).toBe(beat.structure);
+      expect(() => TemplateContentSchema.parse(beat.content)).not.toThrow();
       expect(beat.end - beat.start).toBeGreaterThan(0);
       expect(beat.end - beat.start).toBeLessThanOrEqual(6);
-      if (index > 0) expect(beat.structure).not.toBe(first.beats[index - 1].structure);
-      if (index > 0) {
-        const previous = first.beats[index - 1];
-        expect(`${beat.structure}:${beat.palette}`).not.toBe(`${previous.structure}:${previous.palette}`);
-        if (beat.placement !== 'full' && previous.placement !== 'full') {
-          expect(beat.placement).not.toBe(previous.placement);
-        }
+      const previous = first.beats[index - 1];
+      if (previous && beat.placement !== 'full' && previous.placement !== 'full') {
+        expect(beat.placement).not.toBe(previous.placement);
       }
     });
+    expect(validateDirectorPlan(first)).toEqual([]);
   });
 
-  it('rotates structures for a long repetitive talking-head script', () => {
-    const repetitiveCues = Array.from({length: 21}, (_, index) => ({
+  it('does not force unrelated structures into repetitive generic copy', () => {
+    const repetitiveCues = Array.from({length: 12}, (_, index) => ({
       index: index + 1,
       start: index * 2,
       end: index * 2 + 1.8,
-      text: `这是第${index + 1}个普通观点，需要用不同的视觉语法解释`,
+      text: '这是一个普通观点，需要把信息讲清楚',
     }));
-    const longProbe = {...probe, duration: 44};
     const storyboard = planStoryboard({
-      id: 'rotation-fixture', title: 'Rotation fixture', cues: repetitiveCues, probe: longProbe,
-      captionsMode: 'burned-in', sourceVideo: 'input.mp4', sourceSrt: 'input.srt',
+      id: 'repetitive-fixture',
+      title: 'Repetitive fixture',
+      cues: repetitiveCues,
+      probe: {...probe, duration: 24},
+      captionsMode: 'burned-in',
+      sourceVideo: 'input.mp4',
+      sourceSrt: 'input.srt',
     });
 
-    expect(validateDirectorPlan(storyboard)).toEqual([]);
-    const counts = new Map<string, number>();
-    storyboard.beats.forEach((beat) => counts.set(beat.structure, (counts.get(beat.structure) ?? 0) + 1));
-    expect(Math.max(...counts.values())).toBeLessThanOrEqual(3);
+    expect(new Set(storyboard.beats.map((beat) => beat.structure)).size).toBeLessThanOrEqual(2);
+    expect(storyboard.beats.every((beat) => ['editorial-dual-rail', 'thesis-and-proof'].includes(beat.structure))).toBe(true);
+  });
+
+  it('downgrades an evidence mention when no source asset is available', () => {
+    const storyboard = planStoryboard({
+      id: 'evidence-downgrade',
+      title: 'Evidence downgrade',
+      cues: [{index: 1, start: 0, end: 2.4, text: '这里引用官方文档作为证据'}],
+      probe: {...probe, duration: 2.4},
+      captionsMode: 'burned-in',
+      sourceVideo: 'input.mp4',
+      sourceSrt: 'input.srt',
+    });
+
+    expect(storyboard.beats[0].structure).toBe('thesis-and-proof');
+    expect(storyboard.beats[0].evidence).toBeUndefined();
   });
 });

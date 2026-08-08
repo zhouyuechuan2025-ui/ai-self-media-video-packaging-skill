@@ -1,7 +1,11 @@
-import {StoryboardSchema, type Storyboard, type StoryboardBeat, type VisualStructure} from './schema';
+import {buildTemplateContent} from './content-builders';
 import {paletteForRole} from './palettes';
-import {chooseDirectorRole, chooseIllustration, chooseStructure, fallbackStructure, motionsForStructure} from './semantic-rules';
+import {StoryboardSchema, type Storyboard, type StoryboardBeat} from './schema';
+import {chooseDirectorRole, chooseIllustration, classifySemanticStructure, motionsForStructure} from './semantic-rules';
+import type {SemanticStructure} from './template-contracts';
 import type {MediaProbe, SrtCue} from './types';
+
+type PlannerEvidence = {src: string; label: string; sourceUrl?: string};
 
 type PlannerInput = {
   id: string;
@@ -11,6 +15,7 @@ type PlannerInput = {
   captionsMode: Storyboard['captionsMode'];
   sourceVideo: string;
   sourceSrt?: string;
+  evidenceByCue?: Record<number, PlannerEvidence>;
 };
 
 const overlayText = (text: string): string => {
@@ -18,52 +23,52 @@ const overlayText = (text: string): string => {
   return compact.length <= 34 ? compact : `${compact.slice(0, 33)}…`;
 };
 
-const rotationPool: VisualStructure[] = [
-  'gradient-keyword', 'side-insight-card', 'keyword-relay', 'state-switch',
-  'chapter-timeline', 'split-conflict', 'dual-concept', 'capability-matrix',
-  'adaptive-steps', 'contrarian-stamp',
-];
-
-const selectStructure = (
-  candidate: VisualStructure,
-  index: number,
-  previous: StoryboardBeat | undefined,
-  counts: Map<VisualStructure, number>,
-): VisualStructure => {
-  if (candidate !== previous?.structure && (counts.get(candidate) ?? 0) < 3) return candidate;
-  const rotated = rotationPool
-    .map((structure, offset) => ({structure, offset, count: counts.get(structure) ?? 0}))
-    .filter(({structure, count}) => structure !== previous?.structure && count < 3)
-    .sort((a, b) => a.count - b.count || ((a.offset - index + rotationPool.length) % rotationPool.length) - ((b.offset - index + rotationPool.length) % rotationPool.length));
-  return rotated[0]?.structure ?? fallbackStructure(index);
+const choosePlacement = (
+  structure: SemanticStructure,
+  directorRole: StoryboardBeat['directorRole'],
+  lastSide: 'left' | 'right',
+): 'left' | 'right' | 'full' => {
+  const fullStructures = new Set<SemanticStructure>([
+    'four-stage-pipeline',
+    'before-after-scrub',
+    'evidence-panel',
+    'metric-odometer',
+    'signal-route',
+    'semantic-doodle',
+  ]);
+  if (directorRole === 'hook' || fullStructures.has(structure)) return 'full';
+  return lastSide === 'left' ? 'right' : 'left';
 };
 
 const makeBeat = (
   cue: SrtCue,
   index: number,
-  previous: StoryboardBeat | undefined,
   lastSide: 'left' | 'right',
-  counts: Map<VisualStructure, number>,
+  evidence: PlannerEvidence | undefined,
 ): StoryboardBeat => {
   const text = overlayText(cue.text);
-  const candidate = index === 0 && !/[?？]|为什么|怎么|如何|到底/.test(text) ? 'three-beat-hook' : chooseStructure(text, index);
-  const structure = selectStructure(candidate, index, previous, counts);
+  const classified = classifySemanticStructure(text, index);
+  const structure: SemanticStructure = classified === 'evidence-panel' && !evidence
+    ? 'thesis-and-proof'
+    : classified;
   const illustration = chooseIllustration(text);
   const directorRole = chooseDirectorRole(text, index);
-  const fullScreen = directorRole === 'hook'
-    || directorRole === 'cta'
-    || directorRole === 'payoff'
-    || (directorRole === 'evidence' && structure === 'evidence-takeover');
+  const content = buildTemplateContent(structure, text, {evidence});
   return {
     id: `beat-${String(index + 1).padStart(2, '0')}`,
     start: Number(cue.start.toFixed(3)),
     end: Number(cue.end.toFixed(3)),
     text,
     structure,
+    content,
     motions: motionsForStructure(structure),
-    placement: fullScreen ? 'full' : lastSide === 'left' ? 'right' : 'left',
+    placement: choosePlacement(structure, directorRole, lastSide),
     palette: paletteForRole(directorRole, index, Boolean(illustration)),
     directorRole,
+    reason: classified === 'evidence-panel' && !evidence
+      ? 'Evidence wording detected but no approved source asset was supplied; downgraded to thesis-and-proof.'
+      : `Selected from spoken semantics: ${structure}.`,
+    ...(evidence && structure === 'evidence-panel' ? {evidence} : {}),
     ...(illustration ? {illustration: {type: illustration, label: text.slice(0, 18)}} : {}),
   };
 };
@@ -73,14 +78,12 @@ export const planStoryboard = (input: PlannerInput): Storyboard => {
   const beats: StoryboardBeat[] = [];
   let lastSide: 'left' | 'right' = 'right';
   input.cues.forEach((cue, index) => {
-    const counts = new Map<VisualStructure, number>();
-    beats.forEach((item) => counts.set(item.structure, (counts.get(item.structure) ?? 0) + 1));
-    const beat = makeBeat(cue, index, beats.at(-1), lastSide, counts);
+    const beat = makeBeat(cue, index, lastSide, input.evidenceByCue?.[cue.index]);
     beats.push(beat);
     if (beat.placement === 'left' || beat.placement === 'right') lastSide = beat.placement;
   });
   return StoryboardSchema.parse({
-    version: '1.0',
+    version: '2.0',
     id: input.id,
     title: input.title,
     duration: Number(input.probe.duration.toFixed(3)),
