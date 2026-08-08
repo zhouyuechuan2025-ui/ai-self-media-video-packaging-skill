@@ -6,7 +6,7 @@
 
 ## 真实调用效果
 
-下面所有画面都直接抽取自同一次真实 Skill 调用生成的最终 MP4。案例使用 49.273 秒、1920×1080 的口播源片与 21 条 SRT；Remotion 输出为 49.344 秒、H.264/AAC，输出 SHA-256 为 `30B98D2A68B6204D101DF3752A58C53FFA4641E6BDCE93C1E71C5A2ABF64EB20`。
+下面所有画面都直接抽取自同一次真实 Skill 调用生成的最终 MP4。案例使用 49.273 秒、1920×1080 的口播源片与 21 条 SRT；导演方案实际使用 6 套配色、13 种结构与 21 个视觉节拍。Remotion 输出为 49.323 秒、H.264/AAC，输出 SHA-256 为 `57D909FAABE95A68862C0418A4E110EC9BD557B79D3FDEE07FC0545C847679A8`。
 
 ![真实调用六帧总览](docs/assets/previews/auto-editing-0-contact-sheet.jpg)
 
@@ -14,9 +14,9 @@
 |---|---|---|
 | ![开头钩子](docs/assets/previews/auto-editing-0-01-hook-1.333s.png) | ![事实归属卡](docs/assets/previews/auto-editing-0-02-metric-4.867s.png) | ![程序化简笔画](docs/assets/previews/auto-editing-0-03-doodle-15.350s.png) |
 
-| 前后对比 | 速度表达 | 结尾行动引导 |
+| 前后对比 | 紫色数据表达 | 全屏行动引导 |
 |---|---|---|
-| ![前后对比](docs/assets/previews/auto-editing-0-04-before-after-19.100s.png) | ![速度表达](docs/assets/previews/auto-editing-0-05-speed-25.900s.png) | ![结尾行动引导](docs/assets/previews/auto-editing-0-06-close-47.400s.png) |
+| ![前后对比](docs/assets/previews/auto-editing-0-04-before-after-19.100s.png) | ![紫色数据表达](docs/assets/previews/auto-editing-0-05-violet-30.600s.png) | ![全屏行动引导](docs/assets/previews/auto-editing-0-06-fullscreen-44.216s.png) |
 
 这组预览不是设计稿。完整证据链包括：[真实调用命令](examples/auto-editing-0/invocation.txt)、[输入哈希与参数](examples/auto-editing-0/input-manifest.json)、[完整分镜](examples/auto-editing-0/storyboard.json)、[逐帧哈希与时间码](examples/auto-editing-0/preview-manifest.json)及[成片验收记录](examples/auto-editing-0/QA_REPORT.md)。原始视频和 SRT 不随仓库分发。
 

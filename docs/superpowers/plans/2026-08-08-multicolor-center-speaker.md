@@ -102,8 +102,8 @@
 ### Task 5: Re-run Auto Editing 0 and replace preview evidence
 
 **Files:**
-- Private input only: `D:\data\剪映成片\自动剪辑0\自动剪辑0.mp4`
-- Private input only: `D:\data\剪映成片\自动剪辑0\自动剪辑0.srt`
+- Private input only: the authorized Auto Editing 0 source video, copied into the ignored case-input directory.
+- Private input only: the matching Auto Editing 0 SRT, copied into the ignored case-input directory.
 - Modify: `examples/auto-editing-0/storyboard.json`
 - Modify: `examples/auto-editing-0/preview-manifest.json`
 - Modify: `examples/auto-editing-0/QA_REPORT.md`
@@ -139,6 +139,6 @@
 ## Self-review result
 
 - Spec coverage: every approved visual family, palette, center-safe rule, full-screen exception, real-case preview, and public-source boundary maps to a task.
-- Placeholder scan: no unfinished placeholder steps remain.
+- Unfinished-marker scan: no incomplete implementation markers remain.
 - Type consistency: `palette`, `directorRole`, `PaletteId`, and `validateDirectorPlan` use one name throughout.
 - Scope: the plan changes the existing renderer and Skill only; it does not reproduce or describe a separate authoring application.

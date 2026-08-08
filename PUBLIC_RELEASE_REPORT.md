@@ -14,11 +14,12 @@
 - Case: `auto-editing-0`.
 - Source video: 49.272993 seconds, HEVC/AAC, 1920×1080, 30fps.
 - SRT: 21 cues; burned-in subtitle mode.
-- Final local output: H.264/AAC, 1920×1080, 30fps, 49.344 seconds, 42,279,979 bytes.
-- Output SHA-256: `30B98D2A68B6204D101DF3752A58C53FFA4641E6BDCE93C1E71C5A2ABF64EB20`.
+- Director plan: 21 beats, 6 palettes, 13 structures, 9 left placements, 8 right placements, and 4 short full-screen placements.
+- Final local output: H.264/AAC, 1920×1080, 30fps, 49.322667 seconds, 38,520,178 bytes.
+- Output SHA-256: `57D909FAABE95A68862C0418A4E110EC9BD557B79D3FDEE07FC0545C847679A8`.
 - Full FFmpeg decode: pass.
 - Black-frame scan: no black interval detected.
-- Six README previews: extracted from that exact output and individually hashed in `examples/auto-editing-0/preview-manifest.json`.
+- Six README previews and a ten-frame contact sheet: extracted from that exact output and individually hashed in `examples/auto-editing-0/preview-manifest.json`.
 
 The source MP4, source SRT, full output MP4, local paths, and private assets are intentionally absent from the public candidate set.
 

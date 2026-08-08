@@ -1,1 +1,1 @@
-npm run package-video -- --video examples/auto-editing-0/private-input/input.mp4 --srt examples/auto-editing-0/private-input/input.srt --out examples/auto-editing-0/run --renderer remotion --captions burned-in --approve-gate-a --render
+npm run package-video -- --video examples/auto-editing-0/private-input/input.mp4 --srt examples/auto-editing-0/private-input/input.srt --out examples/auto-editing-0/run --renderer remotion --captions burned-in --approve-gate-a --render --concurrency 2

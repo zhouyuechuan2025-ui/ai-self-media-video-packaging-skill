@@ -19,5 +19,6 @@ examples/**/run/renders/*.mp4
 examples/**/run/renders/*.mov
 examples/**/run/proxy-*.mp4
 examples/**/run/hyperframes/.hyperframes/
+examples/**/hyperframes-final/
 *.log
 tests/tmp/

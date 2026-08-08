@@ -1,34 +1,327 @@
 {
   "version": "1.0",
-  "id": "auto-editing-0",
-  "title": "自动剪辑0真实调用案例",
+  "id": "auto-editing-0-public-case",
+  "title": "自动剪辑0｜多配色真人口播包装",
   "duration": 49.273,
   "fps": 30,
   "width": 1920,
   "height": 1080,
   "captionsMode": "burned-in",
-  "theme": {"background": "#07111f", "foreground": "#f6f8fb", "accent": "#5eead4"},
+  "source": {
+    "video": "input.mp4",
+    "srt": "input.srt"
+  },
+  "theme": {
+    "background": "#07111f",
+    "foreground": "#f6f8fb",
+    "accent": "#5eead4"
+  },
   "beats": [
-    {"id":"beat-01","start":0,"end":2.666,"text":"我用Codex实现了一键智能剪辑","structure":"three-beat-hook","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-02","start":2.733,"end":7,"text":"我一个新账号用它剪的视频几乎每条都进入了几万的流量池","structure":"metric-counter","motions":["count","focus"],"placement":"right"},
-    {"id":"beat-03","start":7.133,"end":8.266,"text":"资料我已经准备好了","structure":"keyword-relay","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-04","start":8.266,"end":11.433,"text":"需要的朋友在评论区打资料包直接就可以拿去用","structure":"completion-rail","motions":["relay","stamp"],"placement":"right"},
-    {"id":"beat-05","start":11.5,"end":14.7,"text":"这套Skill包括了视频剪辑和封面制作","structure":"capability-matrix","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-06","start":14.766,"end":15.933,"text":"是我踩了无数的坑","structure":"keyword-relay","motions":["lift","reveal"],"placement":"right","illustration":{"type":"climb-boulder","label":"是我踩了无数的坑"}},
-    {"id":"beat-07","start":15.933,"end":18.033,"text":"迭代了几个月才打磨出来的","structure":"gradient-keyword","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-08","start":18.1,"end":20.133,"text":"以前剪一条视频，你需要找素材","structure":"side-insight-card","motions":["lift","reveal"],"placement":"right","illustration":{"type":"before-after-illustration","label":"以前剪一条视频，你需要找素材"}},
-    {"id":"beat-09","start":20.133,"end":22.033,"text":"上字幕卡点弄特效","structure":"keyword-relay","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-10","start":22.133,"end":24.7,"text":"每两三个小时根本搞不定，现在呢","structure":"gradient-keyword","motions":["lift","reveal"],"placement":"right","illustration":{"type":"before-after-illustration","label":"每两三个小时根本搞不定，现在呢"}},
-    {"id":"beat-11","start":24.7,"end":27.866,"text":"我只需要把视频丢进去5分钟就剪完了","structure":"metric-counter","motions":["count","focus"],"placement":"left"},
-    {"id":"beat-12","start":27.866,"end":29.266,"text":"关键它还特别便宜","structure":"keyword-relay","motions":["lift","reveal"],"placement":"right"},
-    {"id":"beat-13","start":29.4,"end":31.8,"text":"一条只消耗我Plus周额度的3%，","structure":"metric-counter","motions":["count","focus"],"placement":"left"},
-    {"id":"beat-14","start":32.066,"end":34.2,"text":"一周下来能剪出几十条视频","structure":"side-insight-card","motions":["lift","reveal"],"placement":"right"},
-    {"id":"beat-15","start":34.366,"end":36.533,"text":"好出爆款的概率直接拉满","structure":"keyword-relay","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-16","start":36.566,"end":37.133,"text":"当然","structure":"gradient-keyword","motions":["lift","reveal"],"placement":"right"},
-    {"id":"beat-17","start":37.133,"end":39.533,"text":"一条好的视频只靠剪辑肯定不够","structure":"side-insight-card","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-18","start":39.6,"end":41.833,"text":"决定能不能爆的还有选题和文案","structure":"keyword-relay","motions":["lift","reveal"],"placement":"right"},
-    {"id":"beat-19","start":41.933,"end":46.5,"text":"下一期我就会把自己用的爆款选题方法还有核心Skill分享给大家","structure":"gradient-keyword","motions":["lift","reveal"],"placement":"left"},
-    {"id":"beat-20","start":46.6,"end":48.1,"text":"还没关注我的记得点个关注","structure":"side-insight-card","motions":["lift","reveal"],"placement":"right"},
-    {"id":"beat-21","start":48.1,"end":49.266,"text":"咱们下期再见","structure":"keyword-relay","motions":["lift","reveal"],"placement":"left"}
+    {
+      "id": "beat-01",
+      "start": 0,
+      "end": 2.666,
+      "text": "我用Codex实现了一键智能剪辑",
+      "structure": "three-beat-hook",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "full",
+      "palette": "deep-ocean",
+      "directorRole": "hook"
+    },
+    {
+      "id": "beat-02",
+      "start": 2.733,
+      "end": 7,
+      "text": "我一个新账号用它剪的视频几乎每条都进入了几万的流量池",
+      "structure": "metric-counter",
+      "motions": [
+        "count",
+        "focus"
+      ],
+      "placement": "left",
+      "palette": "deep-ocean",
+      "directorRole": "data"
+    },
+    {
+      "id": "beat-03",
+      "start": 7.133,
+      "end": 8.266,
+      "text": "资料我已经准备好了",
+      "structure": "keyword-relay",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "teal-signal",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-04",
+      "start": 8.266,
+      "end": 11.433,
+      "text": "需要的朋友在评论区打资料包直接就可以拿去用",
+      "structure": "completion-rail",
+      "motions": [
+        "relay",
+        "stamp"
+      ],
+      "placement": "full",
+      "palette": "acid-action",
+      "directorRole": "cta"
+    },
+    {
+      "id": "beat-05",
+      "start": 11.5,
+      "end": 14.7,
+      "text": "这套Skill包括了视频剪辑和封面制作",
+      "structure": "capability-matrix",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "left",
+      "palette": "deep-ocean",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-06",
+      "start": 14.766,
+      "end": 15.933,
+      "text": "是我踩了无数的坑",
+      "structure": "keyword-relay",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "paper-sketch",
+      "directorRole": "definition",
+      "illustration": {
+        "type": "climb-boulder",
+        "label": "是我踩了无数的坑"
+      }
+    },
+    {
+      "id": "beat-07",
+      "start": 15.933,
+      "end": 18.033,
+      "text": "迭代了几个月才打磨出来的",
+      "structure": "gradient-keyword",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "left",
+      "palette": "teal-signal",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-08",
+      "start": 18.1,
+      "end": 20.133,
+      "text": "以前剪一条视频，你需要找素材",
+      "structure": "side-insight-card",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "paper-sketch",
+      "directorRole": "definition",
+      "illustration": {
+        "type": "before-after-illustration",
+        "label": "以前剪一条视频，你需要找素材"
+      }
+    },
+    {
+      "id": "beat-09",
+      "start": 20.133,
+      "end": 22.033,
+      "text": "上字幕卡点弄特效",
+      "structure": "keyword-relay",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "left",
+      "palette": "editorial-cream",
+      "directorRole": "problem"
+    },
+    {
+      "id": "beat-10",
+      "start": 22.133,
+      "end": 24.7,
+      "text": "每两三个小时根本搞不定，现在呢",
+      "structure": "gradient-keyword",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "paper-sketch",
+      "directorRole": "definition",
+      "illustration": {
+        "type": "before-after-illustration",
+        "label": "每两三个小时根本搞不定，现在呢"
+      }
+    },
+    {
+      "id": "beat-11",
+      "start": 24.7,
+      "end": 27.866,
+      "text": "我只需要把视频丢进去5分钟就剪完了",
+      "structure": "metric-counter",
+      "motions": [
+        "count",
+        "focus"
+      ],
+      "placement": "left",
+      "palette": "teal-signal",
+      "directorRole": "data"
+    },
+    {
+      "id": "beat-12",
+      "start": 27.866,
+      "end": 29.266,
+      "text": "关键它还特别便宜",
+      "structure": "state-switch",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "editorial-cream",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-13",
+      "start": 29.4,
+      "end": 31.8,
+      "text": "一条只消耗我Plus周额度的3%，",
+      "structure": "metric-counter",
+      "motions": [
+        "count",
+        "focus"
+      ],
+      "placement": "left",
+      "palette": "violet-sunset",
+      "directorRole": "data"
+    },
+    {
+      "id": "beat-14",
+      "start": 32.066,
+      "end": 34.2,
+      "text": "一周下来能剪出几十条视频",
+      "structure": "side-insight-card",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "violet-sunset",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-15",
+      "start": 34.366,
+      "end": 36.533,
+      "text": "好出爆款的概率直接拉满",
+      "structure": "chapter-timeline",
+      "motions": [
+        "relay",
+        "slide"
+      ],
+      "placement": "left",
+      "palette": "teal-signal",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-16",
+      "start": 36.566,
+      "end": 37.133,
+      "text": "当然",
+      "structure": "gradient-keyword",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "editorial-cream",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-17",
+      "start": 37.133,
+      "end": 39.533,
+      "text": "一条好的视频只靠剪辑肯定不够",
+      "structure": "side-insight-card",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "left",
+      "palette": "deep-ocean",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-18",
+      "start": 39.6,
+      "end": 41.833,
+      "text": "决定能不能爆的还有选题和文案",
+      "structure": "split-conflict",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "violet-sunset",
+      "directorRole": "definition"
+    },
+    {
+      "id": "beat-19",
+      "start": 41.933,
+      "end": 46.5,
+      "text": "下一期我就会把自己用的爆款选题方法还有核心Skill分享给大家",
+      "structure": "dual-concept",
+      "motions": [
+        "lift",
+        "reveal"
+      ],
+      "placement": "full",
+      "palette": "acid-action",
+      "directorRole": "cta"
+    },
+    {
+      "id": "beat-20",
+      "start": 46.6,
+      "end": 48.1,
+      "text": "还没关注我的记得点个关注",
+      "structure": "adaptive-steps",
+      "motions": [
+        "relay",
+        "slide"
+      ],
+      "placement": "full",
+      "palette": "acid-action",
+      "directorRole": "cta"
+    },
+    {
+      "id": "beat-21",
+      "start": 48.1,
+      "end": 49.266,
+      "text": "咱们下期再见",
+      "structure": "contrarian-stamp",
+      "motions": [
+        "stamp",
+        "reveal"
+      ],
+      "placement": "left",
+      "palette": "deep-ocean",
+      "directorRole": "definition"
+    }
   ]
 }

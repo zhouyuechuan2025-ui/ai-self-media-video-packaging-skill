@@ -12,9 +12,9 @@
 
 - 输入：1920×1080、30fps、HEVC/AAC、49.273 秒。
 - 字幕：21 条；源片已烧录字幕。
-- 规划：21 个视觉节拍，最长 4.567 秒。
-- 输出：1920×1080、30fps、H.264/AAC、49.344 秒。
-- 输出 SHA-256：`30B98D2A68B6204D101DF3752A58C53FFA4641E6BDCE93C1E71C5A2ABF64EB20`。
+- 规划：21 个视觉节拍、6 套配色、13 种结构，最长 4.567 秒；普通信息左右交替，中央人物区和底部字幕区保持可读。
+- 输出：1920×1080、30fps、H.264/AAC、49.323 秒，38,520,178 bytes。
+- 输出 SHA-256：`57D909FAABE95A68862C0418A4E110EC9BD557B79D3FDEE07FC0545C847679A8`。
 
 完整参数见 [input-manifest.json](input-manifest.json)，分镜见 [storyboard.json](storyboard.json)，逐帧证据见 [preview-manifest.json](preview-manifest.json)，验收见 [QA_REPORT.md](QA_REPORT.md)。
 

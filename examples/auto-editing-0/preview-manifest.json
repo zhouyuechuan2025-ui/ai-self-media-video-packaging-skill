@@ -1,10 +1,20 @@
 {
   "caseId": "auto-editing-0",
   "renderer": "remotion",
+  "directorPlan": {
+    "beats": 21,
+    "palettes": 6,
+    "structures": 13,
+    "placements": {
+      "left": 9,
+      "right": 8,
+      "full": 4
+    }
+  },
   "output": {
-    "sha256": "30B98D2A68B6204D101DF3752A58C53FFA4641E6BDCE93C1E71C5A2ABF64EB20",
-    "sizeBytes": 42279979,
-    "durationSeconds": 49.344,
+    "sha256": "57D909FAABE95A68862C0418A4E110EC9BD557B79D3FDEE07FC0545C847679A8",
+    "sizeBytes": 38520178,
+    "durationSeconds": 49.322667,
     "video": "h264 1920x1080 30fps",
     "audio": "aac 48000Hz stereo"
   },
@@ -12,42 +22,43 @@
     {
       "file": "../../docs/assets/previews/auto-editing-0-01-hook-1.333s.png",
       "timeSeconds": 1.333,
-      "sha256": "278EE772573F931797EB8BEA364183DE703A360EC10F2BCCD7DA1BF6E7555445",
-      "purpose": "three-beat opening hook"
+      "sha256": "FCCDFAD4972BB1168D23970745A3D491DE42EDFEBC0EF29FECC7EB943DDCB9EC",
+      "purpose": "deep-ocean full-screen opening hook"
     },
     {
       "file": "../../docs/assets/previews/auto-editing-0-02-metric-4.867s.png",
       "timeSeconds": 4.867,
-      "sha256": "81F7646640704ED402134BF289224FC2A8E45E410DA3735C67F2DEC6DD6D2FD4",
-      "purpose": "attributed claim card without invented progress values"
+      "sha256": "AD88BAC31F492C10630E1C6D3D46B8B806D756E36346D582D4CB143908576BA5",
+      "purpose": "left-lane metric card with visible center presenter"
     },
     {
       "file": "../../docs/assets/previews/auto-editing-0-03-doodle-15.350s.png",
       "timeSeconds": 15.35,
-      "sha256": "7089D2A411B85571FB4A92A6474C6A47E74BB17B96B82E0C2EFB413200953E85",
-      "purpose": "programmatic line illustration"
+      "sha256": "4D43EEA306694A8B1165DF58B623150B3F74C88780C0CCB1D4AED81DE2806426",
+      "purpose": "paper-sketch programmatic line illustration"
     },
     {
       "file": "../../docs/assets/previews/auto-editing-0-04-before-after-19.100s.png",
       "timeSeconds": 19.1,
-      "sha256": "BB9C032670085D3BD5EFC20D09D6181DBA1F95EC582D47C4D54D7A9031A57CA7",
-      "purpose": "before and after comparison"
+      "sha256": "D6D65B592006A3379874FFA2579B163C960A1C2256A237EE89D00D65F11220FC",
+      "purpose": "paper-sketch before-and-after comparison"
     },
     {
-      "file": "../../docs/assets/previews/auto-editing-0-05-speed-25.900s.png",
-      "timeSeconds": 25.9,
-      "sha256": "1F50492A17F8913CB199E745D837CEDB0AD572ED0E2675B2602C248EB119E7FB",
-      "purpose": "speed claim with speaker attribution"
+      "file": "../../docs/assets/previews/auto-editing-0-05-violet-30.600s.png",
+      "timeSeconds": 30.6,
+      "sha256": "A57C14EE756115518D6F1069A5726A47B6630DACECCE3511D791D19F6F287786",
+      "purpose": "violet-sunset left-lane data expression"
     },
     {
-      "file": "../../docs/assets/previews/auto-editing-0-06-close-47.400s.png",
-      "timeSeconds": 47.4,
-      "sha256": "0087EBE41B4B5E95D1E04CF4D3684CBD3F597EEE069ECEB0CA7CD3B09ACA8CED",
-      "purpose": "closing call to action"
+      "file": "../../docs/assets/previews/auto-editing-0-06-fullscreen-44.216s.png",
+      "timeSeconds": 44.216,
+      "sha256": "A6C865FCC91E582B429A658C43536657BE2C1508FBC0CB16B29B983CBEC345D2",
+      "purpose": "acid-action short full-screen call to action"
     }
   ],
   "contactSheet": {
     "file": "../../docs/assets/previews/auto-editing-0-contact-sheet.jpg",
-    "sha256": "7FCD96211E37757426D53B2868B0A73C53391519AA9E15634AE6BBF054E41819"
+    "frames": 10,
+    "sha256": "E1F72B07594840EA8520899EA51AEDF1827C24F54BBFD74925892F6DA20A5E8C"
   }
 }
