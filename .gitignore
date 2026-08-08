@@ -15,6 +15,7 @@ out/
 examples/auto-editing-0/private-input/
 examples/synthetic-horizontal/input.mp4
 examples/**/run/
+examples/**/run-v2/
 examples/**/run/renders/*.mp4
 examples/**/run/renders/*.mov
 examples/**/run/proxy-*.mp4

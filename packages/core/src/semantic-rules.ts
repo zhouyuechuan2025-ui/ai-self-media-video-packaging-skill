@@ -6,14 +6,15 @@ const contains = (text: string, expression: RegExp) => expression.test(text);
 export const classifySemanticStructure = (text: string, index: number): SemanticStructure => {
   if (contains(text, /官方|证据|截图|来源|文档/)) return 'evidence-panel';
   if (contains(text, /以前|现在|优化前|优化后|从.+(?:变成|转为)|不是.+而是/)) return 'before-after-scrub';
-  if (contains(text, /首先|然后|接着|随后|最后|第一|第二|第三|第四|步骤/)) return 'four-stage-pipeline';
-  if (contains(text, /运行|点击|打开|检查|审核|确认|输入命令/)) return 'command-palette';
+  if (contains(text, /丢进去.+(?:剪完|生成|完成)/)) return 'signal-route';
+  if (contains(text, /首先|然后|接着|随后|最后|第一|第二|第三|第四|步骤|字幕.+(?:卡点|特效)|卡点.+特效/)) return 'four-stage-pipeline';
+  if (contains(text, /运行|点击|打开|检查|审核|确认|输入命令|评论区打|点个关注|直接拿去用|继续分享|分享给大家/)) return 'command-palette';
   if (contains(text, /反馈|来回|双向|输入.+输出|人.+AI|AI.+人/)) return 'bidirectional-flow';
   if (contains(text, /路径|节点|流向|串联|闭环|连接/)) return 'signal-route';
-  if (contains(text, /\d|百分之|%|万|千|分钟|小时|倍/)) return 'metric-odometer';
-  if (contains(text, /困难|难点|卡住|推着|攀爬|越过|起飞|平衡|转化/)) return 'semantic-doodle';
-  if (contains(text, /因为|原因|关键|证明|意味着|为什么|如何|怎么|[?？]/)) return 'thesis-and-proof';
-  if (contains(text, /一边|另一边|左边|右边|两类|两个方面/)) return 'editorial-dual-rail';
+  if (contains(text, /\d|百分之|%|几万|几十|几个月|万|千|分钟|小时|倍/)) return 'metric-odometer';
+  if (contains(text, /困难|难点|卡住|踩坑|坑|推着|攀爬|越过|起飞|平衡|转化/)) return 'semantic-doodle';
+  if (contains(text, /因为|原因|关键|证明|意味着|为什么|如何|怎么|概率|只靠.+不够|[?？]/)) return 'thesis-and-proof';
+  if (contains(text, /一边|另一边|左边|右边|两类|两个方面|包括.+和|还有.+和|选题和文案/)) return 'editorial-dual-rail';
   return index === 0 ? 'thesis-and-proof' : 'editorial-dual-rail';
 };
 
@@ -53,4 +54,3 @@ export const chooseDirectorRole = (text: string, index: number): DirectorRole =>
   if (contains(text, /\d|百分之|%|万|千|分钟|小时|倍/)) return 'data';
   return 'definition';
 };
-
