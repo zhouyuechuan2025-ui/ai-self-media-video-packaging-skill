@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'vitest';
+import {validateDirectorPlan} from '../src/director-validation';
 import {planStoryboard} from '../src/planner';
 import type {MediaProbe, SrtCue} from '../src/types';
 
@@ -63,5 +64,24 @@ describe('planStoryboard', () => {
         }
       }
     });
+  });
+
+  it('rotates structures for a long repetitive talking-head script', () => {
+    const repetitiveCues = Array.from({length: 21}, (_, index) => ({
+      index: index + 1,
+      start: index * 2,
+      end: index * 2 + 1.8,
+      text: `这是第${index + 1}个普通观点，需要用不同的视觉语法解释`,
+    }));
+    const longProbe = {...probe, duration: 44};
+    const storyboard = planStoryboard({
+      id: 'rotation-fixture', title: 'Rotation fixture', cues: repetitiveCues, probe: longProbe,
+      captionsMode: 'burned-in', sourceVideo: 'input.mp4', sourceSrt: 'input.srt',
+    });
+
+    expect(validateDirectorPlan(storyboard)).toEqual([]);
+    const counts = new Map<string, number>();
+    storyboard.beats.forEach((beat) => counts.set(beat.structure, (counts.get(beat.structure) ?? 0) + 1));
+    expect(Math.max(...counts.values())).toBeLessThanOrEqual(3);
   });
 });
