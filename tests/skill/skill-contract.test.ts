@@ -13,4 +13,19 @@ describe('public Skill contract', () => {
   it('keeps the trigger-only frontmatter concise', () => {
     expect(skill).toMatch(/^---\nname: package-talking-head-video\ndescription: Use when /);
   });
+
+  it('teaches the multicolor center-presenter layout and approval contract', () => {
+    for (const phrase of [
+      'center-presenter',
+      'left/right lanes',
+      'bottom 18%',
+      'full-screen',
+      '1-2 seconds',
+      'semantic palettes',
+      'programmatic line illustrations',
+      'Do not continue until the user approves',
+    ]) {
+      expect(skill).toContain(phrase);
+    }
+  });
 });
