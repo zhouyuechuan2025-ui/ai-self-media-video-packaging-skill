@@ -1,7 +1,9 @@
 import {describe, expect, it} from 'vitest';
 import {
+  DIRECTOR_ROLES,
   ILLUSTRATION_SCENARIOS,
   MOTION_PRIMITIVES,
+  PALETTE_IDS,
   StoryboardSchema,
   VISUAL_STRUCTURES,
 } from '../src/schema';
@@ -25,7 +27,9 @@ const valid = {
       text: '为什么视频一直没人看？',
       structure: 'impact-question',
       motions: ['hit', 'focus'],
-      placement: 'left',
+      placement: 'full',
+      palette: 'deep-ocean',
+      directorRole: 'hook',
     },
     {
       id: 'b2',
@@ -35,6 +39,8 @@ const valid = {
       structure: 'adaptive-steps',
       motions: ['slide', 'reveal'],
       placement: 'right',
+      palette: 'teal-signal',
+      directorRole: 'steps',
       illustration: {type: 'route-activation', label: '内容路径'},
     },
   ],
@@ -48,6 +54,10 @@ describe('StoryboardSchema', () => {
     expect(new Set(MOTION_PRIMITIVES).size).toBe(10);
     expect(ILLUSTRATION_SCENARIOS).toHaveLength(6);
     expect(new Set(ILLUSTRATION_SCENARIOS).size).toBe(6);
+    expect(PALETTE_IDS).toHaveLength(6);
+    expect(new Set(PALETTE_IDS).size).toBe(6);
+    expect(DIRECTOR_ROLES).toContain('hook');
+    expect(DIRECTOR_ROLES).toContain('evidence');
   });
 
   it('accepts a valid deterministic storyboard', () => {
@@ -72,5 +82,19 @@ describe('StoryboardSchema', () => {
     const unknown = structuredClone(valid) as any;
     unknown.beats[0].structure = 'private-template';
     expect(() => StoryboardSchema.parse(unknown)).toThrow();
+  });
+
+  it('rejects unknown palettes, roles, and opaque center placement in 16:9', () => {
+    const unknownPalette = structuredClone(valid) as any;
+    unknownPalette.beats[0].palette = 'same-blue-card';
+    expect(() => StoryboardSchema.parse(unknownPalette)).toThrow();
+
+    const unknownRole = structuredClone(valid) as any;
+    unknownRole.beats[0].directorRole = 'decoration';
+    expect(() => StoryboardSchema.parse(unknownRole)).toThrow();
+
+    const center = structuredClone(valid) as any;
+    center.beats[1].placement = 'center';
+    expect(() => StoryboardSchema.parse(center)).toThrow(/center-presenter|center placement/i);
   });
 });
