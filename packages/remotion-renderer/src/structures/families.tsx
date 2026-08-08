@@ -30,9 +30,10 @@ export const ImpactFamily = ({text, kicker, progress, palette}: StructureProps):
 
 export const GradientFamily = ({text, kicker, progress, palette, placement}: StructureProps): ReactElement => {
   const align = placement === 'right' ? 'right' : 'left';
-  return <section data-visual-family="gradient" style={{...type, position: 'relative', width: 500, minHeight: 330, color: palette.foreground, textAlign: align, display: 'flex', flexDirection: 'column', justifyContent: 'center', ...rise(progress)}}>
+  const paper = palette.id === 'paper-sketch';
+  return <section data-visual-family="gradient" style={{...type, position: 'relative', width: 500, minHeight: 330, padding: paper ? '30px 28px' : 0, color: palette.foreground, textAlign: align, display: 'flex', flexDirection: 'column', justifyContent: 'center', background: paper ? palette.surface : 'transparent', border: paper ? `2px solid ${palette.line}` : 'none', borderRadius: paper ? 18 : 0, boxShadow: paper ? `10px 10px 0 ${palette.accent}44` : 'none', ...rise(progress)}}>
     <Kicker color={palette.line}>{kicker ?? 'KEYWORD'}</Kicker>
-    <h2 style={{margin: '24px 0 0', fontSize: 70, lineHeight: .94, letterSpacing: '-.06em', fontWeight: 950, color: palette.accent, textShadow: `0 8px 34px ${palette.canvas}bb`}}>{text}</h2>
+    <h2 style={{margin: '24px 0 0', fontSize: 70, lineHeight: .94, letterSpacing: '-.06em', fontWeight: 950, color: paper ? palette.foreground : palette.accent, textShadow: paper ? 'none' : `0 8px 34px ${palette.canvas}bb`}}>{text}</h2>
     <div style={{alignSelf: placement === 'right' ? 'flex-end' : 'flex-start', marginTop: 28, width: `${35 + clamp(progress) * 65}%`, height: 8, borderRadius: 99, background: `linear-gradient(90deg,${palette.accent},${palette.line})`}}/>
   </section>;
 };

@@ -1,3 +1,4 @@
+import {readFileSync} from 'node:fs';
 import {describe, expect, it} from 'vitest';
 import {buildCompositionPlan} from '../src/VideoPackaging';
 import {presenterSafeZones} from '../src/theme';
@@ -28,5 +29,12 @@ describe('VideoPackaging composition plan', () => {
     expect(presenterSafeZones.left.endPercent).toBeLessThanOrEqual(32);
     expect(presenterSafeZones.right.startPercent).toBeGreaterThanOrEqual(68);
     expect(presenterSafeZones.subtitleBottomPercent).toBe(18);
+  });
+
+  it('uses the recommended media component for the continuous talking-head track', () => {
+    const source = readFileSync('packages/remotion-renderer/src/VideoPackaging.tsx', 'utf8');
+    expect(source).toContain("import {Video} from '@remotion/media'");
+    expect(source).not.toContain('<OffthreadVideo');
+    expect(source).toContain('disallowFallbackToOffthreadVideo');
   });
 });

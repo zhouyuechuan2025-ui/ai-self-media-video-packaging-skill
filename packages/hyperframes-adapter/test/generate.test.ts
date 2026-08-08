@@ -5,7 +5,10 @@ import {generateHyperFramesProject} from '../src/generate';
 const storyboard: Storyboard = {
   version: '1.0', id: 'hf-test', title: 'HF test', duration: 4, fps: 30, width: 1920, height: 1080,
   captionsMode: 'burned-in', source: {video: 'input.mp4'}, theme: {background: '#07101f', foreground: '#f8fafc', accent: '#5eead4'},
-  beats: [{id: 'b1', start: .4, end: 2.4, text: '测试时间线', structure: 'signal-route', motions: ['route'], placement: 'left', palette: 'teal-signal', directorRole: 'mechanism'}],
+  beats: [
+    {id: 'b1', start: .4, end: 2.4, text: '测试时间线', structure: 'signal-route', motions: ['route'], placement: 'left', palette: 'teal-signal', directorRole: 'mechanism'},
+    {id: 'b2', start: 2.4, end: 4, text: '全屏钩子', structure: 'three-beat-hook', motions: ['hit'], placement: 'full', palette: 'deep-ocean', directorRole: 'hook'},
+  ],
 };
 
 describe('generateHyperFramesProject', () => {
@@ -35,7 +38,9 @@ describe('generateHyperFramesProject', () => {
     expect(result.html).toContain('window.__timelines.main');
     expect(result.html).toContain('0.4');
     expect(result.motion.duration).toBe(4);
-    expect(result.motion.assertions).toHaveLength(2);
+    expect(result.motion.assertions).toHaveLength(4);
     expect(result.motion.assertions[0]).toEqual({kind: 'appearsBy', selector: '#beat-b1-motion', bySec: .58});
+    expect(result.html).toContain('timeline.set("#beat-b2-motion",{opacity:0,y:0},2.4)');
+    expect(result.html).toContain('.to("#beat-b2-motion",{opacity:0,y:0,duration:.14}');
   });
 });

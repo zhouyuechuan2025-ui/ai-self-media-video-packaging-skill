@@ -13,6 +13,7 @@ describe('illustrationRegistry', () => {
       expect(first).toBe(second);
       expect(first).toContain('viewBox="0 0 640 360"');
       expect(first).toContain('fill="none"');
+      expect(first).toContain('stroke="#252933"');
       expect(first).not.toMatch(/<text|logo|watermark/i);
       expect(first.length).toBeGreaterThan(240);
     }

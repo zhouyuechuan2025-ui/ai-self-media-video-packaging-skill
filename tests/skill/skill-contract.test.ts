@@ -29,4 +29,10 @@ describe('public Skill contract', () => {
       expect(normalized).toContain(phrase.toLowerCase());
     }
   });
+
+  it('uses bounded local render concurrency for 1080p talking-head footage', () => {
+    const packagingScript = readFileSync('scripts/package-video.ts', 'utf8');
+    expect(packagingScript).toContain("const renderConcurrency = typeof args.concurrency === 'string' ? args.concurrency : '2'");
+    expect(packagingScript).toContain("'--concurrency', renderConcurrency");
+  });
 });

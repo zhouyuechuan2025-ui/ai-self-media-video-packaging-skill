@@ -1,6 +1,6 @@
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-import {readFileSync, writeFileSync} from 'node:fs';
+import {existsSync, readFileSync, writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
@@ -15,6 +15,7 @@ const files = output
   .split(/\r?\n/)
   .filter(Boolean)
   .filter((path) => path !== 'SHA256SUMS.txt')
+  .filter((path) => existsSync(resolve(root, path)))
   .sort((a, b) => a.localeCompare(b, 'en'));
 
 const lines = files.map((path) => {

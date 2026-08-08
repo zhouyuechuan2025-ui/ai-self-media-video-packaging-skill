@@ -38,4 +38,13 @@ describe('structureRegistry', () => {
       expect(markup).toContain(`data-visual-family="${family}"`);
     }
   });
+
+  it('keeps paper-sketch side copy readable over warm talking-head footage', () => {
+    const entry = structureRegistry['gradient-keyword'];
+    const markup = renderToStaticMarkup(
+      <entry.Component text="暖纸简笔画" kicker="DOODLE" progress={0.72} palette={PALETTES['paper-sketch']} placement="right" />,
+    );
+    expect(markup).toMatch(/<h2 style="[^"]*color:#252933/);
+    expect(markup).toContain('background:#f4efe4');
+  });
 });

@@ -7,7 +7,7 @@ export const Frame = ({progress, accent, children}: IllustrationProps & {childre
     <svg viewBox="0 0 640 360" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <g
         fill="none"
-        stroke="#f6f8fb"
+        stroke="#252933"
         strokeWidth="7"
         strokeLinecap="round"
         strokeLinejoin="round"

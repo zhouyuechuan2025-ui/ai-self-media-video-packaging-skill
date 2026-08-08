@@ -1,5 +1,6 @@
 import type {CSSProperties, ReactElement} from 'react';
-import {AbsoluteFill, Img, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {Video} from '@remotion/media';
+import {AbsoluteFill, Img, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Storyboard} from '../../core/src/schema';
 import {PALETTES} from '../../core/src/palettes';
 import type {SrtCue} from '../../core/src/types';
@@ -58,7 +59,7 @@ export const VideoPackaging = (props: VideoPackagingProps): ReactElement => {
   const {storyboard, overlayOnly = false, cues = []} = props;
   const plan = buildCompositionPlan(props);
   return <AbsoluteFill style={{backgroundColor: plan.background}}>
-    {!overlayOnly ? <OffthreadVideo src={staticFile(storyboard.source.video)} style={{width: '100%', height: '100%', objectFit: 'cover'}}/> : null}
+    {!overlayOnly ? <Video src={staticFile(storyboard.source.video)} style={{width: '100%', height: '100%'}} objectFit="cover" disallowFallbackToOffthreadVideo/> : null}
     {plan.overlays.map((beat) => <Sequence key={beat.id} from={beat.from} durationInFrames={beat.durationInFrames} premountFor={storyboard.fps}><BeatOverlay storyboard={storyboard} beat={beat}/></Sequence>)}
     {storyboard.captionsMode === 'generated' ? <GeneratedCaptions cues={cues}/> : null}
   </AbsoluteFill>;

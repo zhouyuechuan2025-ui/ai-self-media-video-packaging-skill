@@ -15,7 +15,9 @@ export const generateHyperFramesProject = (storyboard: Storyboard): {html: strin
     const selector = `#beat-${beat.id}-motion`;
     const start = Number(beat.start.toFixed(3));
     const hold = Math.max(.1, Number((beat.end - beat.start - .32).toFixed(3)));
-    return `timeline.set(${JSON.stringify(selector)},{opacity:0,y:30},${start}).to(${JSON.stringify(selector)},{opacity:1,y:0,duration:.18},${start}).to(${JSON.stringify(`${selector} .beat__rail`)},{width:'90%',duration:${hold},ease:'none'},${start}).to(${JSON.stringify(selector)},{opacity:0,y:-18,duration:.14},${Number((beat.end - .14).toFixed(3))}).set(${JSON.stringify(selector)},{opacity:0},${Number(beat.end.toFixed(3))});`;
+    const enterY = beat.placement === 'full' ? 0 : 30;
+    const exitY = beat.placement === 'full' ? 0 : -18;
+    return `timeline.set(${JSON.stringify(selector)},{opacity:0,y:${enterY}},${start}).to(${JSON.stringify(selector)},{opacity:1,y:0,duration:.18},${start}).to(${JSON.stringify(`${selector} .beat__rail`)},{width:'90%',duration:${hold},ease:'none'},${start}).to(${JSON.stringify(selector)},{opacity:0,y:${exitY},duration:.14},${Number((beat.end - .14).toFixed(3))}).set(${JSON.stringify(selector)},{opacity:0},${Number(beat.end.toFixed(3))});`;
   }).join('\n');
   const motion: HyperFramesMotionSidecar = {
     duration: storyboard.duration,

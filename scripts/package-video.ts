@@ -53,8 +53,10 @@ const main = (): void => {
   if (!existsSync(video) || !existsSync(srt)) throw new Error('Input video or SRT does not exist');
   const renderer = typeof args.renderer === 'string' ? args.renderer : 'remotion';
   const captionsMode = typeof args.captions === 'string' ? args.captions : 'burned-in';
+  const renderConcurrency = typeof args.concurrency === 'string' ? args.concurrency : '2';
   if (!['burned-in', 'none', 'generated'].includes(captionsMode)) throw new Error('Invalid --captions mode');
   if (!['remotion', 'hyperframes'].includes(renderer)) throw new Error('Invalid --renderer');
+  if (!/^[1-9]\d*$/.test(renderConcurrency) || Number(renderConcurrency) > 16) throw new Error('Invalid --concurrency; expected an integer from 1 to 16');
 
   mkdirSync(out, {recursive: true});
   const probe = probeMedia(video);
@@ -98,7 +100,7 @@ const main = (): void => {
   writeFileSync(propsPath, `${JSON.stringify({storyboard, cues, overlayOnly: false}, null, 2)}\n`, 'utf8');
   const entry = join(repo, 'packages', 'remotion-renderer', 'src', 'index.ts');
   const output = join(renders, 'packaged.mp4');
-  run(process.execPath, [join(repo, 'node_modules', '@remotion', 'cli', 'remotion-cli.js'), 'render', entry, 'VideoPackaging', output, '--props', propsPath, '--public-dir', publicDir, '--codec', 'h264', '--crf', '18', '--overwrite'], repo);
+  run(process.execPath, [join(repo, 'node_modules', '@remotion', 'cli', 'remotion-cli.js'), 'render', entry, 'VideoPackaging', output, '--props', propsPath, '--public-dir', publicDir, '--codec', 'h264', '--crf', '18', '--concurrency', renderConcurrency, '--overwrite'], repo);
   const screenshotTimes = storyboard.beats.slice(0, 5).map((beat) => Number(((beat.start + beat.end) / 2).toFixed(3)));
   screenshotTimes.forEach((time, index) => run('ffmpeg', ['-y', '-v', 'error', '-ss', String(time), '-i', output, '-frames:v', '1', join(renders, `preview-${String(index + 1).padStart(2, '0')}-${time.toFixed(3)}s.png`)], repo));
   const outputProbe = probeMedia(output);
