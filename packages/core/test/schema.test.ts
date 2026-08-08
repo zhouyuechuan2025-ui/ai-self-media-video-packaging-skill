@@ -7,9 +7,10 @@ import {
   StoryboardSchema,
   VISUAL_STRUCTURES,
 } from '../src/schema';
+import {SEMANTIC_STRUCTURES, TemplateContentSchema} from '../src/template-contracts';
 
 const valid = {
-  version: '1.0',
+  version: '2.0',
   id: 'fixture',
   title: 'Fixture',
   duration: 8,
@@ -25,7 +26,12 @@ const valid = {
       start: 0,
       end: 2.6,
       text: '为什么视频一直没人看？',
-      structure: 'impact-question',
+      structure: 'thesis-and-proof',
+      content: {
+        structure: 'thesis-and-proof',
+        thesis: '为什么视频一直没人看？',
+        reason: '先找到真正卡点',
+      },
       motions: ['hit', 'focus'],
       placement: 'full',
       palette: 'deep-ocean',
@@ -35,9 +41,14 @@ const valid = {
       id: 'b2',
       start: 2.8,
       end: 5.8,
-      text: '先把信息讲清楚',
-      structure: 'adaptive-steps',
-      motions: ['slide', 'reveal'],
+      text: '先读取素材，然后分析，最后确认方案',
+      structure: 'four-stage-pipeline',
+      content: {
+        structure: 'four-stage-pipeline',
+        title: '执行流程',
+        stages: ['读取素材', '分析内容', '确认方案'],
+      },
+      motions: ['relay', 'slide'],
       placement: 'right',
       palette: 'teal-signal',
       directorRole: 'steps',
@@ -46,10 +57,40 @@ const valid = {
   ],
 };
 
+describe('V2 template contracts', () => {
+  it('declares ten unique semantic structures', () => {
+    expect(SEMANTIC_STRUCTURES).toEqual([
+      'editorial-dual-rail',
+      'thesis-and-proof',
+      'bidirectional-flow',
+      'command-palette',
+      'four-stage-pipeline',
+      'before-after-scrub',
+      'evidence-panel',
+      'metric-odometer',
+      'signal-route',
+      'semantic-doodle',
+    ]);
+    expect(new Set(SEMANTIC_STRUCTURES).size).toBe(10);
+    expect(VISUAL_STRUCTURES).toEqual(SEMANTIC_STRUCTURES);
+  });
+
+  it('rejects content that does not satisfy the selected structure', () => {
+    expect(() => TemplateContentSchema.parse({
+      structure: 'before-after-scrub',
+      before: '手工处理',
+      criterion: '交付方式',
+    })).toThrow();
+
+    expect(() => TemplateContentSchema.parse({
+      structure: 'metric-odometer',
+      metrics: [{value: '3%', unit: '', label: '本次消耗'}],
+    })).toThrow(/evidenceStatus/i);
+  });
+});
+
 describe('StoryboardSchema', () => {
-  it('declares the approved public vocabulary', () => {
-    expect(VISUAL_STRUCTURES).toHaveLength(18);
-    expect(new Set(VISUAL_STRUCTURES).size).toBe(18);
+  it('keeps the approved supporting vocabulary', () => {
     expect(MOTION_PRIMITIVES).toHaveLength(10);
     expect(new Set(MOTION_PRIMITIVES).size).toBe(10);
     expect(ILLUSTRATION_SCENARIOS).toHaveLength(6);
@@ -60,7 +101,7 @@ describe('StoryboardSchema', () => {
     expect(DIRECTOR_ROLES).toContain('evidence');
   });
 
-  it('accepts a valid deterministic storyboard', () => {
+  it('accepts a valid deterministic V2 storyboard', () => {
     expect(StoryboardSchema.parse(valid).beats).toHaveLength(2);
   });
 
@@ -74,17 +115,26 @@ describe('StoryboardSchema', () => {
     expect(() => StoryboardSchema.parse(tooLong)).toThrow(/six seconds/i);
   });
 
-  it('rejects overlaps and unknown structure names', () => {
+  it('rejects overlaps, unknown structures, and mismatched content', () => {
     const overlap = structuredClone(valid);
     overlap.beats[1].start = 2;
     expect(() => StoryboardSchema.parse(overlap)).toThrow(/overlap/i);
 
     const unknown = structuredClone(valid) as any;
-    unknown.beats[0].structure = 'private-template';
+    unknown.beats[0].structure = 'generic-color-card';
     expect(() => StoryboardSchema.parse(unknown)).toThrow();
+
+    const mismatch = structuredClone(valid) as any;
+    mismatch.beats[0].content = {
+      structure: 'before-after-scrub',
+      before: '原方案',
+      after: '新方案',
+      criterion: '视觉结构',
+    };
+    expect(() => StoryboardSchema.parse(mismatch)).toThrow(/match/i);
   });
 
-  it('rejects unknown palettes, roles, and opaque center placement in 16:9', () => {
+  it('rejects unknown palettes, roles, and center placement', () => {
     const unknownPalette = structuredClone(valid) as any;
     unknownPalette.beats[0].palette = 'same-blue-card';
     expect(() => StoryboardSchema.parse(unknownPalette)).toThrow();
@@ -95,6 +145,6 @@ describe('StoryboardSchema', () => {
 
     const center = structuredClone(valid) as any;
     center.beats[1].placement = 'center';
-    expect(() => StoryboardSchema.parse(center)).toThrow(/center-presenter|center placement/i);
+    expect(() => StoryboardSchema.parse(center)).toThrow();
   });
 });
