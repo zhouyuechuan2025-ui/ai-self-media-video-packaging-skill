@@ -1,6 +1,6 @@
 # AI Self-Media Video Packaging Skill
 
-一套可直接调用的 Agent Skill：把已有口播视频与 SRT 转成有节奏、有证据边界、可复现的视频包装工程。默认使用 Remotion 生成真实成片，也可以从同一份 storyboard 生成 HyperFrames 项目。
+一套可直接调用的 Agent Skill：把人物居中的横屏真人口播视频与 SRT 转成有节奏、有证据边界、可复现的视频包装工程。默认使用 Remotion 生成真实成片，也可以从同一份 storyboard 生成 HyperFrames 项目。
 
 它不是“随便套几个字幕卡”的模板集合。完整流程会先检查源视频、逐条解析 SRT、生成 Gate A 审核稿，获得明确批准后才进入视觉实现和渲染；最后还会检查真实成片，而不是用成功构建或静态页面代替交付证据。
 
@@ -24,7 +24,7 @@
 
 - 一条连续的源视频/音频主轨，不擅自重剪或重排原片。
 - 依据 SRT 语义自动规划的视觉节拍，普通片段优先控制在 1.6–3.2 秒，硬上限 6 秒。
-- 18 种视觉结构、10 种 seek-safe 动效原语、6 类程序化 SVG 简笔画。
+- 18 种视觉结构、6 套差异化视觉语法、6 组语义配色、10 种 seek-safe 动效原语、6 类程序化 SVG 简笔画。
 - 已烧录字幕、无字幕、生成字幕三种模式，避免重复字幕。
 - 证据卡、个人经验、估算和客观事实的边界控制。
 - Remotion 默认渲染，以及可选的 HyperFrames 项目生成。
@@ -37,6 +37,14 @@
 `impact-question`、`contrarian-stamp`、`gradient-keyword`、`split-conflict`、`three-beat-hook`、`side-insight-card`、`dual-concept`、`keyword-relay`、`adaptive-steps`、`signal-route`、`state-switch`、`chapter-timeline`、`evidence-pip`、`evidence-takeover`、`metric-counter`、`before-after`、`capability-matrix`、`completion-rail`。
 
 结构选择由口播逻辑、人物安全区和证据状态共同决定，不为了凑变化而随机套用。详见 [视觉结构说明](references/visual-structures.md)。
+
+### 真人居中安全排版
+
+- 人物默认位于画面中间，中央约 35%–65% 保持透明。
+- 普通信息进入左侧 6%–32% 或右侧 68%–94%，左右交替出现。
+- 底部 18% 预留给原片烧录字幕。
+- 开头钩子、章节转场、证据和结尾收束可短暂全屏，普通全屏镜头约 1–2 秒。
+- 冲击问题、渐变关键词、信号路径、编辑印章、完成检查轨与纸张简笔画分别使用不同版式和语义配色，不是同一张卡片随机换色。
 
 ### 10 种 seek-safe 动效原语
 
@@ -68,7 +76,7 @@ npm ci
 
 ### 硬规则：先出方案，确认后再实施
 
-每个视频都必须先执行不渲染的 Gate A，把源文件参数、SRT 节拍、视觉结构、事实风险、字幕模式和安全区方案交给用户确认。只有当前这个视频收到明确批准，才能进入视觉实现；沉默、催进度、其他视频的批准或笼统授权都不能代替本次确认。
+每个视频都必须先执行不渲染的 Gate A，把源文件参数、SRT 节拍、视觉结构、语义配色、左右排版、全屏时机、事实风险、字幕模式和安全区方案交给用户确认。只有当前这个视频收到明确批准，才能进入视觉实现；沉默、催进度、其他视频的批准或笼统授权都不能代替本次确认。
 
 ### 1. 只做 Gate A，不渲染
 

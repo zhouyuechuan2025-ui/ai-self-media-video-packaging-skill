@@ -22,6 +22,8 @@ Example trigger:
 - renderer: `remotion` or `hyperframes`;
 - an output directory that is safe to write.
 
+The default layout assumes a center-presenter 16:9 source. Ordinary overlays use the left x=6-32% or right x=68-94% lane, protect the center x=35-65%, and keep the bottom 18% clear for burned-in captions. Gate A must list every full-screen exception and semantic palette before implementation.
+
 ## Gate A only
 
 ```bash

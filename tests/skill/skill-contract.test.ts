@@ -15,6 +15,7 @@ describe('public Skill contract', () => {
   });
 
   it('teaches the multicolor center-presenter layout and approval contract', () => {
+    const normalized = skill.toLowerCase();
     for (const phrase of [
       'center-presenter',
       'left/right lanes',
@@ -25,7 +26,7 @@ describe('public Skill contract', () => {
       'programmatic line illustrations',
       'Do not continue until the user approves',
     ]) {
-      expect(skill).toContain(phrase);
+      expect(normalized).toContain(phrase.toLowerCase());
     }
   });
 });

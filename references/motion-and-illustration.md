@@ -14,3 +14,5 @@
 - `before-after-illustration`: two states with a visible transformation.
 
 Use explicit SVG `fill="none"` for line paths. Keep the background transparent, avoid brands and text inside the drawing, and animate layers with the same frame-driven primitives.
+
+For a center-presenter source, place a doodle in one side lane or use it as a brief approved full-screen chapter illustration. Use warm paper, relaxed dark strokes, and one semantic accent so it remains visually distinct from technology, editorial, and completion families.

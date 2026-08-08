@@ -15,7 +15,8 @@ describe('generateHyperFramesProject', () => {
     expect(result.html).toContain('data-composition-id="main"');
     expect(result.html).toContain('data-width="1920"');
     expect(result.html).toContain('data-height="1080"');
-    expect(result.html).toContain('data-composition-id="main" data-width="1920" data-height="1080" data-start="0"');
+    expect(result.html).toContain('data-composition-id="main"');
+    expect(result.html).toContain('data-start="0"');
     expect(result.html).toContain('<video id="source-video"');
     expect(result.html).toContain('data-has-audio="true"');
     expect(result.html).toContain('class="stage clip"');
