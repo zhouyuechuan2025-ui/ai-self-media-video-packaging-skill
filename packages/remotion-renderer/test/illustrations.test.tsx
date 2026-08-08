@@ -2,6 +2,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {describe, expect, it} from 'vitest';
 import {ILLUSTRATION_SCENARIOS} from '../../core/src/schema';
 import {illustrationRegistry} from '../src/illustrations';
+import {SemanticDoodle} from '../src/illustrations/SemanticDoodle';
 
 describe('illustrationRegistry', () => {
   it('renders six deterministic transparent line illustrations', () => {
@@ -17,5 +18,21 @@ describe('illustrationRegistry', () => {
       expect(first).not.toMatch(/<text|logo|watermark/i);
       expect(first.length).toBeGreaterThan(240);
     }
+  });
+
+  it('renders line, action, and outcome layers for an integrated semantic doodle', () => {
+    const markup = renderToStaticMarkup(
+      <SemanticDoodle
+        progress={0.72}
+        accent="#e97a5f"
+        subject="创作者"
+        action="推动流程"
+        outcome="完成交付"
+      />,
+    );
+    expect(markup).toContain('data-doodle-layer="line"');
+    expect(markup).toContain('data-doodle-layer="action"');
+    expect(markup).toContain('data-doodle-layer="outcome"');
+    expect(markup).toContain('fill="none"');
   });
 });

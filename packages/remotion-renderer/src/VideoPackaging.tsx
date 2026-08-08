@@ -1,19 +1,17 @@
-import type {CSSProperties, ReactElement} from 'react';
+import type {ReactElement} from 'react';
 import {Video} from '@remotion/media';
-import {AbsoluteFill, Img, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import type {Storyboard} from '../../core/src/schema';
 import {PALETTES} from '../../core/src/palettes';
 import type {SrtCue} from '../../core/src/types';
 import {illustrationRegistry} from './illustrations';
 import {structureRegistry} from './structures';
-import {placementStyle} from './theme';
 
 export type VideoPackagingProps = {
   storyboard: Storyboard;
   overlayOnly?: boolean;
   cues?: SrtCue[];
 };
-
 export const buildCompositionPlan = ({storyboard, overlayOnly = false, cues = []}: VideoPackagingProps) => {
   const durationInFrames = Math.ceil(storyboard.duration * storyboard.fps);
   return {
@@ -30,21 +28,29 @@ export const buildCompositionPlan = ({storyboard, overlayOnly = false, cues = []
   };
 };
 
-const BeatOverlay = ({storyboard, beat}: {storyboard: Storyboard; beat: Storyboard['beats'][number]}): ReactElement => {
+const BeatOverlay = ({beat}: {beat: Storyboard['beats'][number]}): ReactElement => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const duration = Math.max(1, Math.round((beat.end - beat.start) * fps));
   const progress = Math.max(0, Math.min(1, frame / Math.max(1, duration - 1)));
-  const Structure = structureRegistry[beat.structure].Component;
+  const definition = structureRegistry[beat.structure];
+  const Structure = definition.Component;
   const palette = PALETTES[beat.palette];
-  const Illustration = beat.illustration ? illustrationRegistry[beat.illustration.type] : null;
-  const wrapper: CSSProperties = {display: 'flex', boxSizing: 'border-box', ...placementStyle(beat.placement)};
+  const Illustration = beat.illustration ? illustrationRegistry[beat.illustration.type] : undefined;
+  const evidence = beat.evidence ? {...beat.evidence, src: staticFile(beat.evidence.src)} : undefined;
 
-  return <AbsoluteFill data-beat={beat.id} data-safe-zone={structureRegistry[beat.structure].safeZone} style={wrapper}>
-    <Structure text={beat.text} kicker={beat.kicker} progress={progress} palette={palette} placement={beat.placement}/>
-    {Illustration ? <div data-illustration-lane={beat.placement === 'left' ? 'right' : 'left'} style={{position: 'absolute', [beat.placement === 'left' ? 'right' : 'left']: '6%', top: '16%', bottom: '20%', width: '26%', padding: 18, borderRadius: 20, background: PALETTES['paper-sketch'].surface, border: `2px solid ${PALETTES['paper-sketch'].line}`, boxShadow: `12px 12px 0 ${PALETTES['paper-sketch'].accent}55`}}><Illustration progress={progress} accent={PALETTES['paper-sketch'].accent}/></div> : null}
-    {beat.evidence ? <div data-evidence-lane={beat.placement} style={{position: 'absolute', [beat.placement === 'right' ? 'right' : 'left']: '6%', top: '11%', width: beat.placement === 'full' ? '88%' : '26%', height: beat.placement === 'full' ? '68%' : '42%', overflow: 'hidden', borderRadius: 20, border: `3px solid ${palette.accent}`, background: '#fff'}}><Img src={staticFile(beat.evidence.src)} style={{width: '100%', height: '100%', objectFit: 'contain'}}/><span style={{position: 'absolute', left: 18, bottom: 14, padding: '7px 12px', borderRadius: 8, background: 'rgba(2,8,23,.82)', color: '#fff', font: '700 18px/1.2 system-ui'}}>{beat.evidence.label}</span></div> : null}
-  </AbsoluteFill>;
+  return (
+    <AbsoluteFill data-beat={beat.id} data-safe-zone={definition.safeZone}>
+      <Structure
+        content={beat.content}
+        progress={progress}
+        palette={palette}
+        placement={beat.placement}
+        evidence={evidence}
+        Illustration={Illustration}
+      />
+    </AbsoluteFill>
+  );
 };
 
 const GeneratedCaptions = ({cues}: {cues: SrtCue[]}): ReactElement => {
@@ -52,15 +58,21 @@ const GeneratedCaptions = ({cues}: {cues: SrtCue[]}): ReactElement => {
   const {fps} = useVideoConfig();
   const time = frame / fps;
   const cue = cues.find((item) => item.start <= time && item.end > time);
-  return <AbsoluteFill style={{justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 52}}>{cue ? <div style={{maxWidth: 1450, padding: '12px 22px', borderRadius: 12, color: '#fff', background: 'rgba(2,8,23,.78)', font: '800 38px/1.25 system-ui', textAlign: 'center'}}>{cue.text}</div> : null}</AbsoluteFill>;
+  return (
+    <AbsoluteFill style={{justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 52}}>
+      {cue ? <div style={{maxWidth: 1450, padding: '12px 22px', borderRadius: 12, color: '#fff', background: 'rgba(2,8,23,.78)', font: '800 38px/1.25 system-ui', textAlign: 'center'}}>{cue.text}</div> : null}
+    </AbsoluteFill>
+  );
 };
 
 export const VideoPackaging = (props: VideoPackagingProps): ReactElement => {
   const {storyboard, overlayOnly = false, cues = []} = props;
   const plan = buildCompositionPlan(props);
-  return <AbsoluteFill style={{backgroundColor: plan.background}}>
-    {!overlayOnly ? <Video src={staticFile(storyboard.source.video)} style={{width: '100%', height: '100%'}} objectFit="cover" disallowFallbackToOffthreadVideo/> : null}
-    {plan.overlays.map((beat) => <Sequence key={beat.id} from={beat.from} durationInFrames={beat.durationInFrames} premountFor={storyboard.fps}><BeatOverlay storyboard={storyboard} beat={beat}/></Sequence>)}
-    {storyboard.captionsMode === 'generated' ? <GeneratedCaptions cues={cues}/> : null}
-  </AbsoluteFill>;
+  return (
+    <AbsoluteFill style={{backgroundColor: plan.background}}>
+      {!overlayOnly ? <Video src={staticFile(storyboard.source.video)} style={{width: '100%', height: '100%'}} objectFit="cover" disallowFallbackToOffthreadVideo/> : null}
+      {plan.overlays.map((beat) => <Sequence key={beat.id} from={beat.from} durationInFrames={beat.durationInFrames} premountFor={storyboard.fps}><BeatOverlay beat={beat}/></Sequence>)}
+      {storyboard.captionsMode === 'generated' ? <GeneratedCaptions cues={cues}/> : null}
+    </AbsoluteFill>
+  );
 };

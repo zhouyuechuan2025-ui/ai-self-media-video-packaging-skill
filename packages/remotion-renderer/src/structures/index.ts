@@ -1,45 +1,27 @@
-import type {VisualStructure} from '../../../core/src/schema';
-import {
-  AdaptiveSteps,
-  BeforeAfter,
-  CapabilityMatrix,
-  ChapterTimeline,
-  CompletionRail,
-  ContrarianStamp,
-  DualConcept,
-  EvidencePip,
-  EvidenceTakeover,
-  GradientKeyword,
-  ImpactQuestion,
-  KeywordRelay,
-  MetricCounter,
-  SideInsightCard,
-  SignalRoute,
-  SplitConflict,
-  StateSwitch,
-  ThreeBeatHook,
-} from './components';
-import type {StructureDefinition, StructureProps} from './types';
+import type {SemanticStructure} from '../../../core/src/template-contracts';
+import type {StructureDefinition} from './types';
+import {BeforeAfterScrub} from './v2/BeforeAfterScrub';
+import {BidirectionalFlow} from './v2/BidirectionalFlow';
+import {CommandPalette} from './v2/CommandPalette';
+import {EditorialDualRail} from './v2/EditorialDualRail';
+import {EvidencePanel} from './v2/EvidencePanel';
+import {FourStagePipeline} from './v2/FourStagePipeline';
+import {MetricOdometer} from './v2/MetricOdometer';
+import {SemanticDoodle} from './v2/SemanticDoodle';
+import {SignalRoute} from './v2/SignalRoute';
+import {ThesisAndProof} from './v2/ThesisAndProof';
 
-export const structureRegistry: Record<VisualStructure, StructureDefinition> = {
-  'impact-question': {safeZone: 'full', aspectRatios: ['16:9', '9:16'], motions: ['hit', 'reveal'], Component: ImpactQuestion},
-  'contrarian-stamp': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['stamp', 'focus'], Component: ContrarianStamp},
-  'gradient-keyword': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['lift', 'focus'], Component: GradientKeyword},
-  'split-conflict': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['slide', 'reveal'], Component: SplitConflict},
-  'three-beat-hook': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['hit', 'relay'], Component: ThreeBeatHook},
-  'side-insight-card': {safeZone: 'left', aspectRatios: ['16:9'], motions: ['slide', 'lift'], Component: SideInsightCard},
-  'dual-concept': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['slide', 'focus'], Component: DualConcept},
-  'keyword-relay': {safeZone: 'center', aspectRatios: ['16:9'], motions: ['relay', 'focus'], Component: KeywordRelay},
-  'adaptive-steps': {safeZone: 'right', aspectRatios: ['16:9', '9:16'], motions: ['reveal', 'lift'], Component: AdaptiveSteps},
+export const structureRegistry: Record<SemanticStructure, StructureDefinition> = {
+  'editorial-dual-rail': {safeZone: 'side', aspectRatios: ['16:9'], motions: ['slide', 'reveal'], Component: EditorialDualRail},
+  'thesis-and-proof': {safeZone: 'side', aspectRatios: ['16:9', '9:16'], motions: ['hit', 'focus'], Component: ThesisAndProof},
+  'bidirectional-flow': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['route', 'relay'], Component: BidirectionalFlow},
+  'command-palette': {safeZone: 'side', aspectRatios: ['16:9', '9:16'], motions: ['focus', 'stamp'], Component: CommandPalette},
+  'four-stage-pipeline': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['route', 'relay'], Component: FourStagePipeline},
+  'before-after-scrub': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['slide', 'reveal'], Component: BeforeAfterScrub},
+  'evidence-panel': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['reveal', 'focus'], Component: EvidencePanel},
+  'metric-odometer': {safeZone: 'full', aspectRatios: ['16:9', '9:16'], motions: ['count', 'hit'], Component: MetricOdometer},
   'signal-route': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['route', 'trace'], Component: SignalRoute},
-  'state-switch': {safeZone: 'right', aspectRatios: ['16:9'], motions: ['slide', 'stamp'], Component: StateSwitch},
-  'chapter-timeline': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['route', 'reveal'], Component: ChapterTimeline},
-  'evidence-pip': {safeZone: 'left', aspectRatios: ['16:9'], motions: ['lift', 'focus'], Component: EvidencePip},
-  'evidence-takeover': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['reveal', 'focus'], Component: EvidenceTakeover},
-  'metric-counter': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['count', 'hit'], Component: MetricCounter},
-  'before-after': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['slide', 'reveal'], Component: BeforeAfter},
-  'capability-matrix': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['reveal', 'relay'], Component: CapabilityMatrix},
-  'completion-rail': {safeZone: 'center', aspectRatios: ['16:9', '9:16'], motions: ['route', 'stamp'], Component: CompletionRail},
+  'semantic-doodle': {safeZone: 'full', aspectRatios: ['16:9'], motions: ['trace', 'lift'], Component: SemanticDoodle},
 };
 
-export type {StructureProps};
+export type {StructureProps} from './types';

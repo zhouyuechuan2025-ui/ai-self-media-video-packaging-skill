@@ -4,7 +4,7 @@ import type {MediaProbe, SrtCue} from './types';
 
 const evidenceStatus = (beat: StoryboardBeat): string => {
   if (beat.structure === 'evidence-panel') return beat.evidence ? `source: ${beat.evidence.label}` : 'missing source';
-  if (beat.structure === 'metric-odometer') {
+  if (beat.content.structure === 'metric-odometer') {
     return [...new Set(beat.content.metrics.map((metric) => metric.evidenceStatus))].join(', ');
   }
   return 'not required';

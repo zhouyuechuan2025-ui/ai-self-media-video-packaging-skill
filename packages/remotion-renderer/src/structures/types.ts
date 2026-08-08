@@ -1,44 +1,20 @@
-import type {CSSProperties, ReactElement} from 'react';
+import type {ComponentType, ReactElement} from 'react';
 import type {MotionPrimitive} from '../../../core/src/schema';
+import type {TemplateContent} from '../../../core/src/template-contracts';
 import type {Palette} from '../../../core/src/palettes';
+import type {IllustrationProps} from '../illustrations/types';
 
 export type StructureProps = {
-  text: string;
-  kicker?: string;
+  content: TemplateContent;
   progress: number;
   palette: Palette;
-  placement: 'left' | 'right' | 'center' | 'full';
+  placement: 'left' | 'right' | 'full';
+  evidence?: {src: string; label: string; sourceUrl?: string};
+  Illustration?: ComponentType<IllustrationProps>;
 };
-
-export type StructureMode =
-  | 'impact'
-  | 'stamp'
-  | 'keyword'
-  | 'split'
-  | 'sequence'
-  | 'aside'
-  | 'dual'
-  | 'relay'
-  | 'steps'
-  | 'route'
-  | 'switch'
-  | 'timeline'
-  | 'evidence'
-  | 'takeover'
-  | 'metric'
-  | 'compare'
-  | 'matrix'
-  | 'complete';
-
 export type StructureDefinition = {
-  safeZone: 'left' | 'right' | 'center' | 'full';
+  safeZone: 'side' | 'full';
   aspectRatios: string[];
   motions: MotionPrimitive[];
   Component: (props: StructureProps) => ReactElement;
-};
-
-export type ShellConfig = {
-  mode: StructureMode;
-  align?: CSSProperties['textAlign'];
-  eyebrow?: string;
 };
