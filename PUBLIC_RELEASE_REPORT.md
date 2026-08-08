@@ -1,0 +1,54 @@
+# Public release report
+
+## Scope
+
+- Repository target: `zhouyuechuan2025-ui/ai-self-media-video-packaging-skill`.
+- Visibility target: public.
+- Default renderer: Remotion.
+- Optional adapter: HyperFrames.
+- Public capabilities: 18 visual structures, 10 deterministic motion primitives, and 6 programmatic line-illustration scenarios.
+- Workflow: plan first, wait for explicit confirmation, then implement; export remains separately gated.
+
+## Real invocation evidence
+
+- Case: `auto-editing-0`.
+- Source video: 49.272993 seconds, HEVC/AAC, 1920×1080, 30fps.
+- SRT: 21 cues; burned-in subtitle mode.
+- Final local output: H.264/AAC, 1920×1080, 30fps, 49.344 seconds, 42,279,979 bytes.
+- Output SHA-256: `30B98D2A68B6204D101DF3752A58C53FFA4641E6BDCE93C1E71C5A2ABF64EB20`.
+- Full FFmpeg decode: pass.
+- Black-frame scan: no black interval detected.
+- Six README previews: extracted from that exact output and individually hashed in `examples/auto-editing-0/preview-manifest.json`.
+
+The source MP4, source SRT, full output MP4, local paths, and private assets are intentionally absent from the public candidate set.
+
+## Independent renderer checks
+
+### Remotion
+
+- Real authorized case render: pass.
+- Repository synthetic fixture render: pass, 120/120 frames.
+- Composition discovery/build: pass.
+
+### HyperFrames 0.7.99
+
+- Generated from the repository synthetic fixture.
+- Lint: 0 errors, 0 warnings.
+- Dynamic check: `ok=true` using installed system Chrome after the bundled headless shell failed to launch on this Windows host.
+- Runtime: 0 errors.
+- Layout: 9 samples, 0 findings.
+- Motion: enabled, 81 samples, 0 findings.
+- Contrast: 10/10 passed.
+- Snapshots: 5 generated, 0 finding crops.
+
+## Publication safety
+
+- Public candidate scan checks source media, local absolute paths, credentials, private keys, files over 20MB, unfinished markers, and non-public terminology.
+- Production dependencies audit: 0 vulnerabilities.
+- README final line is locked by test to the approved current business WeChat `nanaya093`.
+- Original media is ignored and not present in Git candidates.
+- Repository stays `private: true` at the npm package level to prevent accidental npm publication; this does not affect GitHub visibility.
+
+## Current state
+
+Local source and evidence are ready for a public GitHub repository. Repository creation, initial push, and remote read-back must be completed before this report can be treated as proof of publication.

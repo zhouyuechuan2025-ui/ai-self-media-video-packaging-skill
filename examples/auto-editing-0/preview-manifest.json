@@ -1,0 +1,53 @@
+{
+  "caseId": "auto-editing-0",
+  "renderer": "remotion",
+  "output": {
+    "sha256": "30B98D2A68B6204D101DF3752A58C53FFA4641E6BDCE93C1E71C5A2ABF64EB20",
+    "sizeBytes": 42279979,
+    "durationSeconds": 49.344,
+    "video": "h264 1920x1080 30fps",
+    "audio": "aac 48000Hz stereo"
+  },
+  "frames": [
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-01-hook-1.333s.png",
+      "timeSeconds": 1.333,
+      "sha256": "278EE772573F931797EB8BEA364183DE703A360EC10F2BCCD7DA1BF6E7555445",
+      "purpose": "three-beat opening hook"
+    },
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-02-metric-4.867s.png",
+      "timeSeconds": 4.867,
+      "sha256": "81F7646640704ED402134BF289224FC2A8E45E410DA3735C67F2DEC6DD6D2FD4",
+      "purpose": "attributed claim card without invented progress values"
+    },
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-03-doodle-15.350s.png",
+      "timeSeconds": 15.35,
+      "sha256": "7089D2A411B85571FB4A92A6474C6A47E74BB17B96B82E0C2EFB413200953E85",
+      "purpose": "programmatic line illustration"
+    },
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-04-before-after-19.100s.png",
+      "timeSeconds": 19.1,
+      "sha256": "BB9C032670085D3BD5EFC20D09D6181DBA1F95EC582D47C4D54D7A9031A57CA7",
+      "purpose": "before and after comparison"
+    },
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-05-speed-25.900s.png",
+      "timeSeconds": 25.9,
+      "sha256": "1F50492A17F8913CB199E745D837CEDB0AD572ED0E2675B2602C248EB119E7FB",
+      "purpose": "speed claim with speaker attribution"
+    },
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-06-close-47.400s.png",
+      "timeSeconds": 47.4,
+      "sha256": "0087EBE41B4B5E95D1E04CF4D3684CBD3F597EEE069ECEB0CA7CD3B09ACA8CED",
+      "purpose": "closing call to action"
+    }
+  ],
+  "contactSheet": {
+    "file": "../../docs/assets/previews/auto-editing-0-contact-sheet.jpg",
+    "sha256": "7FCD96211E37757426D53B2868B0A73C53391519AA9E15634AE6BBF054E41819"
+  }
+}

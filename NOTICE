@@ -1,0 +1,15 @@
+Nana AI Video Packaging Skill
+Copyright 2026 Nana AI
+
+This repository contains original orchestration, planning, validation, and
+visual component code released under the MIT License.
+
+Remotion is used as a dependency and has its own license and commercial-use
+terms. Review https://www.remotion.dev/license before commercial use.
+
+HyperFrames can be used through the optional adapter and remains subject to
+its upstream license. Review the selected package and upstream repository
+before use.
+
+Names, portraits, logos, trademarks, and third-party media are not granted by
+the MIT License unless a file explicitly states otherwise.

@@ -1,0 +1,25 @@
+{
+  "caseId": "auto-editing-0",
+  "sourceVideo": {
+    "sha256": "3CAEFB03337D6E9A1357F7437507B73868E269A63DFCA0DA5BC9B458B8F6E696",
+    "sizeBytes": 45680566,
+    "durationSeconds": 49.272993,
+    "codec": "hevc",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "audioCodec": "aac",
+    "audioSampleRate": 44100,
+    "audioChannels": 2
+  },
+  "sourceSrt": {
+    "sha256": "93968AF7002BECE6B4E4C1A4841171BAB9D43F38EE25D82D2CFC06E7F31ECC40",
+    "cueCount": 21,
+    "captionMode": "burned-in"
+  },
+  "privacy": {
+    "sourceVideoPublished": false,
+    "sourceSrtPublished": false,
+    "derivedFramesPublished": true
+  }
+}
