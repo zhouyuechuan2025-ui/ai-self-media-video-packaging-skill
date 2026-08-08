@@ -86,7 +86,7 @@ describe('V2 template contracts', () => {
 
 - [ ] **Step 2: Run the focused test and verify the missing module failure**
 
-Run: `npx vitest run packages/core/test/schema.test.ts`  
+Run: `npx vitest run packages/core/test/schema.test.ts`
 Expected: FAIL because `template-contracts.ts` and the V2 exports do not exist.
 
 - [ ] **Step 3: Create the canonical structures and discriminated content schema**
@@ -148,7 +148,7 @@ Change the storyboard version literal from `1.0` to `2.0`, export `SemanticStruc
 
 - [ ] **Step 5: Run schema tests**
 
-Run: `npx vitest run packages/core/test/schema.test.ts`  
+Run: `npx vitest run packages/core/test/schema.test.ts`
 Expected: PASS with ten unique structures, matching content discriminators, and the existing timing/safe-placement checks.
 
 - [ ] **Step 6: Commit the contract**
@@ -193,7 +193,7 @@ it('builds content that validates for every planned beat', () => {
 
 - [ ] **Step 2: Run the planner test and verify it fails against the old rotation planner**
 
-Run: `npx vitest run packages/core/test/planner.test.ts`  
+Run: `npx vitest run packages/core/test/planner.test.ts`
 Expected: FAIL because `classifySemanticStructure`, V2 content, and semantic eligibility do not exist.
 
 - [ ] **Step 3: Implement semantic classification without index-based family rotation**
@@ -248,7 +248,7 @@ const scoreCandidate = (candidate: SemanticStructure, context: SelectionContext)
 
 - [ ] **Step 6: Run planner and schema tests**
 
-Run: `npx vitest run packages/core/test/planner.test.ts packages/core/test/schema.test.ts`  
+Run: `npx vitest run packages/core/test/planner.test.ts packages/core/test/schema.test.ts`
 Expected: PASS; every beat has matching validated content, and the fixture maps to meaning-driven structures.
 
 - [ ] **Step 7: Commit semantic planning**
@@ -286,7 +286,7 @@ it('rejects palette-only diversity, unsafe full-screen use, missing evidence, an
 
 - [ ] **Step 2: Run the validator test and verify new issue codes are missing**
 
-Run: `npx vitest run packages/core/test/director-validation.test.ts`  
+Run: `npx vitest run packages/core/test/director-validation.test.ts`
 Expected: FAIL because the V2 validation issue codes and content checks are not implemented.
 
 - [ ] **Step 3: Implement V2 director validation**
@@ -323,7 +323,7 @@ Add `Why`, `Content contract`, `Evidence status`, and `Risk` columns to `storybo
 
 - [ ] **Step 5: Run core tests**
 
-Run: `npx vitest run packages/core/test`  
+Run: `npx vitest run packages/core/test`
 Expected: PASS; director-invalid fixtures produce precise issue codes and valid fixtures remain clean.
 
 - [ ] **Step 6: Commit the director gates**
@@ -371,7 +371,7 @@ it('requires full-screen surfaces to preserve a presenter window or use a dim la
 
 - [ ] **Step 2: Run the renderer structure test and verify it fails**
 
-Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx`  
+Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx`
 Expected: FAIL because `sideLaneStyle` and V2 structure props do not exist.
 
 - [ ] **Step 3: Define typed props and optional illustration renderer**
@@ -436,7 +436,7 @@ export const sideLaneStyle = (side: 'left' | 'right') => ({
 
 - [ ] **Step 7: Run focused tests and typecheck**
 
-Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx && npm run typecheck`  
+Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx && npm run typecheck`
 Expected: PASS for shared helpers; remaining old structures may require temporary test fixture updates within this task.
 
 - [ ] **Step 8: Commit shared foundations**
@@ -481,7 +481,7 @@ expect(new Set(Object.values(expected)).size).toBe(6);
 
 - [ ] **Step 2: Run the test and verify all six modules are absent**
 
-Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx`  
+Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx`
 Expected: FAIL with missing component imports or registry entries.
 
 - [ ] **Step 3: Implement `EditorialDualRail` and `ThesisAndProof`**
@@ -514,7 +514,7 @@ return <FullScreenSurface data-structure-identity="before-after-scrub" style={{c
 
 - [ ] **Step 6: Run tests and typecheck**
 
-Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx && npm run typecheck`  
+Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx && npm run typecheck`
 Expected: PASS for six independent identities and all typed content narrowing.
 
 - [ ] **Step 7: Commit the first structure group**
@@ -561,7 +561,7 @@ it('renders doodle line, action, and outcome layers without a generic paper card
 
 - [ ] **Step 2: Run tests and verify the four structures/layers are missing**
 
-Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx packages/remotion-renderer/test/illustrations.test.tsx`  
+Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx packages/remotion-renderer/test/illustrations.test.tsx`
 Expected: FAIL with missing V2 components and doodle layers.
 
 - [ ] **Step 3: Implement evidence and metric structures**
@@ -598,7 +598,7 @@ The scene uses transparent composition or context-matched local fills; it does n
 
 - [ ] **Step 6: Run illustration, structure, and type tests**
 
-Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx packages/remotion-renderer/test/illustrations.test.tsx && npm run typecheck`  
+Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx packages/remotion-renderer/test/illustrations.test.tsx && npm run typecheck`
 Expected: PASS; all ten structures are independently identifiable and doodles retain explicit SVG safety.
 
 - [ ] **Step 7: Commit the second structure group**
@@ -633,7 +633,7 @@ it('maps every V2 structure to a unique component function', () => {
 
 - [ ] **Step 2: Run the registry test and verify the existing six-family alias design fails**
 
-Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx`  
+Run: `npx vitest run packages/remotion-renderer/test/structures.test.tsx`
 Expected: FAIL because multiple names still share the same family component.
 
 - [ ] **Step 3: Register one component per semantic structure**
@@ -674,12 +674,12 @@ Use `version: '2.0'`, `structure: 'thesis-and-proof'`, matching content, full pl
 
 - [ ] **Step 6: Run renderer tests and production composition discovery**
 
-Run: `npm run typecheck && npx vitest run packages/remotion-renderer/test && npm run build`  
+Run: `npm run typecheck && npx vitest run packages/remotion-renderer/test && npm run build`
 Expected: PASS; Remotion lists `VideoPackaging`, and the registry exposes ten unique components.
 
 - [ ] **Step 7: Delete the old family files and verify no references remain**
 
-Run: `rg -n "ImpactFamily|GradientFamily|SupportingFamily|families|components" packages/remotion-renderer/src`  
+Run: `rg -n "ImpactFamily|GradientFamily|SupportingFamily|families|components" packages/remotion-renderer/src`
 Expected: no matches referring to the removed family implementation.
 
 - [ ] **Step 8: Commit the V2 composition**
@@ -715,7 +715,7 @@ it('preserves all V2 identifiers and does not collapse them into one generic she
 
 - [ ] **Step 2: Run the adapter test and verify the generic beat shell fails**
 
-Run: `npx vitest run packages/hyperframes-adapter/test/generate.test.ts`  
+Run: `npx vitest run packages/hyperframes-adapter/test/generate.test.ts`
 Expected: FAIL because current markup uses one generic heading/rail shell.
 
 - [ ] **Step 3: Implement ten markup renderers**
@@ -743,7 +743,7 @@ Use paused GSAP timelines driven by absolute storyboard seconds. Avoid runtime t
 
 - [ ] **Step 5: Run adapter tests and public scan**
 
-Run: `npx vitest run packages/hyperframes-adapter/test/generate.test.ts && npm run verify:public`  
+Run: `npx vitest run packages/hyperframes-adapter/test/generate.test.ts && npm run verify:public`
 Expected: PASS; ten identifiers and safety metadata are present, and no forbidden local data is introduced.
 
 - [ ] **Step 6: Commit adapter parity**
@@ -782,7 +782,7 @@ it('refuses render unless every cumulative approval is explicit', () => {
 
 - [ ] **Step 2: Run the new tests and verify the current two-flag flow fails**
 
-Run: `npx vitest run tests/gate-cli.test.ts tests/artifact-qa.test.ts`  
+Run: `npx vitest run tests/gate-cli.test.ts tests/artifact-qa.test.ts`
 Expected: FAIL because separate gates and artifact helpers do not exist.
 
 - [ ] **Step 3: Implement cumulative approval parsing**
@@ -826,7 +826,7 @@ Select one midpoint from eight distinct structures; if the storyboard contains f
 
 - [ ] **Step 6: Run CLI and QA tests**
 
-Run: `npx vitest run tests/gate-cli.test.ts tests/artifact-qa.test.ts`  
+Run: `npx vitest run tests/gate-cli.test.ts tests/artifact-qa.test.ts`
 Expected: PASS; no final render is possible without cumulative explicit approvals.
 
 - [ ] **Step 7: Commit gate enforcement and QA**
@@ -871,7 +871,7 @@ it('preserves the requested closing contact', () => {
 
 - [ ] **Step 2: Run Skill contract tests and verify V2 documentation is missing**
 
-Run: `npx vitest run tests/skill/skill-contract.test.ts tests/readme-integrity.test.ts`  
+Run: `npx vitest run tests/skill/skill-contract.test.ts tests/readme-integrity.test.ts`
 Expected: FAIL because current docs still advertise the old 18-name/six-family system and old render flags.
 
 - [ ] **Step 3: Rewrite the structure, gate, and illustration references**
@@ -880,7 +880,7 @@ Document the exact trigger, required fields, forbidden usage, placement, and mot
 
 - [ ] **Step 4: Bump the package release to 0.2.0**
 
-Run: `npm version 0.2.0 --no-git-tag-version`  
+Run: `npm version 0.2.0 --no-git-tag-version`
 Expected: `package.json` and `package-lock.json` both report `0.2.0`; no Git tag is created.
 
 - [ ] **Step 5: Update usage commands to the four gates**
@@ -901,7 +901,7 @@ npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --ren
 
 - [ ] **Step 6: Run documentation and public-repository tests**
 
-Run: `npx vitest run tests/skill/skill-contract.test.ts tests/readme-integrity.test.ts tests/public-verifier.test.ts && npm run verify:public`  
+Run: `npx vitest run tests/skill/skill-contract.test.ts tests/readme-integrity.test.ts tests/public-verifier.test.ts && npm run verify:public`
 Expected: PASS; the requested closing copy is unchanged and the repository remains clean.
 
 - [ ] **Step 7: Commit the V2 Skill contract**
@@ -937,7 +937,7 @@ Expected: command reports `Gate A complete`; no final MP4 exists; the storyboard
 
 - [ ] **Step 3: Validate the Gate A plan**
 
-Run: `node -e "const s=require('./examples/auto-editing-0/run-v2/storyboard.json'); const u=new Set(s.beats.map(b=>b.structure)); if(u.size<8) throw new Error('fewer than eight structures'); console.log([...u])"`  
+Run: `node -e "const s=require('./examples/auto-editing-0/run-v2/storyboard.json'); const u=new Set(s.beats.map(b=>b.structure)); if(u.size<8) throw new Error('fewer than eight structures'); console.log([...u])"`
 Expected: eight or more V2 semantic identifiers, no content/structure mismatch, and no invented evidence.
 
 - [ ] **Step 4: Present Gate A to Nana and stop**
@@ -972,7 +972,7 @@ Expected: eight review stills and a contact sheet exist; final `packaged.mp4` do
 
 - [ ] **Step 2: Run automated visual checks**
 
-Run: `npm test && npm run typecheck && npm run build`  
+Run: `npm test && npm run typecheck && npm run build`
 Expected: all tests pass; center-lane, subtitle-band, copy-length, contrast, structure-count, and SVG checks report no errors.
 
 - [ ] **Step 3: Manually review all eight frames**
@@ -1047,7 +1047,7 @@ Expected: tests, typecheck, build, public scan, audit, and diff check pass; stat
 
 - [ ] **Step 6: Regenerate checksums and re-run the public scan**
 
-Run: `npm run checksums && npm run verify:public`  
+Run: `npm run checksums && npm run verify:public`
 Expected: checksum manifest matches all tracked release files and public verification reports `ok: true`.
 
 - [ ] **Step 7: Commit the verified V2 public evidence**
@@ -1079,7 +1079,7 @@ Expected: only V2 contracts, implementations, tests, docs, and verified public e
 
 - [ ] **Step 2: Inspect tracked binary files and local paths**
 
-Run: `git ls-files | rg "\.(mp4|mov|mkv|wav|mp3|srt|env|pem|key)$"`  
+Run: `git ls-files | rg "\.(mp4|mov|mkv|wav|mp3|srt|env|pem|key)$"`
 Expected: no source media, source subtitle, environment, or key files are tracked.
 
 - [ ] **Step 3: Confirm GitHub scope with Nana**

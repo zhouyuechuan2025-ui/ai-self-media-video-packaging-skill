@@ -1,7 +1,7 @@
 # Semantic Template System V2 — Design Specification
 
-**Status:** Approved design direction, implementation pending  
-**Target:** Public `ai-self-media-video-packaging-skill` repository  
+**Status:** Approved design direction, implementation pending
+**Target:** Public `ai-self-media-video-packaging-skill` repository
 **Primary use case:** 16:9, center-framed talking-head footage with burned-in or separately managed captions
 
 ## 1. Problem statement
@@ -87,82 +87,82 @@ Each template is a distinct component with its own content schema, layout, and m
 
 ### 6.1 `editorial-dual-rail`
 
-**Use for:** a main argument with two complementary groups of supporting points.  
-**Layout:** center presenter; framed left and right rails; top kicker; footer takeaway.  
-**Required fields:** `kicker`, `headline`, `leftItems[1..3]`, `rightItems[1..3]`, `takeaway`.  
-**Motion:** header settles first, rails enter from opposite sides, numbered items reveal in reading order, takeaway locks last.  
+**Use for:** a main argument with two complementary groups of supporting points.
+**Layout:** center presenter; framed left and right rails; top kicker; footer takeaway.
+**Required fields:** `kicker`, `headline`, `leftItems[1..3]`, `rightItems[1..3]`, `takeaway`.
+**Motion:** header settles first, rails enter from opposite sides, numbered items reveal in reading order, takeaway locks last.
 **Do not use for:** a sequential process or direct comparison.
 
 ### 6.2 `thesis-and-proof`
 
-**Use for:** one strong claim that requires a concise reason, source, or observation.  
-**Layout:** large thesis on one side; proof block with source label on the other; center presenter remains open.  
-**Required fields:** `thesis`, `reason`, optional `sourceLabel`, optional `sourceDetail`.  
-**Motion:** thesis hits, reason lifts, source stamp appears only after the proof is readable.  
+**Use for:** one strong claim that requires a concise reason, source, or observation.
+**Layout:** large thesis on one side; proof block with source label on the other; center presenter remains open.
+**Required fields:** `thesis`, `reason`, optional `sourceLabel`, optional `sourceDetail`.
+**Motion:** thesis hits, reason lifts, source stamp appears only after the proof is readable.
 **Do not use for:** unsupported promotional claims.
 
 ### 6.3 `bidirectional-flow`
 
-**Use for:** input/output, tool/human, problem/solution, or two-way feedback relationships.  
-**Layout:** left and right nodes connected around the presenter lane; return path is visually distinct.  
-**Required fields:** `leftLabel`, `rightLabel`, `forwardAction`, optional `returnAction`, `result`.  
-**Motion:** forward route draws first; return route draws only when the narration establishes a feedback loop.  
+**Use for:** input/output, tool/human, problem/solution, or two-way feedback relationships.
+**Layout:** left and right nodes connected around the presenter lane; return path is visually distinct.
+**Required fields:** `leftLabel`, `rightLabel`, `forwardAction`, optional `returnAction`, `result`.
+**Motion:** forward route draws first; return route draws only when the narration establishes a feedback loop.
 **Do not use for:** a one-direction timeline.
 
 ### 6.4 `command-palette`
 
-**Use for:** executable actions, commands, shortcuts, or a small operational checklist.  
-**Layout:** compact command surface on one side, output or status summary on the other.  
-**Required fields:** `commandTitle`, `actions[2..5]`, `resultState`.  
-**Motion:** focus bar moves through actions; result state stamps after the final action.  
+**Use for:** executable actions, commands, shortcuts, or a small operational checklist.
+**Layout:** compact command surface on one side, output or status summary on the other.
+**Required fields:** `commandTitle`, `actions[2..5]`, `resultState`.
+**Motion:** focus bar moves through actions; result state stamps after the final action.
 **Do not use for:** general benefits or conceptual nouns.
 
 ### 6.5 `four-stage-pipeline`
 
-**Use for:** exactly three or four ordered operational stages.  
-**Layout:** full-screen or side-spanning connected stages with a visible current-stage indicator.  
-**Required fields:** `title`, `stages[3..4]`, optional `output`.  
-**Motion:** route draws once; stages activate in chronological order; completed stages remain legible.  
+**Use for:** exactly three or four ordered operational stages.
+**Layout:** full-screen or side-spanning connected stages with a visible current-stage indicator.
+**Required fields:** `title`, `stages[3..4]`, optional `output`.
+**Motion:** route draws once; stages activate in chronological order; completed stages remain legible.
 **Do not use for:** unordered lists.
 
 ### 6.6 `before-after-scrub`
 
-**Use for:** exactly two comparable states with a stable comparison dimension.  
-**Layout:** split field or scrub bar; labels remain anchored; the comparison criterion stays visible.  
-**Required fields:** `before`, `after`, `criterion`, optional `delta`.  
-**Motion:** reveal progresses from before to after; delta appears only if it is sourced or explicitly presented as an estimate.  
+**Use for:** exactly two comparable states with a stable comparison dimension.
+**Layout:** split field or scrub bar; labels remain anchored; the comparison criterion stays visible.
+**Required fields:** `before`, `after`, `criterion`, optional `delta`.
+**Motion:** reveal progresses from before to after; delta appears only if it is sourced or explicitly presented as an estimate.
 **Do not use for:** three alternatives or non-comparable examples.
 
 ### 6.7 `evidence-panel`
 
-**Use for:** screenshots, documentation, research excerpts, or verifiable artifacts.  
-**Layout:** evidence image or excerpt receives the largest area; interpretation and source are secondary.  
-**Required fields:** `evidenceAsset`, `caption`, `sourceLabel`, `interpretation`.  
-**Motion:** evidence enters first, crop or highlight follows, interpretation appears last.  
+**Use for:** screenshots, documentation, research excerpts, or verifiable artifacts.
+**Layout:** evidence image or excerpt receives the largest area; interpretation and source are secondary.
+**Required fields:** `evidenceAsset`, `caption`, `sourceLabel`, `interpretation`.
+**Motion:** evidence enters first, crop or highlight follows, interpretation appears last.
 **Do not use for:** decorative stock imagery or invented proof.
 
 ### 6.8 `metric-odometer`
 
-**Use for:** one to three real numeric values central to the spoken point.  
-**Layout:** large number, unit, meaning label, and source/estimate status.  
-**Required fields:** `metrics[1..3]`, each with `value`, `unit`, `label`, and `evidenceStatus`.  
-**Motion:** numbers count only when interpolation is honest; otherwise use a direct hit or step change.  
+**Use for:** one to three real numeric values central to the spoken point.
+**Layout:** large number, unit, meaning label, and source/estimate status.
+**Required fields:** `metrics[1..3]`, each with `value`, `unit`, `label`, and `evidenceStatus`.
+**Motion:** numbers count only when interpolation is honest; otherwise use a direct hit or step change.
 **Do not use for:** numbers without a source or clearly stated owner estimate.
 
 ### 6.9 `signal-route`
 
-**Use for:** a system path, dependency chain, handoff, or data route with three to five nodes.  
-**Layout:** route avoids the presenter lane or uses full-screen dim mode; nodes have distinct roles.  
-**Required fields:** `nodes[3..5]`, `routeLabel`, optional `failureNode`, `result`.  
-**Motion:** line draw, node activation, optional failure pulse, result lock.  
+**Use for:** a system path, dependency chain, handoff, or data route with three to five nodes.
+**Layout:** route avoids the presenter lane or uses full-screen dim mode; nodes have distinct roles.
+**Required fields:** `nodes[3..5]`, `routeLabel`, optional `failureNode`, `result`.
+**Motion:** line draw, node activation, optional failure pulse, result lock.
 **Do not use for:** a simple list disguised as a diagram.
 
 ### 6.10 `semantic-doodle`
 
-**Use for:** an abstract idea best explained through a human action, transformation, or cause/effect metaphor.  
-**Layout:** one clear subject, one action, and one outcome; avoid white-card default framing.  
-**Required fields:** `subject`, `action`, `outcome`, `accent`, optional `annotation`.  
-**Motion:** line path draws, local color blocks reveal, subject acts, result appears.  
+**Use for:** an abstract idea best explained through a human action, transformation, or cause/effect metaphor.
+**Layout:** one clear subject, one action, and one outcome; avoid white-card default framing.
+**Required fields:** `subject`, `action`, `outcome`, `accent`, optional `annotation`.
+**Motion:** line path draws, local color blocks reveal, subject acts, result appears.
 **Do not use for:** generic decoration or a literal restatement of the subtitle.
 
 ## 7. Visual system
