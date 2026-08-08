@@ -9,21 +9,27 @@ export const SemanticDoodle = ({progress, accent, subject, action, outcome}: Ill
   return (
     <svg viewBox="0 0 640 360" fill="none" style={{width: '100%', height: '100%', overflow: 'visible'}} aria-label={`${subject ?? 'subject'} ${action ?? 'action'} ${outcome ?? 'outcome'}`}>
       <g data-doodle-layer="line" stroke="#252933" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" fill="none" opacity={0.12 + draw * .88}>
-        <circle cx="132" cy="115" r="34"/>
-        <path d="M130 150c-8 45-5 83 12 112M142 183l58 24M142 183l-48 50M142 262l-42 61M142 262l53 58"/>
-        <path d="M214 210h210l45-60h76" strokeDasharray="420" strokeDashoffset={420 * (1 - draw)}/>
+        <path d="M52 320 C145 293 228 258 306 218 C396 170 476 116 588 58" strokeDasharray="680" strokeDashoffset={680 * (1 - draw)}/>
+        <g data-doodle-object="climber" transform={`translate(${Math.round(move * 22)} ${Math.round(-move * 14)})`}>
+          <circle cx="184" cy="198" r="19"/>
+          <path d="M186 218 L209 258 M199 237 L246 215 M207 257 L176 294 M208 257 L247 281"/>
+          <path d="M233 215 L270 203"/>
+        </g>
+        <g data-doodle-object="boulder" transform={`translate(${Math.round(move * 42)} ${Math.round(-move * 28)})`}>
+          <circle cx="318" cy="184" r="54" fill={`${accent}18`}/>
+          <path d="M287 164 C309 141 347 148 359 179 C368 207 346 237 315 238 C285 239 264 211 269 185"/>
+        </g>
       </g>
       <g data-doodle-layer="action" fill="none" stroke={accent} strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" transform={`translate(${Math.round(move * 38)} 0)`}>
-        <path d="M218 208h182" strokeDasharray="182" strokeDashoffset={182 * (1 - move)}/>
-        <path d="m374 180 31 28-31 29" opacity={move}/>
-        <circle cx="284" cy="208" r="18" fill={accent} opacity={move}/>
+        <path d="M354 159 C410 132 458 104 510 73" strokeDasharray="210" strokeDashoffset={210 * (1 - move)}/>
+        <path d="M480 70 L514 70 L500 101" opacity={move}/>
+        <path d="M250 214 L279 198" opacity={move}/>
       </g>
-      <g data-doodle-layer="outcome" fill="none" stroke="#252933" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" opacity={finish} transform={`scale(${.86 + finish * .14})`} style={{transformOrigin: '520px 150px'}}>
-        <rect x="472" y="103" width="96" height="96" rx="24" fill={`${accent}22`}/>
-        <path d="m493 151 19 20 38-44" stroke={accent} strokeWidth="12"/>
-        <path d="M485 230h76M501 252h44"/>
+      <g data-doodle-layer="outcome" fill="none" stroke="#252933" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" opacity={finish} transform={`scale(${.86 + finish * .14})`} style={{transformOrigin: '548px 68px'}}>
+        <path d="M548 103 V32 M548 34 H606 L584 57 L606 80 H548"/>
+        <circle cx="548" cy="104" r="8" fill={accent} stroke={accent}/>
+        <path d="M505 128 C529 115 553 105 576 96" stroke={accent} strokeWidth="9"/>
       </g>
     </svg>
   );
 };
-

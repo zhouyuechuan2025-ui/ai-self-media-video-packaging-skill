@@ -17,7 +17,7 @@ describe('public README evidence', () => {
 
   it('maps every preview to the verified output and matching file hash', () => {
     const manifest = JSON.parse(read('examples/auto-editing-0/preview-manifest.json').toString('utf8'));
-    expect(manifest.output.sha256).toBe('57D909FAABE95A68862C0418A4E110EC9BD557B79D3FDEE07FC0545C847679A8');
+    expect(manifest.output.sha256).toBe('026C197E05B3D3C14323DF04A81F27C6F252E467D8BADC7CA963D02121278C37');
     for (const frame of manifest.frames) {
       const path = resolve(root, 'examples/auto-editing-0', frame.file);
       expect(existsSync(path)).toBe(true);

@@ -6,17 +6,21 @@
 
 ## 真实调用效果
 
-下面所有画面都直接抽取自同一次真实 Skill 调用生成的最终 MP4。案例使用 49.273 秒、1920×1080 的口播源片与 21 条 SRT；导演方案实际使用 6 套配色、13 种结构与 21 个视觉节拍。Remotion 输出为 49.323 秒、H.264/AAC，输出 SHA-256 为 `57D909FAABE95A68862C0418A4E110EC9BD557B79D3FDEE07FC0545C847679A8`。
+下面所有画面都直接抽取自同一次真实 Skill 调用生成的最终 MP4。案例使用 49.273 秒、1920×1080 的口播源片与 21 条 SRT；导演方案实际生成 22 个视觉节拍，使用 6 套配色与 8 种语义结构，最长状态 3.2 秒。Remotion 输出为 49.323 秒、H.264/AAC，输出 SHA-256 为 `026C197E05B3D3C14323DF04A81F27C6F252E467D8BADC7CA963D02121278C37`。
 
-![真实调用六帧总览](docs/assets/previews/auto-editing-0-contact-sheet.jpg)
+![真实调用八帧总览](docs/assets/previews/auto-editing-0-contact-sheet.jpg)
 
-| 开头钩子 | 事实归属卡 | 程序化简笔画 |
+| 论点与证据 | 双侧编辑轨 | 文字指标 |
 |---|---|---|
-| ![开头钩子](docs/assets/previews/auto-editing-0-01-hook-1.333s.png) | ![事实归属卡](docs/assets/previews/auto-editing-0-02-metric-4.867s.png) | ![程序化简笔画](docs/assets/previews/auto-editing-0-03-doodle-15.350s.png) |
+| ![论点与证据](docs/assets/previews/auto-editing-0-01-thesis-and-proof-1.333s.png) | ![双侧编辑轨](docs/assets/previews/auto-editing-0-02-editorial-dual-rail-3.800s.png) | ![保留口语数值的指标结构](docs/assets/previews/auto-editing-0-03-metric-odometer-5.934s.png) |
 
-| 前后对比 | 紫色数据表达 | 全屏行动引导 |
+| 命令面板 | 语义简笔画 | 前后对比 |
 |---|---|---|
-| ![前后对比](docs/assets/previews/auto-editing-0-04-before-after-19.100s.png) | ![紫色数据表达](docs/assets/previews/auto-editing-0-05-violet-30.600s.png) | ![全屏行动引导](docs/assets/previews/auto-editing-0-06-fullscreen-44.216s.png) |
+| ![命令面板](docs/assets/previews/auto-editing-0-04-command-palette-9.849s.png) | ![人物推石上坡的语义简笔画](docs/assets/previews/auto-editing-0-05-semantic-doodle-15.349s.png) | ![前后对比](docs/assets/previews/auto-editing-0-06-before-after-scrub-19.117s.png) |
+
+| 四阶段流程 | 信号路径 |
+|---|---|
+| ![四阶段流程](docs/assets/previews/auto-editing-0-07-four-stage-pipeline-21.083s.png) | ![避开人物中心区的信号路径](docs/assets/previews/auto-editing-0-08-signal-route-26.283s.png) |
 
 这组预览不是设计稿。完整证据链包括：[真实调用命令](examples/auto-editing-0/invocation.txt)、[输入哈希与参数](examples/auto-editing-0/input-manifest.json)、[完整分镜](examples/auto-editing-0/storyboard.json)、[逐帧哈希与时间码](examples/auto-editing-0/preview-manifest.json)及[成片验收记录](examples/auto-editing-0/QA_REPORT.md)。原始视频和 SRT 不随仓库分发。
 
@@ -24,7 +28,7 @@
 
 - 一条连续的源视频/音频主轨，不擅自重剪或重排原片。
 - 依据 SRT 语义自动规划的视觉节拍，普通片段优先控制在 1.6–3.2 秒，硬上限 6 秒。
-- 18 种视觉结构、6 套差异化视觉语法、6 组语义配色、10 种 seek-safe 动效原语、6 类程序化 SVG 简笔画。
+- 10 种语义视觉结构、6 组语义配色、10 种 seek-safe 动效原语、6 类程序化 SVG 简笔画。
 - 已烧录字幕、无字幕、生成字幕三种模式，避免重复字幕。
 - 证据卡、个人经验、估算和客观事实的边界控制。
 - Remotion 默认渲染，以及可选的 HyperFrames 项目生成。
@@ -32,9 +36,9 @@
 
 ## 视觉与动画能力
 
-### 18 种视觉结构
+### 10 种语义视觉结构
 
-`impact-question`、`contrarian-stamp`、`gradient-keyword`、`split-conflict`、`three-beat-hook`、`side-insight-card`、`dual-concept`、`keyword-relay`、`adaptive-steps`、`signal-route`、`state-switch`、`chapter-timeline`、`evidence-pip`、`evidence-takeover`、`metric-counter`、`before-after`、`capability-matrix`、`completion-rail`。
+`editorial-dual-rail`、`thesis-and-proof`、`bidirectional-flow`、`command-palette`、`four-stage-pipeline`、`before-after-scrub`、`evidence-panel`、`metric-odometer`、`signal-route`、`semantic-doodle`。
 
 结构选择由口播逻辑、人物安全区和证据状态共同决定，不为了凑变化而随机套用。详见 [视觉结构说明](references/visual-structures.md)。
 
@@ -86,18 +90,34 @@ npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --ren
 
 会生成 `BRIEF.md`、`SOURCE_PROBE.json`、`STORYBOARD.md`、`storyboard.json` 和 `input-manifest.json`。
 
-### 2. Gate A 获批后生成 Remotion 成片
+### 2. Gate A 获批后完成 Gate B 视觉实现
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --render
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b
 ```
 
-程序会在 HEVC 等浏览器不兼容输入时创建不改时序的 H.264/AAC 制作代理，生成最终 MP4、代表帧和 `RENDER_MANIFEST.json`，并执行完整解码。
+此阶段生成可复核的视觉实现，不导出最终成片。程序会在 HEVC 等浏览器不兼容输入时创建不改时序的 H.264/AAC 制作代理。
 
-### 3. 生成 HyperFrames 项目
+### 3. Gate C 可视验收
 
 ```bash
-npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer hyperframes --captions burned-in --approve-gate-a
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c
+```
+
+检查实际时间轴、人物安全区、字幕安全区、语义准确性、配色与结构差异，再决定是否导出。
+
+### 4. Gate D 获批后生成 Remotion 成片
+
+```bash
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer remotion --captions burned-in --approve-gate-a --approve-gate-b --approve-gate-c --approve-gate-d --render
+```
+
+程序生成最终 MP4、代表帧和 `RENDER_MANIFEST.json`，并执行 ffprobe、完整解码与黑帧扫描。
+
+### 5. 可选：生成 HyperFrames 项目
+
+```bash
+npm run package-video -- --video ./input.mp4 --srt ./input.srt --out ./run --renderer hyperframes --captions burned-in --approve-gate-a --approve-gate-b
 npx hyperframes@0.7.99 lint ./run/hyperframes
 npx hyperframes@0.7.99 check ./run/hyperframes --snapshots
 ```

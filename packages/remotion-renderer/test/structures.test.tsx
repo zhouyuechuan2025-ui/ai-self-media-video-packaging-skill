@@ -5,6 +5,8 @@ import {SEMANTIC_STRUCTURES, type SemanticStructure, type TemplateContent} from 
 import {contrastRatio} from '../src/contrast';
 import {FullScreenSurface} from '../src/structures/shared';
 import {structureRegistry} from '../src/structures';
+import {MetricOdometer} from '../src/structures/v2/MetricOdometer';
+import {SignalRoute} from '../src/structures/v2/SignalRoute';
 import {presenterSafeZones, sideLaneStyle} from '../src/theme';
 
 const fixtureContent: Record<SemanticStructure, TemplateContent> = {
@@ -78,5 +80,32 @@ describe('presenter-safe visual foundations', () => {
     );
     expect(html).toContain('data-presenter-window="35-65"');
     expect(html).toContain('data-subtitle-reserve="18"');
+  });
+
+  it('renders verbal metrics literally instead of animating them from zero', () => {
+    const html = renderToStaticMarkup(
+      <MetricOdometer
+        content={{structure: 'metric-odometer', metrics: [{value: '几万', unit: '', label: '个人案例', evidenceStatus: 'owner-confirmed'}]}}
+        progress={0.5}
+        palette={PALETTES['teal-signal']}
+        placement="full"
+      />,
+    );
+    expect(html).toContain('data-verbal-metric="true"');
+    expect(html).toContain('>几万<');
+    expect(html).not.toContain('>0<');
+  });
+
+  it('keeps signal-route nodes in the side lanes around the presenter', () => {
+    const html = renderToStaticMarkup(
+      <SignalRoute
+        content={{structure: 'signal-route', nodes: ['放入原视频', '工作流处理', '约5分钟完成'], routeLabel: '本次个人工作流', result: '个人实测：约5分钟'}}
+        progress={0.72}
+        palette={PALETTES['acid-action']}
+        placement="full"
+      />,
+    );
+    expect(html).toContain('data-route-layout="side-lanes"');
+    expect(html).toContain('data-presenter-window="35-65"');
   });
 });

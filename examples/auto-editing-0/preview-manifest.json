@@ -2,63 +2,76 @@
   "caseId": "auto-editing-0",
   "renderer": "remotion",
   "directorPlan": {
-    "beats": 21,
+    "beats": 22,
     "palettes": 6,
-    "structures": 13,
+    "structures": 8,
+    "maxBeatSeconds": 3.2,
     "placements": {
-      "left": 9,
-      "right": 8,
-      "full": 4
+      "left": 6,
+      "right": 6,
+      "full": 10
     }
   },
   "output": {
-    "sha256": "57D909FAABE95A68862C0418A4E110EC9BD557B79D3FDEE07FC0545C847679A8",
-    "sizeBytes": 38520178,
+    "sha256": "026C197E05B3D3C14323DF04A81F27C6F252E467D8BADC7CA963D02121278C37",
+    "sizeBytes": 35100883,
     "durationSeconds": 49.322667,
     "video": "h264 1920x1080 30fps",
     "audio": "aac 48000Hz stereo"
   },
   "frames": [
     {
-      "file": "../../docs/assets/previews/auto-editing-0-01-hook-1.333s.png",
+      "file": "../../docs/assets/previews/auto-editing-0-01-thesis-and-proof-1.333s.png",
       "timeSeconds": 1.333,
-      "sha256": "FCCDFAD4972BB1168D23970745A3D491DE42EDFEBC0EF29FECC7EB943DDCB9EC",
-      "purpose": "deep-ocean full-screen opening hook"
+      "structure": "thesis-and-proof",
+      "sha256": "9C88E9EB71C43B5DC7CDA5B9C281C08A3F807D1EDA9282590E66E491D2F753C1"
     },
     {
-      "file": "../../docs/assets/previews/auto-editing-0-02-metric-4.867s.png",
-      "timeSeconds": 4.867,
-      "sha256": "AD88BAC31F492C10630E1C6D3D46B8B806D756E36346D582D4CB143908576BA5",
-      "purpose": "left-lane metric card with visible center presenter"
+      "file": "../../docs/assets/previews/auto-editing-0-02-editorial-dual-rail-3.800s.png",
+      "timeSeconds": 3.8,
+      "structure": "editorial-dual-rail",
+      "sha256": "077C9A3FFD00C9ECEDE3DA8D2027C470EFDDFE9640EC00BEEC1FA2CAED1C5BFD"
     },
     {
-      "file": "../../docs/assets/previews/auto-editing-0-03-doodle-15.350s.png",
-      "timeSeconds": 15.35,
-      "sha256": "4D43EEA306694A8B1165DF58B623150B3F74C88780C0CCB1D4AED81DE2806426",
-      "purpose": "paper-sketch programmatic line illustration"
+      "file": "../../docs/assets/previews/auto-editing-0-03-metric-odometer-5.934s.png",
+      "timeSeconds": 5.934,
+      "structure": "metric-odometer",
+      "sha256": "63E389773BCE2898701382BE90EC623E4881802CE9ACE1C00AD393CB42E215EB"
     },
     {
-      "file": "../../docs/assets/previews/auto-editing-0-04-before-after-19.100s.png",
-      "timeSeconds": 19.1,
-      "sha256": "D6D65B592006A3379874FFA2579B163C960A1C2256A237EE89D00D65F11220FC",
-      "purpose": "paper-sketch before-and-after comparison"
+      "file": "../../docs/assets/previews/auto-editing-0-04-command-palette-9.849s.png",
+      "timeSeconds": 9.849,
+      "structure": "command-palette",
+      "sha256": "4A44B77D0A0E92460204C5557A84C40A73A94B0C219D0A7519728EB45312BB10"
     },
     {
-      "file": "../../docs/assets/previews/auto-editing-0-05-violet-30.600s.png",
-      "timeSeconds": 30.6,
-      "sha256": "A57C14EE756115518D6F1069A5726A47B6630DACECCE3511D791D19F6F287786",
-      "purpose": "violet-sunset left-lane data expression"
+      "file": "../../docs/assets/previews/auto-editing-0-05-semantic-doodle-15.349s.png",
+      "timeSeconds": 15.349,
+      "structure": "semantic-doodle",
+      "sha256": "1B0531F7601A43F982EC52E1499AC929C36719E6D907510C9A11D08DC43F8344"
     },
     {
-      "file": "../../docs/assets/previews/auto-editing-0-06-fullscreen-44.216s.png",
-      "timeSeconds": 44.216,
-      "sha256": "A6C865FCC91E582B429A658C43536657BE2C1508FBC0CB16B29B983CBEC345D2",
-      "purpose": "acid-action short full-screen call to action"
+      "file": "../../docs/assets/previews/auto-editing-0-06-before-after-scrub-19.117s.png",
+      "timeSeconds": 19.117,
+      "structure": "before-after-scrub",
+      "sha256": "F0DD69DAFAA05D71B59C47C27A727D8F104B7CB8E01E2945A93489993D044ED4"
+    },
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-07-four-stage-pipeline-21.083s.png",
+      "timeSeconds": 21.083,
+      "structure": "four-stage-pipeline",
+      "sha256": "63F444A83A4600D3CBAA8829EDB972231CCEC01792176EEC8B908E5D99FF0716"
+    },
+    {
+      "file": "../../docs/assets/previews/auto-editing-0-08-signal-route-26.283s.png",
+      "timeSeconds": 26.283,
+      "structure": "signal-route",
+      "sha256": "53828B72C449B2A3DCD4C6C5887334082E8DE62E95CD959927B2A1D970142F65"
     }
   ],
   "contactSheet": {
     "file": "../../docs/assets/previews/auto-editing-0-contact-sheet.jpg",
-    "frames": 10,
-    "sha256": "E1F72B07594840EA8520899EA51AEDF1827C24F54BBFD74925892F6DA20A5E8C"
+    "frames": 8,
+    "sha256": "D11E65CFDCD65C37E86BF0F8DC57489CD1454F6C78F5440F02DB239DD1978F3A"
   }
 }

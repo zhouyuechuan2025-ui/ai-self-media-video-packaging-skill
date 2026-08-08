@@ -1,7 +1,7 @@
 {
-  "version": "1.0",
-  "id": "auto-editing-0-public-case",
-  "title": "自动剪辑0｜多配色真人口播包装",
+  "version": "2.0",
+  "id": "run-v2",
+  "title": "run-v2",
   "duration": 49.273,
   "fps": 30,
   "width": 1920,
@@ -22,306 +22,582 @@
       "start": 0,
       "end": 2.666,
       "text": "我用Codex实现了一键智能剪辑",
-      "structure": "three-beat-hook",
+      "structure": "thesis-and-proof",
+      "content": {
+        "structure": "thesis-and-proof",
+        "thesis": "用Codex完成智能剪辑",
+        "reason": "从素材输入到成片由工作流串联"
+      },
       "motions": [
-        "lift",
-        "reveal"
+        "hit",
+        "focus"
       ],
       "placement": "full",
       "palette": "deep-ocean",
-      "directorRole": "hook"
+      "directorRole": "hook",
+      "reason": "Selected from spoken semantics: thesis-and-proof."
     },
     {
       "id": "beat-02",
       "start": 2.733,
-      "end": 7,
-      "text": "我一个新账号用它剪的视频几乎每条都进入了几万的流量池",
-      "structure": "metric-counter",
+      "end": 4.867,
+      "text": "我一个新账号用它剪的视频",
+      "structure": "editorial-dual-rail",
+      "content": {
+        "structure": "editorial-dual-rail",
+        "kicker": "PERSONAL CASE",
+        "headline": "新账号实测背景",
+        "leftItems": [
+          {
+            "label": "账号状态",
+            "detail": "新账号起步阶段"
+          }
+        ],
+        "rightItems": [
+          {
+            "label": "剪辑方式",
+            "detail": "使用本套工作流"
+          }
+        ],
+        "takeaway": "下一屏呈现本人口径数据"
+      },
       "motions": [
-        "count",
-        "focus"
+        "slide",
+        "reveal"
       ],
       "placement": "left",
-      "palette": "deep-ocean",
-      "directorRole": "data"
+      "palette": "violet-sunset",
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: editorial-dual-rail."
     },
     {
       "id": "beat-03",
-      "start": 7.133,
-      "end": 8.266,
-      "text": "资料我已经准备好了",
-      "structure": "keyword-relay",
+      "start": 4.867,
+      "end": 7,
+      "text": "个人案例：几乎每条都进入了几万的流量池",
+      "structure": "metric-odometer",
+      "content": {
+        "structure": "metric-odometer",
+        "metrics": [
+          {
+            "value": "几万",
+            "unit": "",
+            "label": "个人案例：几乎每条都进入了几万的流…",
+            "evidenceStatus": "owner-confirmed"
+          }
+        ]
+      },
       "motions": [
-        "lift",
-        "reveal"
+        "count",
+        "hit"
       ],
-      "placement": "right",
+      "placement": "full",
       "palette": "teal-signal",
-      "directorRole": "definition"
+      "directorRole": "data",
+      "reason": "Selected from spoken semantics: metric-odometer."
     },
     {
       "id": "beat-04",
-      "start": 8.266,
-      "end": 11.433,
-      "text": "需要的朋友在评论区打资料包直接就可以拿去用",
-      "structure": "completion-rail",
+      "start": 7.133,
+      "end": 8.266,
+      "text": "资料我已经准备好了",
+      "structure": "editorial-dual-rail",
+      "content": {
+        "structure": "editorial-dual-rail",
+        "kicker": "RESOURCE READY",
+        "headline": "配套资料已准备",
+        "leftItems": [
+          {
+            "label": "当前状态",
+            "detail": "资料已经整理完成"
+          }
+        ],
+        "rightItems": [
+          {
+            "label": "领取方式",
+            "detail": "按下一屏指引获取"
+          }
+        ],
+        "takeaway": "继续查看领取指令"
+      },
       "motions": [
-        "relay",
-        "stamp"
-      ],
-      "placement": "full",
-      "palette": "acid-action",
-      "directorRole": "cta"
-    },
-    {
-      "id": "beat-05",
-      "start": 11.5,
-      "end": 14.7,
-      "text": "这套Skill包括了视频剪辑和封面制作",
-      "structure": "capability-matrix",
-      "motions": [
-        "lift",
-        "reveal"
-      ],
-      "placement": "left",
-      "palette": "deep-ocean",
-      "directorRole": "definition"
-    },
-    {
-      "id": "beat-06",
-      "start": 14.766,
-      "end": 15.933,
-      "text": "是我踩了无数的坑",
-      "structure": "keyword-relay",
-      "motions": [
-        "lift",
+        "slide",
         "reveal"
       ],
       "placement": "right",
+      "palette": "editorial-cream",
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: editorial-dual-rail."
+    },
+    {
+      "id": "beat-05",
+      "start": 8.266,
+      "end": 11.433,
+      "text": "需要的朋友在评论区打资料包直接就可以拿去用",
+      "structure": "command-palette",
+      "content": {
+        "structure": "command-palette",
+        "commandTitle": "领取资料",
+        "actions": [
+          "评论区输入：资料包",
+          "按需领取并使用"
+        ],
+        "resultState": "资料已准备"
+      },
+      "motions": [
+        "focus",
+        "stamp"
+      ],
+      "placement": "left",
+      "palette": "acid-action",
+      "directorRole": "cta",
+      "reason": "Selected from spoken semantics: command-palette."
+    },
+    {
+      "id": "beat-06",
+      "start": 11.5,
+      "end": 14.7,
+      "text": "这套Skill包括了视频剪辑和封面制作",
+      "structure": "editorial-dual-rail",
+      "content": {
+        "structure": "editorial-dual-rail",
+        "kicker": "双项能力",
+        "headline": "一套Skill覆盖两类制作",
+        "leftItems": [
+          {
+            "label": "视频剪辑",
+            "detail": "完成口播内容包装"
+          }
+        ],
+        "rightItems": [
+          {
+            "label": "封面制作",
+            "detail": "补齐发布视觉入口"
+          }
+        ],
+        "takeaway": "剪辑与封面统一处理"
+      },
+      "motions": [
+        "slide",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "violet-sunset",
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: editorial-dual-rail."
+    },
+    {
+      "id": "beat-07",
+      "start": 14.766,
+      "end": 15.933,
+      "text": "是我踩了无数的坑",
+      "structure": "semantic-doodle",
+      "content": {
+        "structure": "semantic-doodle",
+        "subject": "创作者",
+        "action": "跨过反复踩坑",
+        "outcome": "沉淀可复用Skill",
+        "accent": "#e97a5f",
+        "annotation": "持续迭代"
+      },
+      "motions": [
+        "trace",
+        "lift"
+      ],
+      "placement": "full",
       "palette": "paper-sketch",
       "directorRole": "definition",
+      "reason": "Selected from spoken semantics: semantic-doodle.",
       "illustration": {
         "type": "climb-boulder",
         "label": "是我踩了无数的坑"
       }
     },
     {
-      "id": "beat-07",
+      "id": "beat-08",
       "start": 15.933,
       "end": 18.033,
       "text": "迭代了几个月才打磨出来的",
-      "structure": "gradient-keyword",
+      "structure": "metric-odometer",
+      "content": {
+        "structure": "metric-odometer",
+        "metrics": [
+          {
+            "value": "几个月",
+            "unit": "",
+            "label": "迭代了几个月才打磨出来的",
+            "evidenceStatus": "owner-confirmed"
+          }
+        ]
+      },
       "motions": [
-        "lift",
-        "reveal"
+        "count",
+        "hit"
       ],
-      "placement": "left",
-      "palette": "teal-signal",
-      "directorRole": "definition"
+      "placement": "full",
+      "palette": "editorial-cream",
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: metric-odometer."
     },
     {
-      "id": "beat-08",
+      "id": "beat-09",
       "start": 18.1,
       "end": 20.133,
       "text": "以前剪一条视频，你需要找素材",
-      "structure": "side-insight-card",
+      "structure": "before-after-scrub",
+      "content": {
+        "structure": "before-after-scrub",
+        "before": "人工逐项找素材",
+        "after": "原视频进入工作流",
+        "criterion": "剪辑入口"
+      },
       "motions": [
-        "lift",
+        "slide",
         "reveal"
       ],
-      "placement": "right",
+      "placement": "full",
       "palette": "paper-sketch",
-      "directorRole": "definition",
+      "directorRole": "contrast",
+      "reason": "Selected from spoken semantics: before-after-scrub.",
       "illustration": {
         "type": "before-after-illustration",
         "label": "以前剪一条视频，你需要找素材"
       }
     },
     {
-      "id": "beat-09",
+      "id": "beat-10",
       "start": 20.133,
       "end": 22.033,
       "text": "上字幕卡点弄特效",
-      "structure": "keyword-relay",
+      "structure": "four-stage-pipeline",
+      "content": {
+        "structure": "four-stage-pipeline",
+        "title": "传统手工剪辑流程",
+        "stages": [
+          "找素材",
+          "上字幕",
+          "卡点",
+          "加特效"
+        ],
+        "output": "逐项手工完成"
+      },
       "motions": [
-        "lift",
-        "reveal"
+        "route",
+        "relay"
       ],
-      "placement": "left",
+      "placement": "full",
       "palette": "editorial-cream",
-      "directorRole": "problem"
+      "directorRole": "problem",
+      "reason": "Selected from spoken semantics: four-stage-pipeline."
     },
     {
-      "id": "beat-10",
+      "id": "beat-11",
       "start": 22.133,
       "end": 24.7,
       "text": "每两三个小时根本搞不定，现在呢",
-      "structure": "gradient-keyword",
+      "structure": "before-after-scrub",
+      "content": {
+        "structure": "before-after-scrub",
+        "before": "2–3小时仍难完成",
+        "after": "交给工作流处理",
+        "criterion": "单条剪辑时间"
+      },
       "motions": [
-        "lift",
+        "slide",
         "reveal"
       ],
-      "placement": "right",
+      "placement": "full",
       "palette": "paper-sketch",
-      "directorRole": "definition",
+      "directorRole": "contrast",
+      "reason": "Selected from spoken semantics: before-after-scrub.",
       "illustration": {
         "type": "before-after-illustration",
         "label": "每两三个小时根本搞不定，现在呢"
       }
     },
     {
-      "id": "beat-11",
+      "id": "beat-12",
       "start": 24.7,
       "end": 27.866,
       "text": "我只需要把视频丢进去5分钟就剪完了",
-      "structure": "metric-counter",
+      "structure": "signal-route",
+      "content": {
+        "structure": "signal-route",
+        "nodes": [
+          "放入原视频",
+          "工作流处理",
+          "约5分钟完成"
+        ],
+        "routeLabel": "本次个人工作流",
+        "result": "个人实测：约5分钟"
+      },
       "motions": [
-        "count",
-        "focus"
+        "route",
+        "trace"
       ],
-      "placement": "left",
-      "palette": "teal-signal",
-      "directorRole": "data"
-    },
-    {
-      "id": "beat-12",
-      "start": 27.866,
-      "end": 29.266,
-      "text": "关键它还特别便宜",
-      "structure": "state-switch",
-      "motions": [
-        "lift",
-        "reveal"
-      ],
-      "placement": "right",
-      "palette": "editorial-cream",
-      "directorRole": "definition"
+      "placement": "full",
+      "palette": "acid-action",
+      "directorRole": "data",
+      "reason": "Selected from spoken semantics: signal-route."
     },
     {
       "id": "beat-13",
-      "start": 29.4,
-      "end": 31.8,
-      "text": "一条只消耗我Plus周额度的3%，",
-      "structure": "metric-counter",
+      "start": 27.866,
+      "end": 29.266,
+      "text": "关键它还特别便宜",
+      "structure": "thesis-and-proof",
+      "content": {
+        "structure": "thesis-and-proof",
+        "thesis": "本次工具链成本更低",
+        "reason": "成本数据按个人实际用量说明"
+      },
       "motions": [
-        "count",
+        "hit",
         "focus"
       ],
       "placement": "left",
-      "palette": "violet-sunset",
-      "directorRole": "data"
+      "palette": "deep-ocean",
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: thesis-and-proof."
     },
     {
       "id": "beat-14",
-      "start": 32.066,
-      "end": 34.2,
-      "text": "一周下来能剪出几十条视频",
-      "structure": "side-insight-card",
+      "start": 29.4,
+      "end": 31.8,
+      "text": "一条只消耗我Plus周额度的3%，",
+      "structure": "metric-odometer",
+      "content": {
+        "structure": "metric-odometer",
+        "metrics": [
+          {
+            "value": "3",
+            "unit": "%",
+            "label": "一条只消耗我Plus周额度的3%，",
+            "evidenceStatus": "owner-confirmed"
+          }
+        ]
+      },
       "motions": [
-        "lift",
-        "reveal"
+        "count",
+        "hit"
       ],
-      "placement": "right",
-      "palette": "violet-sunset",
-      "directorRole": "definition"
+      "placement": "full",
+      "palette": "deep-ocean",
+      "directorRole": "data",
+      "reason": "Selected from spoken semantics: metric-odometer."
     },
     {
       "id": "beat-15",
-      "start": 34.366,
-      "end": 36.533,
-      "text": "好出爆款的概率直接拉满",
-      "structure": "chapter-timeline",
+      "start": 32.066,
+      "end": 34.2,
+      "text": "一周下来能剪出几十条视频",
+      "structure": "metric-odometer",
+      "content": {
+        "structure": "metric-odometer",
+        "metrics": [
+          {
+            "value": "几十",
+            "unit": "条",
+            "label": "一周下来能剪出几十条视频",
+            "evidenceStatus": "estimate"
+          }
+        ]
+      },
       "motions": [
-        "relay",
-        "slide"
+        "count",
+        "hit"
       ],
-      "placement": "left",
+      "placement": "full",
       "palette": "teal-signal",
-      "directorRole": "definition"
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: metric-odometer."
     },
     {
       "id": "beat-16",
-      "start": 36.566,
-      "end": 37.133,
-      "text": "当然",
-      "structure": "gradient-keyword",
+      "start": 34.366,
+      "end": 36.533,
+      "text": "好出爆款的概率直接拉满",
+      "structure": "thesis-and-proof",
+      "content": {
+        "structure": "thesis-and-proof",
+        "thesis": "剪辑提升内容完成度",
+        "reason": "爆款仍取决于选题、文案与平台反馈"
+      },
       "motions": [
-        "lift",
-        "reveal"
+        "hit",
+        "focus"
       ],
       "placement": "right",
       "palette": "editorial-cream",
-      "directorRole": "definition"
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: thesis-and-proof."
     },
     {
       "id": "beat-17",
-      "start": 37.133,
+      "start": 36.566,
       "end": 39.533,
-      "text": "一条好的视频只靠剪辑肯定不够",
-      "structure": "side-insight-card",
+      "text": "当然，一条好的视频只靠剪辑肯定不够",
+      "structure": "thesis-and-proof",
+      "content": {
+        "structure": "thesis-and-proof",
+        "thesis": "好视频不只靠剪辑",
+        "reason": "选题与文案同样决定最终反馈"
+      },
       "motions": [
-        "lift",
-        "reveal"
+        "hit",
+        "focus"
       ],
       "placement": "left",
       "palette": "deep-ocean",
-      "directorRole": "definition"
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: thesis-and-proof."
     },
     {
       "id": "beat-18",
       "start": 39.6,
       "end": 41.833,
       "text": "决定能不能爆的还有选题和文案",
-      "structure": "split-conflict",
+      "structure": "editorial-dual-rail",
+      "content": {
+        "structure": "editorial-dual-rail",
+        "kicker": "爆款变量",
+        "headline": "剪辑之外还有两件事",
+        "leftItems": [
+          {
+            "label": "选题",
+            "detail": "决定用户是否停留"
+          }
+        ],
+        "rightItems": [
+          {
+            "label": "文案",
+            "detail": "决定内容是否成立"
+          }
+        ],
+        "takeaway": "剪辑只是完整链路的一环"
+      },
       "motions": [
-        "lift",
+        "slide",
         "reveal"
       ],
       "placement": "right",
       "palette": "violet-sunset",
-      "directorRole": "definition"
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: editorial-dual-rail."
     },
     {
       "id": "beat-19",
       "start": 41.933,
-      "end": 46.5,
-      "text": "下一期我就会把自己用的爆款选题方法还有核心Skill分享给大家",
-      "structure": "dual-concept",
+      "end": 44.216,
+      "text": "下一期我就会把自己用的爆款选题方法",
+      "structure": "editorial-dual-rail",
+      "content": {
+        "structure": "editorial-dual-rail",
+        "kicker": "NEXT EPISODE",
+        "headline": "下一期拆解选题方法",
+        "leftItems": [
+          {
+            "label": "方法",
+            "detail": "本人实际使用的选题逻辑"
+          }
+        ],
+        "rightItems": [
+          {
+            "label": "实操",
+            "detail": "结合真实内容继续拆解"
+          }
+        ],
+        "takeaway": "下一屏补充核心Skill"
+      },
       "motions": [
-        "lift",
-        "reveal"
-      ],
-      "placement": "full",
-      "palette": "acid-action",
-      "directorRole": "cta"
-    },
-    {
-      "id": "beat-20",
-      "start": 46.6,
-      "end": 48.1,
-      "text": "还没关注我的记得点个关注",
-      "structure": "adaptive-steps",
-      "motions": [
-        "relay",
-        "slide"
-      ],
-      "placement": "full",
-      "palette": "acid-action",
-      "directorRole": "cta"
-    },
-    {
-      "id": "beat-21",
-      "start": 48.1,
-      "end": 49.266,
-      "text": "咱们下期再见",
-      "structure": "contrarian-stamp",
-      "motions": [
-        "stamp",
+        "slide",
         "reveal"
       ],
       "placement": "left",
-      "palette": "deep-ocean",
-      "directorRole": "definition"
+      "palette": "acid-action",
+      "directorRole": "cta",
+      "reason": "Selected from spoken semantics: editorial-dual-rail."
+    },
+    {
+      "id": "beat-20",
+      "start": 44.216,
+      "end": 46.5,
+      "text": "继续分享：还有核心Skill分享给大家",
+      "structure": "command-palette",
+      "content": {
+        "structure": "command-palette",
+        "commandTitle": "下一期继续分享",
+        "actions": [
+          "爆款选题方法",
+          "核心Skill实操"
+        ],
+        "resultState": "关注后续内容"
+      },
+      "motions": [
+        "focus",
+        "stamp"
+      ],
+      "placement": "right",
+      "palette": "editorial-cream",
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: command-palette."
+    },
+    {
+      "id": "beat-21",
+      "start": 46.6,
+      "end": 48.1,
+      "text": "还没关注我的记得点个关注",
+      "structure": "command-palette",
+      "content": {
+        "structure": "command-palette",
+        "commandTitle": "继续获取方法",
+        "actions": [
+          "关注账号",
+          "等待下一期"
+        ],
+        "resultState": "下期继续"
+      },
+      "motions": [
+        "focus",
+        "stamp"
+      ],
+      "placement": "left",
+      "palette": "acid-action",
+      "directorRole": "cta",
+      "reason": "Selected from spoken semantics: command-palette."
+    },
+    {
+      "id": "beat-22",
+      "start": 48.1,
+      "end": 49.266,
+      "text": "咱们下期再见",
+      "structure": "editorial-dual-rail",
+      "content": {
+        "structure": "editorial-dual-rail",
+        "kicker": "SEE YOU NEXT",
+        "headline": "下期继续拆解",
+        "leftItems": [
+          {
+            "label": "本期",
+            "detail": "智能剪辑工作流"
+          }
+        ],
+        "rightItems": [
+          {
+            "label": "下期",
+            "detail": "选题方法与Skill"
+          }
+        ],
+        "takeaway": "继续关注下一期"
+      },
+      "motions": [
+        "slide",
+        "reveal"
+      ],
+      "placement": "right",
+      "palette": "violet-sunset",
+      "directorRole": "definition",
+      "reason": "Selected from spoken semantics: editorial-dual-rail."
     }
   ]
 }

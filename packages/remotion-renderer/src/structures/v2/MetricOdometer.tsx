@@ -10,9 +10,12 @@ const metricStatusLabel = {
 } as const;
 
 const AnimatedValue = ({value, progress}: {value: string; progress: number}): ReactElement => {
-  const numeric = Number(value.replace(/[^0-9.-]/g, ''));
+  const numericText = value.replace(/[^0-9.-]/g, '');
+  const isVerbal = !/[0-9]/.test(value) || numericText === '';
+  if (isVerbal) return <span data-verbal-metric="true">{value}</span>;
+  const numeric = Number(numericText);
   const display = Number.isFinite(numeric) ? String(Math.round(numeric * phase(progress, 0.08, 0.78))) : value;
-  return <>{display}</>;
+  return <span data-verbal-metric="false">{display}</span>;
 };
 
 export const MetricOdometer = ({content, progress, palette}: StructureProps): ReactElement => {
@@ -41,4 +44,3 @@ export const MetricOdometer = ({content, progress, palette}: StructureProps): Re
     </AbsoluteFill>
   );
 };
-

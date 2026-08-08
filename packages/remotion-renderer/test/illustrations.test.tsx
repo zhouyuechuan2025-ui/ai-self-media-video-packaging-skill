@@ -33,6 +33,15 @@ describe('illustrationRegistry', () => {
     expect(markup).toContain('data-doodle-layer="line"');
     expect(markup).toContain('data-doodle-layer="action"');
     expect(markup).toContain('data-doodle-layer="outcome"');
+    expect(markup).toContain('data-doodle-object="climber"');
+    expect(markup).toContain('data-doodle-object="boulder"');
     expect(markup).toContain('fill="none"');
+  });
+
+  it('renders an explicit climber and boulder in the climb metaphor', () => {
+    const ClimbBoulder = illustrationRegistry['climb-boulder'];
+    const markup = renderToStaticMarkup(<ClimbBoulder progress={0.72} accent="#e97a5f"/>);
+    expect(markup).toContain('data-doodle-object="climber"');
+    expect(markup).toContain('data-doodle-object="boulder"');
   });
 });
