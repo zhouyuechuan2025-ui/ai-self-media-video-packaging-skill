@@ -234,3 +234,5 @@ npm audit --omit=dev
 针对不同人群的不同需求，我们已设计开发两个课程产品，预计8月14日开售。
 不仅会教给你完整的AI自媒体快速起号方法、避坑指南，还能给到独家内部商单派单资源。
 感兴趣的朋友欢迎咨询业务微信：nanaya093
+
+<img src="docs/assets/contact/nana-wechat-qr.jpg" alt="Nana 业务微信二维码" width="320">

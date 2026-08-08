@@ -1,4 +1,4 @@
-import {readFileSync} from 'node:fs';
+import {existsSync, readFileSync, statSync} from 'node:fs';
 import {describe, expect, it} from 'vitest';
 import {SEMANTIC_STRUCTURES} from '../../packages/core/src/template-contracts';
 
@@ -83,5 +83,12 @@ describe('public Skill contract', () => {
     ]) expect(readme).toContain(phrase);
     expect(readme).not.toContain('已烧录字幕');
     expect(readme).not.toContain('烧录字幕');
+  });
+
+  it('shows the authorized business WeChat QR code after the contact line', () => {
+    const qrPath = 'docs/assets/contact/nana-wechat-qr.jpg';
+    expect(readme).toMatch(/感兴趣的朋友欢迎咨询业务微信：nanaya093\s+<img src="docs\/assets\/contact\/nana-wechat-qr\.jpg" alt="Nana 业务微信二维码" width="320">/);
+    expect(existsSync(qrPath)).toBe(true);
+    expect(statSync(qrPath).size).toBeGreaterThan(100_000);
   });
 });
