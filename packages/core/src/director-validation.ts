@@ -41,3 +41,10 @@ export const validateDirectorPlan = (storyboard: Storyboard): DirectorIssue[] =>
   });
   return issues;
 };
+
+export const assertDirectorPlan = (storyboard: Storyboard): void => {
+  const issues = validateDirectorPlan(storyboard);
+  if (issues.length === 0) return;
+  const details = issues.map((issue) => `${issue.code}${issue.beatId ? `(${issue.beatId})` : ''}: ${issue.message}`).join('; ');
+  throw new Error(`Director plan rejected: ${details}`);
+};

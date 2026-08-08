@@ -2,6 +2,7 @@ import {execFileSync, spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {basename, join, resolve} from 'node:path';
+import {assertDirectorPlan} from '../packages/core/src/director-validation';
 import {planStoryboard} from '../packages/core/src/planner';
 import {probeMedia} from '../packages/core/src/probe';
 import {gateABrief, storyboardMarkdown} from '../packages/core/src/reports';
@@ -60,6 +61,7 @@ const main = (): void => {
   const cues = parseSrt(readFileSync(srt, 'utf8'));
   const id = typeof args.id === 'string' ? args.id : basename(out).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'video-package';
   const storyboard = planStoryboard({id, title: typeof args.title === 'string' ? args.title : id, cues, probe, captionsMode: captionsMode as 'burned-in' | 'none' | 'generated', sourceVideo: 'input.mp4', sourceSrt: 'input.srt'});
+  assertDirectorPlan(storyboard);
   writeFileSync(join(out, 'BRIEF.md'), gateABrief({storyboard, probe, cues}), 'utf8');
   writeFileSync(join(out, 'SOURCE_PROBE.json'), `${JSON.stringify(probe, null, 2)}\n`, 'utf8');
   writeFileSync(join(out, 'STORYBOARD.md'), storyboardMarkdown(storyboard), 'utf8');

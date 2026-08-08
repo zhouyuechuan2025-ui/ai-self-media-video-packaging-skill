@@ -55,6 +55,6 @@ export const paletteForRole = (role: DirectorRole, index: number, hasIllustratio
   if (role === 'contrast' || role === 'problem') return 'editorial-cream';
   if (role === 'mechanism' || role === 'steps') return 'teal-signal';
   if (role === 'payoff' || role === 'cta') return 'acid-action';
-  if (role === 'data' || role === 'evidence') return index % 2 ? 'violet-sunset' : 'deep-ocean';
-  return index % 2 ? 'violet-sunset' : 'deep-ocean';
+  if (role === 'data' || role === 'evidence') return (['violet-sunset', 'deep-ocean', 'teal-signal', 'acid-action'] as const)[index % 4];
+  return (['deep-ocean', 'violet-sunset', 'teal-signal', 'editorial-cream'] as const)[index % 4];
 };

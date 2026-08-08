@@ -1,6 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import type {Storyboard} from '../src/schema';
-import {validateDirectorPlan} from '../src/director-validation';
+import {assertDirectorPlan, validateDirectorPlan} from '../src/director-validation';
 
 const makeBeat = (index: number, overrides: Record<string, unknown> = {}) => ({
   id: `b${index}`,
@@ -50,5 +50,6 @@ describe('validateDirectorPlan', () => {
     expect(codes).toContain('template-overuse');
     expect(codes).toContain('side-repeat');
     expect(codes).toContain('invalid-full-screen-role');
+    expect(() => assertDirectorPlan(storyboard(beats))).toThrow(/Director plan rejected/);
   });
 });
